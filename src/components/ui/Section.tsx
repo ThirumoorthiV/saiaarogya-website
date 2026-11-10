@@ -2,45 +2,45 @@ import type { ReactNode } from "react";
 import { Container } from "./Container";
 import { cn } from "./cn";
 
-type Tone = "white" | "cream" | "maroon";
+type Tone = "plain" | "white" | "tint" | "dark";
 
 const tones: Record<Tone, string> = {
+  plain: "bg-ink-50",
   white: "bg-white",
-  cream: "bg-cream-100",
-  maroon: "bg-maroon-700 text-white",
+  tint: "bg-maroon-50",
+  dark: "bg-maroon-950 text-white",
 };
 
 interface SectionProps {
   id?: string;
   tone?: Tone;
+  eyebrow?: ReactNode;
   title?: ReactNode;
   intro?: ReactNode;
-  /** Heading level for the section title (default h2) */
-  as?: "h2" | "h3";
   action?: ReactNode;
-  children: ReactNode;
+  as?: "h2" | "h3";
+  center?: boolean;
   className?: string;
+  children: ReactNode;
 }
 
-/** Page section with §6.4 vertical rhythm (96px desktop / 56px mobile). */
-export function Section({ id, tone = "white", title, intro, as: H = "h2", action, children, className }: SectionProps) {
-  const headingId = id ? `${id}-title` : undefined;
+/** Page section: eyebrow pill + large title + intro, generous vertical rhythm. */
+export function Section({ id, tone = "plain", eyebrow, title, intro, action, as: H = "h2", center, className, children }: SectionProps) {
+  const headingId = id && title ? `${id}-title` : undefined;
+  const dark = tone === "dark";
   return (
-    <section
-      id={id}
-      aria-labelledby={title && headingId ? headingId : undefined}
-      className={cn("scroll-mt-24 py-section-sm md:py-section", tones[tone], className)}
-    >
+    <section id={id} aria-labelledby={headingId} className={cn("py-16 md:py-24", tones[tone], className)}>
       <Container>
-        {(title || intro || action) && (
-          <div className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-prose">
+        {(eyebrow || title || intro || action) && (
+          <div className={cn("mb-10 flex flex-col gap-5 md:mb-14", center ? "items-center text-center" : "md:flex-row md:items-end md:justify-between")}>
+            <div className={cn("max-w-2xl", center && "mx-auto")}>
+              {eyebrow && <p className={cn("eyebrow", dark && "bg-white/10 text-maroon-100")}>{eyebrow}</p>}
               {title && (
-                <H id={headingId} className={cn("h2", tone === "maroon" && "text-white")}>
+                <H id={headingId} className={cn("text-h2", eyebrow ? "mt-4" : undefined, dark && "text-white")}>
                   {title}
                 </H>
               )}
-              {intro && <p className={cn("mt-3", tone === "maroon" ? "text-white/90" : "text-ink-600")}>{intro}</p>}
+              {intro && <div className={cn("mt-4 text-lg", dark ? "text-maroon-100" : "text-ink-600")}>{intro}</div>}
             </div>
             {action && <div className="shrink-0">{action}</div>}
           </div>

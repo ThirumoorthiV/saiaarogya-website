@@ -1,23 +1,20 @@
 import { useMemo, useState } from "react";
 import { Phone, RotateCcw } from "lucide-react";
-import { departments, doctors, siteSettings } from "@/content";
-import { usePick, useT } from "@/i18n/LangContext";
+import { departments, doctors, siteSettings, tel } from "@/content";
 import { getPageMeta } from "@/lib/pageMeta";
 import { SITE_URL } from "@/lib/staticPaths";
-import { DAYS, visitsOn, type DayOfWeek, type DoctorType } from "@/types";
+import { DAYS, DAY_NAMES, visitsOn, type DayOfWeek, type DoctorType } from "@/types";
 import { Seo } from "@/components/seo/Seo";
-import { PageHeader } from "@/components/layout/PageHeader";
-import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/layout/PageHero";
+import { Container } from "@/components/ui/Container";
 import { DoctorCard } from "@/components/doctors/DoctorCard";
-import { ButtonLink, Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { Todo } from "@/components/ui/Todo";
-import { inputClass } from "@/components/forms/Field";
+import { Select } from "@/components/ui/Select";
 import { cn } from "@/components/ui/cn";
 
 /** Doctors directory (§5.4): filter by department, visiting day and Resident / Consultant. */
 export function Component() {
-  const pick = usePick();
-  const t = useT();
   const path = "/doctors/";
   const meta = getPageMeta(path);
   const [dept, setDept] = useState("");
@@ -25,10 +22,7 @@ export function Component() {
   const [type, setType] = useState<DoctorType | "">("");
 
   const results = useMemo(
-    () =>
-      doctors.filter(
-        (d) => (!dept || d.department === dept) && (!day || visitsOn(d.visitingDays, day)) && (!type || d.type === type),
-      ),
+    () => doctors.filter((d) => (!dept || d.department === dept) && (!day || visitsOn(d.visitingDays, day)) && (!type || d.type === type)),
     [dept, day, type],
   );
   const filtered = Boolean(dept || day || type);
@@ -38,7 +32,6 @@ export function Component() {
     setDay("");
     setType("");
   };
-
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -46,14 +39,14 @@ export function Component() {
     itemListElement: doctors.map((d, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE_URL}/doctors/${d.slug}/`, name: d.name })),
   };
 
-  const typeChip = (value: DoctorType | "", label: string) => (
+  const chip = (value: DoctorType | "", label: string) => (
     <button
       type="button"
       onClick={() => setType(value)}
       aria-pressed={type === value}
       className={cn(
-        "inline-flex min-h-12 items-center rounded-full border px-5 text-base font-semibold",
-        type === value ? "border-maroon-700 bg-maroon-700 text-white" : "border-maroon-700/30 bg-white text-maroon-700 hover:bg-maroon-50",
+        "inline-flex min-h-12 items-center rounded-full px-5 text-[15px] font-semibold transition-colors",
+        type === value ? "bg-maroon-700 text-white" : "border border-ink-200 bg-white text-ink-700 hover:border-maroon-200 hover:bg-maroon-100 hover:text-maroon-900",
       )}
     >
       {label}
@@ -63,90 +56,86 @@ export function Component() {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={path} schema={[itemList]} />
-      <PageHeader title={meta.h1 ?? meta.title} intro={meta.description} crumbs={meta.crumbs} path={path} />
+      <PageHero title={meta.h1 ?? meta.title} eyebrow={<p className="eyebrow">{doctors.length} doctors</p>} intro={meta.description} crumbs={meta.crumbs} path={path} />
 
-      <Section tone="white" className="!pt-8 md:!pt-12">
-        <form role="search" aria-label={t("doctorsPage.filterLabel")} onSubmit={(e) => e.preventDefault()} className="rounded-card bg-cream-100 p-4 md:p-6">
-          <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
-            <div>
-              <label htmlFor="f-dept" className="mb-1.5 block font-semibold">
-                {t("doctorsPage.department")}
-              </label>
-              <select id="f-dept" value={dept} onChange={(e) => setDept(e.target.value)} className={inputClass(false)}>
-                <option value="">{t("doctorsPage.allDepartments")}</option>
-                {departments.map((d) => (
-                  <option key={d.slug} value={d.slug}>
-                    {pick(d.name)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="f-day" className="mb-1.5 block font-semibold">
-                {t("doctorsPage.visitingDay")}
-              </label>
-              <select id="f-day" value={day} onChange={(e) => setDay(e.target.value as DayOfWeek | "")} className={inputClass(false)}>
-                <option value="">{t("doctorsPage.anyDay")}</option>
-                {DAYS.map((d) => (
-                  <option key={d} value={d}>
-                    {t(`days.${d}`)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <fieldset>
-              <legend className="mb-1.5 block font-semibold">{t("doctorsPage.doctorType")}</legend>
-              <div className="flex flex-wrap gap-2">
-                {typeChip("", t("doctorsPage.all"))}
-                {typeChip("Resident", t("doctor.resident"))}
-                {typeChip("Consultant", t("doctor.consultant"))}
+      <div className="py-12 md:py-16">
+        <Container>
+          <form role="search" aria-label="Filter doctors" onSubmit={(e) => e.preventDefault()} className="surface p-4 md:p-5">
+            <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+              <div>
+                <span id="f-dept-label" className="mb-1.5 block text-[15px] font-semibold">
+                  Department
+                </span>
+                <Select
+                  id="f-dept"
+                  labelId="f-dept-label"
+                  value={dept}
+                  onChange={setDept}
+                  options={[{ value: "", label: "All departments" }, ...departments.map((d) => ({ value: d.slug, label: d.name }))]}
+                />
               </div>
-            </fieldset>
-          </div>
-          {!schedulesKnown && (
-            <div className="mt-4">
-              <Todo id="doctor-visiting-days">
-                Visiting days are not yet confirmed for any doctor, so the “Visiting day” filter cannot find matches yet.
-              </Todo>
+              <div>
+                <span id="f-day-label" className="mb-1.5 block text-[15px] font-semibold">
+                  Visiting day
+                </span>
+                <Select
+                  id="f-day"
+                  labelId="f-day-label"
+                  value={day}
+                  onChange={(v) => setDay(v as DayOfWeek | "")}
+                  options={[{ value: "", label: "Any day" }, ...DAYS.map((d) => ({ value: d, label: DAY_NAMES[d] }))]}
+                />
+              </div>
+              <fieldset>
+                <legend className="mb-1.5 block text-[15px] font-semibold">Doctor type</legend>
+                <div className="flex flex-wrap gap-2">
+                  {chip("", "All")}
+                  {chip("Resident", "Resident")}
+                  {chip("Consultant", "Consultant")}
+                </div>
+              </fieldset>
             </div>
-          )}
-        </form>
+            {!schedulesKnown && (
+              <div className="mt-4">
+                <Todo id="doctor-visiting-days">Visiting days are not yet confirmed for any doctor, so the “Visiting day” filter cannot find matches yet.</Todo>
+              </div>
+            )}
+          </form>
 
-        <div className="mb-6 mt-8 flex flex-wrap items-center justify-between gap-3">
-          <p role="status" className="text-ink-600">
-            {filtered ? t("doctorsPage.showing", { shown: results.length, total: doctors.length }) : t("doctorsPage.total", { count: doctors.length })}
-          </p>
-          {filtered && (
-            <Button variant="ghost" onClick={reset} icon={<RotateCcw className="h-4 w-4" aria-hidden />}>
-              {t("doctorsPage.clearFilters")}
-            </Button>
-          )}
-        </div>
-
-        {results.length ? (
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6">
-            {results.map((d) => (
-              <li key={d.slug}>
-                <DoctorCard doctor={d} headingLevel="h2" />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="rounded-card bg-cream-100 p-8 text-center">
-            <p className="font-heading text-xl text-maroon-700">
-              {day ? t("doctorsPage.noneOnDay") : t("doctorsPage.noneMatch")}
+          <div className="mb-6 mt-8 flex flex-wrap items-center justify-between gap-3">
+            <p role="status" className="text-ink-600">
+              {filtered ? `Showing ${results.length} of ${doctors.length} doctors` : `${doctors.length} doctors`}
             </p>
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <ButtonLink to={`tel:${siteSettings.phone}`} icon={<Phone className="h-5 w-5" aria-hidden />} track="call-doctors-empty">
-                {t("departmentsPage.callPhone", { phone: siteSettings.phoneDisplay })}
-              </ButtonLink>
-              <Button variant="secondary" onClick={reset}>
-                {t("doctorsPage.clearFilters")}
+            {filtered && (
+              <Button variant="ghost" onClick={reset} icon={<RotateCcw className="h-4 w-4" aria-hidden />}>
+                Clear filters
               </Button>
-            </div>
+            )}
           </div>
-        )}
-      </Section>
+
+          {results.length ? (
+            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {results.map((d) => (
+                <li key={d.slug}>
+                  <DoctorCard doctor={d} headingLevel="h2" />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="surface p-10 text-center">
+              <p className="font-heading text-xl font-bold text-ink-900">{day ? "No doctor visiting on this day — call us for help" : "No doctor matches these filters — call us for help"}</p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <ButtonLink to={tel} icon={<Phone className="h-[18px] w-[18px]" aria-hidden />} track="call-doctors-empty">
+                  {`Call ${siteSettings.phoneDisplay}`}
+                </ButtonLink>
+                <Button variant="outline" onClick={reset}>
+                  Clear filters
+                </Button>
+              </div>
+            </div>
+          )}
+        </Container>
+      </div>
     </>
   );
 }

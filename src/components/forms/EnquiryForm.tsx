@@ -1,121 +1,101 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CircleCheck, CircleX, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { siteSettings } from "@/content";
-import { useT } from "@/i18n/LangContext";
 import { SITE_URL } from "@/lib/staticPaths";
 import { formsConfigured, submitToWeb3Forms, WEB3FORMS_ENDPOINT, WEB3FORMS_KEY } from "@/lib/web3forms";
 import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
 import { Todo } from "@/components/ui/Todo";
-import { Field, describedBy, inputClass } from "./Field";
+import { Select } from "@/components/ui/Select";
+import { Field, describedBy, inputClass } from "@/components/ui/Field";
+import { FormError, FormSuccess } from "./FormStatus";
 
-const noopSubscribe = () => () => {};
-
-export const REASONS = ["patient", "donation", "volunteer", "partnership", "other"] as const;
-export type Reason = (typeof REASONS)[number];
+export const REASONS = [
+  { value: "patient", label: "Patient enquiry" },
+  { value: "donation", label: "Donation" },
+  { value: "volunteer", label: "Volunteer" },
+  { value: "partnership", label: "Partnership" },
+  { value: "other", label: "Other" },
+] as const;
+export type Reason = (typeof REASONS)[number]["value"];
 
 /** Indian mobile: optional +91 / 91 / 0 prefix, then 10 digits starting 6–9. */
 export const INDIAN_PHONE = /^(?:\+?91|0)?[6-9]\d{9}$/;
 export const normalizePhone = (v: string) => v.replace(/[\s()-]/g, "");
+const noopSubscribe = () => () => {};
 
 const schema = z.object({
-  name: z.string().trim().min(2, "errName").max(100, "errName"),
+  name: z.string().trim().min(2, "Please enter your name.").max(100),
   phone: z
     .string()
     .transform(normalizePhone)
-    .refine((v) => INDIAN_PHONE.test(v), "errPhone"),
-  email: z.union([z.literal(""), z.string().trim().email("errEmail")]),
-  reason: z.enum(REASONS, { message: "errReason" }),
-  message: z.string().trim().min(10, "errMessage").max(2000, "errMessage"),
+    .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
+  email: z.union([z.literal(""), z.string().trim().email("Please enter a valid email address, or leave it empty.")]),
+  reason: z.enum(REASONS.map((r) => r.value) as [Reason, ...Reason[]], { message: "Please choose a reason." }),
+  message: z.string().trim().min(10, "Please write a short message (at least 10 characters).").max(2000),
   botcheck: z.boolean().optional(),
 });
-
-type FormInput = z.input<typeof schema>;
-type FormOutput = z.output<typeof schema>;
+type In = z.input<typeof schema>;
+type Out = z.output<typeof schema>;
 
 /**
  * Contact enquiry form (§5.8): required name, phone, reason, message; email
- * optional; Indian phone validation; success message. Submits to Web3Forms,
- * which emails the hospital. Honeypot spam protection (§8).
+ * optional; Indian phone validation; success message. Sent via Web3Forms.
+ * Honeypot spam protection (§8). Also posts without JavaScript.
  */
 export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { defaultReason?: Reason; pagePath?: string }) {
-  const t = useT();
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
   const statusRef = useRef<HTMLDivElement>(null);
+  const sentViaRedirect = useSyncExternalStore(noopSubscribe, () => new URLSearchParams(window.location.search).get("sent") === "1", () => false);
+  const [redirectDismissed, setRedirectDismissed] = useState(false);
+  const shown = status === "idle" && sentViaRedirect && !redirectDismissed ? "sent" : status;
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, submitCount },
-  } = useForm<FormInput, unknown, FormOutput>({
+  } = useForm<In, unknown, Out>({
     resolver: zodResolver(schema),
     defaultValues: { name: "", phone: "", email: "", reason: (defaultReason ?? "") as Reason, message: "", botcheck: false },
   });
 
-  // No-JS fallback: Web3Forms redirects back with ?sent=1 (false while pre-rendering / hydrating)
-  const sentViaRedirect = useSyncExternalStore(
-    noopSubscribe,
-    () => new URLSearchParams(window.location.search).get("sent") === "1",
-    () => false,
-  );
-  const [redirectDismissed, setRedirectDismissed] = useState(false);
-  const shownStatus = status === "idle" && sentViaRedirect && !redirectDismissed ? "sent" : status;
-
   useEffect(() => {
-    if (shownStatus !== "idle") statusRef.current?.focus();
-  }, [shownStatus]);
+    if (shown !== "idle") statusRef.current?.focus();
+  }, [shown]);
 
-  const onSubmit = async (data: FormOutput) => {
+  const onSubmit = async (data: Out) => {
     const { botcheck, ...fields } = data;
-    const result = await submitToWeb3Forms(
-      `Website enquiry: ${t(`form.reasons.${data.reason}`)} — ${data.name}`,
-      { ...fields, reason: t(`form.reasons.${data.reason}`), page: pagePath },
-      Boolean(botcheck),
-    );
-    if (result.ok) {
+    const reasonLabel = REASONS.find((r) => r.value === data.reason)?.label ?? data.reason;
+    const res = await submitToWeb3Forms(`Website enquiry: ${reasonLabel} — ${data.name}`, { ...fields, reason: reasonLabel, page: pagePath }, Boolean(botcheck));
+    if (res.ok) {
       trackEvent("form_submit", { form: "enquiry", reason: data.reason });
       reset();
       setStatus("sent");
-    } else {
-      setStatus("error");
-    }
+    } else setStatus("error");
   };
 
-  const err = (key?: string) => (key ? t(`form.${key}`) : undefined);
-  const hasErrors = Object.keys(errors).length > 0;
-
-  if (shownStatus === "sent") {
+  if (shown === "sent") {
     return (
-      <div ref={statusRef} tabIndex={-1} role="status" className="rounded-card bg-[#E7F3EA] p-6 outline-none">
-        <p className="flex items-center gap-2 font-heading text-xl font-medium text-success-700">
-          <CircleCheck className="h-6 w-6" aria-hidden />
-          {t("form.successTitle")}
-        </p>
-        <p className="mt-2 text-ink-900">{t("form.successText", { phone: siteSettings.phoneDisplay })}</p>
-        <Button variant="secondary" className="mt-4" onClick={() => {
-            setRedirectDismissed(true);
-            setStatus("idle");
-          }}>
-          {t("actions.sendEnquiry")}
-        </Button>
-      </div>
+      <FormSuccess
+        ref={statusRef}
+        title="Thank you — your message has been sent."
+        text={`Our team will get back to you soon. For anything urgent, please call ${siteSettings.phoneDisplay}.`}
+        onReset={() => {
+          setRedirectDismissed(true);
+          setStatus("idle");
+        }}
+      />
     );
   }
 
+  const hasErrors = Object.keys(errors).length > 0;
   return (
-    <form
-      action={WEB3FORMS_ENDPOINT}
-      method="POST"
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-      aria-describedby="enquiry-medical-note"
-    >
-      {/* Used only when JavaScript is unavailable */}
+    <form action={WEB3FORMS_ENDPOINT} method="POST" noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-5" aria-describedby="enq-note">
       <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="subject" value="Website enquiry" />
       <input type="hidden" name="redirect" value={`${SITE_URL}${pagePath}?sent=1`} />
@@ -125,43 +105,18 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
           Form not connected yet — set <code>VITE_WEB3FORMS_ACCESS_KEY</code>. Messages cannot be sent until then.
         </Todo>
       )}
-
-      {status === "error" && (
-        <div ref={statusRef} tabIndex={-1} role="alert" className="rounded-btn bg-[#FDECEC] p-4 outline-none">
-          <p className="flex items-center gap-2 font-semibold text-alert-700">
-            <CircleX className="h-5 w-5" aria-hidden />
-            {t("form.errorTitle")}
-          </p>
-          <p className="mt-1 text-ink-900">
-            {t("form.errorText")}{" "}
-            <a href={`tel:${siteSettings.phone}`} className="font-semibold" data-track="call-form-error">
-              {siteSettings.phoneDisplay}
-            </a>
-          </p>
-        </div>
-      )}
-
+      {status === "error" && <FormError ref={statusRef} />}
       {hasErrors && submitCount > 0 && (
         <p role="alert" className="font-medium text-alert-700">
-          {t("form.errorSummary")}
+          Please correct the highlighted fields.
         </p>
       )}
 
-      <Field id="enq-name" label={t("form.name")} required error={err(errors.name?.message)}>
-        <input
-          id="enq-name"
-          type="text"
-          autoComplete="name"
-          className={inputClass(!!errors.name)}
-          aria-required="true"
-          aria-invalid={!!errors.name}
-          aria-describedby={describedBy("enq-name", false, !!errors.name)}
-          {...register("name")}
-        />
+      <Field id="enq-name" label="Your name" required error={errors.name?.message}>
+        <input id="enq-name" autoComplete="name" className={inputClass(!!errors.name)} aria-required="true" aria-invalid={!!errors.name} aria-describedby={describedBy("enq-name", false, !!errors.name)} {...register("name")} />
       </Field>
-
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        <Field id="enq-phone" label={t("form.phone")} required hint={t("form.phoneHint")} error={err(errors.phone?.message)}>
+        <Field id="enq-phone" label="Phone number" required hint="10-digit Indian mobile number" error={errors.phone?.message}>
           <input
             id="enq-phone"
             type="tel"
@@ -175,60 +130,41 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
             {...register("phone")}
           />
         </Field>
-        <Field id="enq-email" label={t("form.email")} optionalLabel={t("form.optional")} error={err(errors.email?.message)}>
-          <input
-            id="enq-email"
-            type="email"
-            autoComplete="email"
-            className={inputClass(!!errors.email)}
-            aria-invalid={!!errors.email}
-            aria-describedby={describedBy("enq-email", false, !!errors.email)}
-            {...register("email")}
-          />
+        <Field id="enq-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
+          <input id="enq-email" type="email" autoComplete="email" className={inputClass(!!errors.email)} aria-invalid={!!errors.email} aria-describedby={describedBy("enq-email", true, !!errors.email)} {...register("email")} />
         </Field>
       </div>
-
-      <Field id="enq-reason" label={t("form.reason")} required error={err(errors.reason?.message)}>
-        <select
-          id="enq-reason"
-          className={inputClass(!!errors.reason)}
-          aria-required="true"
-          aria-invalid={!!errors.reason}
-          aria-describedby={describedBy("enq-reason", false, !!errors.reason)}
-          {...register("reason")}
-        >
-          <option value="" disabled>
-            {t("form.reasonPlaceholder")}
-          </option>
-          {REASONS.map((r) => (
-            <option key={r} value={r}>
-              {t(`form.reasons.${r}`)}
-            </option>
-          ))}
-        </select>
-      </Field>
-
-      <Field id="enq-message" label={t("form.message")} required error={err(errors.message?.message)}>
-        <textarea
-          id="enq-message"
-          rows={5}
-          className={inputClass(!!errors.message)}
-          aria-required="true"
-          aria-invalid={!!errors.message}
-          aria-describedby={describedBy("enq-message", false, !!errors.message)}
-          {...register("message")}
+      <Field id="enq-reason" label="Reason for contacting us" required error={errors.reason?.message}>
+        <Controller
+          control={control}
+          name="reason"
+          render={({ field }) => (
+            <Select
+              id="enq-reason"
+              labelId="enq-reason-label"
+              name="reason"
+              value={field.value ?? ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              options={REASONS.map((r) => ({ value: r.value, label: r.label }))}
+              placeholder="Choose a reason"
+              required
+              invalid={!!errors.reason}
+              describedBy={describedBy("enq-reason", false, !!errors.reason)}
+            />
+          )}
         />
       </Field>
-
+      <Field id="enq-message" label="Message" required error={errors.message?.message}>
+        <textarea id="enq-message" rows={5} className={inputClass(!!errors.message)} aria-required="true" aria-invalid={!!errors.message} aria-describedby={describedBy("enq-message", false, !!errors.message)} {...register("message")} />
+      </Field>
       {/* Honeypot (spam protection) — hidden from people and screen readers */}
       <input type="checkbox" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("botcheck")} />
-
-      <p id="enquiry-medical-note" className="text-sm text-ink-600">
-        {t("form.medicalNote")}
+      <p id="enq-note" className="rounded-2xl bg-ink-100 px-4 py-3 text-sm text-ink-700">
+        Please do not include medical details or reports in this form. For medical questions, call us or visit the OPD.
       </p>
-
-      <Button type="submit" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full sm:w-auto">
-        {isSubmitting ? t("form.sending") : t("form.submit")}
+      <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full sm:w-auto">
+        {isSubmitting ? "Sending…" : "Send message"}
       </Button>
     </form>
   );

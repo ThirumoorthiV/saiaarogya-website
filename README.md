@@ -2,8 +2,14 @@
 
 A patient-first website for Sai Aarogya Hospital, Bapatla, a unit of Sri Sathya Sai Sujala Sravanthi Trust. It is built from `Sai_Aarogya_Hospital_Website_Requirements_Analysis.md` (v1.0), which is the single source of truth for this project.
 
-**Stack (§7):** React 18 · TypeScript · Vite · Tailwind CSS · Lucide React · React Router.
-- **Pre-rendering:** every route is pre-rendered to static HTML with `vite-react-ssg`, in English and under `/te/`.
+**Stack (§7):** React 18 · TypeScript · Vite · Tailwind CSS · Lucide React · React Router. English only.
+
+**Design:** a modern, maroon-only design system with no orange.
+- Plus Jakarta Sans for headings and Inter for body text, both self-hosted.
+- Soft rounded cards and pill buttons.
+- Dropdown navigation and custom dropdowns, all with a light-maroon (`maroon-100`) hover and focus state.
+- The colour tokens are in `tailwind.config.ts`.
+- **Pre-rendering:** every route is pre-rendered to static HTML with `vite-react-ssg`.
 - **Content:** JSON files in `src/content/`, edited with Decap CMS.
 - **Hosting:** Netlify, which also handles redirects and CMS logins.
 - **Forms:** sent through [Web3Forms](https://web3forms.com). Set `VITE_WEB3FORMS_ACCESS_KEY` (see `.env.example`). Forms also work without JavaScript.
@@ -19,7 +25,6 @@ A patient-first website for Sai Aarogya Hospital, Bapatla, a unit of Sri Sathya 
 | `npm run build` | Pre-render every page to `dist/`, and write `sitemap.xml`, `robots.txt` and `404.html` |
 | `npm run check` | lint + typecheck + build + meta check + structured-data check + TODO scan (run before every commit) |
 | `npm run check:schema` | Validate the JSON-LD on every page (Hospital, Physician, FAQPage, BreadcrumbList…) |
-| `npm run i18n:status` | Telugu translation progress |
 | `npm run a11y` | axe-core WCAG 2.1 A/AA audit of every built page at 360 and 1440 px, plus a keyboard skip-link check |
 | `npm run check:meta` | Check that each built page has one H1, a unique title, and a 140–160 character description |
 | `npm run qa` | Open every built page in Chrome at 360, 768 and 1440 px and check for overflow, H1, alt text and console errors (`--shots <dir>` saves screenshots) |
@@ -31,16 +36,16 @@ A patient-first website for Sai Aarogya Hospital, Bapatla, a unit of Sri Sathya 
 ```
 src/
 ├── components/
-│   ├── layout/     Header, Footer, UtilityBar, MobileActionBar, Breadcrumbs, PageHeader
-│   ├── ui/         Button, Card, Badge, Accordion, Todo, Section, …
-│   ├── sections/   Page sections (Hero, QuickActions, ImpactCounters, …)
-│   └── seo/        <Seo> (title, description, canonical, hreflang, Open Graph, JSON-LD)
+│   ├── layout/     TopBar, Header + NavDropdown, Footer, MobileActionBar, Breadcrumbs, PageHero
+│   ├── ui/         Button, Badge, Select (custom dropdown), Field, Accordion, Todo, Section, …
+│   ├── home/       Hero, QuickActions, ImpactBand, DoctorCarousel
+│   ├── sections/   Shared sections (VisitUs, ContactDetails, NetworkCards, SupportCta, FaqList…)
+│   └── seo/        <Seo> (title, description, canonical, Open Graph, JSON-LD)
 ├── content/        CMS collections as JSON (requirements §10) + typed loaders
-├── i18n/           en.json, te.json, language context (URL-driven: /te/ prefix)
-├── lib/            staticPaths (every route), pageMeta (titles/descriptions), schema (JSON-LD)
+├── lib/            staticPaths, pageMeta, navigation (menus), schema (JSON-LD)
 ├── pages/          One module per route (exports `Component`)
 ├── types/          Data model types
-├── routes.tsx      Route table (mounted under / and /te)
+├── routes.tsx      Route table
 └── main.tsx
 docs/
 ├── CONTENT_TODO.md      Every placeholder waiting for information from the hospital
@@ -66,4 +71,5 @@ public/
 - [x] Phase 2 — Patient essentials: Home, Patient Guide, Contact
 - [x] Phase 3 — Departments & Doctors, CMS admin, schema markup
 - [x] Phase 4 — About, Impact, Stories, Gallery, Support Us, Policies
-- [x] Phase 5 — Telugu readiness, redirects, analytics + cookie notice, performance, launch docs (`docs/LAUNCH_CHECKLIST.md`, `docs/STAFF_GUIDE.md`)
+- [x] Phase 5 — Redirects, analytics + cookie notice, performance, launch docs (`docs/LAUNCH_CHECKLIST.md`, `docs/STAFF_GUIDE.md`)
+- [x] Redesign — modern maroon-only design, dropdown navigation, English only (branch `redesign`)

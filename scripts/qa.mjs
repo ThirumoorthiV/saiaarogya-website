@@ -30,9 +30,7 @@ const WIDTHS = [360, 768, 1440];
 
 const sitemap = await readFile("dist/sitemap.xml", "utf8");
 const allPaths = [...sitemap.matchAll(/<loc>https:\/\/www\.saiaarogya\.hospital([^<]*)<\/loc>/g)].map((m) => m[1]);
-// The sitemap lists /te/ URLs only once Telugu is live, so always add the Telugu mirrors here.
-const withTelugu = [...new Set(allPaths.flatMap((p) => (p.startsWith("/te/") ? [p] : [p, p === "/" ? "/te/" : `/te${p}`])))];
-const paths = only ?? withTelugu;
+const paths = only ?? allPaths;
 
 const server = http.createServer((req, res) => handler(req, res, { public: "dist", trailingSlash: true }));
 await new Promise((r) => server.listen(4319, r));

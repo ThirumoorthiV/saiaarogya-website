@@ -5,4 +5,4 @@
 /privacypolicy        /policies/privacy/       301
 /refundpolicy         /policies/refund/        301
 /home                 /                        301
-/te                   /te/                     301
+/te/*                /:splat                  301

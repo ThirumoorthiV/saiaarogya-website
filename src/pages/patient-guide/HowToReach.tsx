@@ -1,31 +1,29 @@
 import { Bus, Landmark, Route } from "lucide-react";
-import { useT } from "@/i18n/LangContext";
-import { GuidePage } from "@/components/guide/GuidePage";
+import { GuideShell } from "@/components/guide/GuideShell";
 import { VisitUs } from "@/components/sections/VisitUs";
 import { Todo } from "@/components/ui/Todo";
 
 /** How to Reach (§5.5): map, landmarks, nearest bus stop, road directions from Bapatla town. */
 export function Component() {
-  const t = useT();
   const items = [
-    { icon: Landmark, title: t("guide.landmarks"), todo: "Nearby landmarks to help people find the hospital." },
-    { icon: Bus, title: t("guide.busStop"), todo: "Nearest bus stop and how far it is from the hospital (auto / walk)." },
-    { icon: Route, title: t("guide.fromBapatla"), todo: "Road route and approximate distance from Bapatla town." },
+    { icon: Landmark, title: "Landmarks", todo: "Nearby landmarks to help people find the hospital." },
+    { icon: Bus, title: "Nearest bus stop", todo: "Nearest bus stop and how far it is from the hospital (auto / walk)." },
+    { icon: Route, title: "From Bapatla town", todo: "Road route and approximate distance from Bapatla town." },
   ];
   return (
-    <GuidePage path="/patient-guide/how-to-reach/">
+    <GuideShell path="/patient-guide/how-to-reach/">
       <VisitUs showDirectionsTodo={false} />
       <section aria-labelledby="reach-directions">
-        <h2 id="reach-directions" className="h2 mb-6">
-          {t("guide.directionsTitle")}
+        <h2 id="reach-directions" className="text-h2 mb-8">
+          Directions
         </h2>
-        <ul className="grid gap-4 md:grid-cols-3 md:gap-6">
+        <ul className="grid gap-4 md:grid-cols-3 md:gap-5">
           {items.map((i) => (
-            <li key={i.title} className="rounded-card bg-white p-6 shadow-card">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700">
-                <i.icon className="h-6 w-6" aria-hidden />
+            <li key={i.title} className="surface p-6 md:p-7">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700">
+                <i.icon className="h-6 w-6" aria-hidden strokeWidth={1.75} />
               </span>
-              <h3 className="mt-4 font-heading text-xl font-medium text-maroon-700">{i.title}</h3>
+              <h3 className="mt-5 font-heading text-xl font-bold text-ink-900">{i.title}</h3>
               <div className="mt-3">
                 <Todo id="directions">{i.todo}</Todo>
               </div>
@@ -33,6 +31,6 @@ export function Component() {
           ))}
         </ul>
       </section>
-    </GuidePage>
+    </GuideShell>
   );
 }

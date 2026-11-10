@@ -42,8 +42,8 @@ collections:
                 widget: relation
                 collection: departments
                 file: departments
-                search_fields: ["items.*.name.en"]
-                display_fields: ["items.*.name.en"]
+                search_fields: ["items.*.name"]
+                display_fields: ["items.*.name"]
                 value_field: "items.*.slug"
               - { label: "Type", name: type, widget: select, options: ["Resident", "Consultant"] }
               - { label: "Visiting days", name: visitingDays, widget: select, multiple: true, required: false, options: &days [{ label: "Daily", value: "Daily" }, { label: "Monday", value: "Mon" }, { label: "Tuesday", value: "Tue" }, { label: "Wednesday", value: "Wed" }, { label: "Thursday", value: "Thu" }, { label: "Friday", value: "Fri" }, { label: "Saturday", value: "Sat" }, { label: "Sunday", value: "Sun" }] }
@@ -71,8 +71,8 @@ collections:
                 widget: relation
                 collection: departments
                 file: departments
-                search_fields: ["items.*.name.en"]
-                display_fields: ["items.*.name.en"]
+                search_fields: ["items.*.name"]
+                display_fields: ["items.*.name"]
                 value_field: "items.*.slug"
               - { label: "Day", name: day, widget: select, options: &weekdays [{ label: "Monday", value: "Mon" }, { label: "Tuesday", value: "Tue" }, { label: "Wednesday", value: "Wed" }, { label: "Thursday", value: "Thu" }, { label: "Friday", value: "Fri" }, { label: "Saturday", value: "Sat" }, { label: "Sunday", value: "Sun" }] }
               - { label: "Start time (24h)", name: startTime, widget: string, pattern: ['^\d{2}:\d{2}$', "Use HH:MM, e.g. 09:30"] }
@@ -91,17 +91,17 @@ collections:
           - label: "Departments"
             name: items
             widget: list
-            summary: "{{fields.name.en}}"
+            summary: "{{fields.name}}"
             fields:
-              - { label: "Name", name: name, widget: object, fields: &en_te [{ label: "English", name: "en", widget: string }, { label: "Telugu (తెలుగు)", name: "te", widget: string, required: false }] }
+              - { label: "Name", name: name, widget: string }
               - { label: "URL slug", name: slug, widget: string, hint: "Do not change after launch." }
               - label: "Icon"
                 name: icon
                 widget: select
                 options: ["stethoscope", "scissors", "smile", "bone", "baby", "eye", "heart-handshake", "heart-pulse", "hand", "droplets"]
-              - { label: "One-line summary", name: summary, widget: object, required: false, fields: &en_te_text [{ label: "English", name: "en", widget: text }, { label: "Telugu (తెలుగు)", name: "te", widget: text, required: false }] }
-              - { label: "Description paragraphs", name: description, widget: list, required: false, fields: *en_te_text }
-              - { label: "Services & conditions treated", name: services, widget: list, required: false, fields: *en_te }
+              - { label: "One-line summary", name: summary, widget: text, required: false }
+              - { label: "Description paragraphs", name: description, widget: list, required: false, field: { label: "Paragraph", name: p, widget: text } }
+              - { label: "Services & conditions treated", name: services, widget: list, required: false, field: { label: "Item", name: i, widget: string } }
               - { label: "Sort order", name: order, widget: number, value_type: int }
               - { label: "Show on website", name: isActive, widget: boolean, default: true }
 
@@ -149,8 +149,8 @@ collections:
               - { label: "Days", name: days, widget: select, multiple: true, options: *weekdays }
               - { label: "Opens (24h HH:MM)", name: open, widget: string }
               - { label: "Closes (24h HH:MM)", name: close, widget: string }
-          - { label: "OPD summary (top bar)", name: opdSummary, widget: object, required: false, fields: *en_te }
-          - { label: "Holiday notice", name: holidayNotice, widget: object, required: false, fields: *en_te_text }
+          - { label: "OPD summary (top bar)", name: opdSummary, widget: string, required: false }
+          - { label: "Holiday notice", name: holidayNotice, widget: text, required: false }
           - label: "Trust"
             name: trust
             widget: object
@@ -187,15 +187,15 @@ collections:
           - label: "Stories"
             name: items
             widget: list
-            summary: "{{fields.date}} — {{fields.title.en}}"
+            summary: "{{fields.date}} — {{fields.title}}"
             fields:
-              - { label: "Title", name: title, widget: object, fields: *en_te }
+              - { label: "Title", name: title, widget: string }
               - { label: "URL slug", name: slug, widget: string }
               - { label: "Category", name: category, widget: select, options: ["Patient", "Camp", "Update"] }
               - { label: "Date", name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
               - { label: "Cover image", name: coverImage, widget: image, required: false }
               - { label: "Cover image description (alt text)", name: coverAlt, widget: string }
-              - { label: "Paragraphs", name: body, widget: list, fields: *en_te_text }
+              - { label: "Paragraphs", name: body, widget: list, field: { label: "Paragraph", name: p, widget: text } }
               - { label: "Written consent received (required for patient stories)", name: consentConfirmed, widget: boolean, default: false }
 
   # ---------------------------------------------------------------- Gallery
@@ -210,10 +210,10 @@ collections:
           - label: "Photos"
             name: items
             widget: list
-            summary: "{{fields.category}} — {{fields.caption.en}}"
+            summary: "{{fields.category}} — {{fields.caption}}"
             fields:
               - { label: "Image", name: image, widget: image }
-              - { label: "Caption (also used as alt text)", name: caption, widget: object, fields: *en_te }
+              - { label: "Caption (also used as alt text)", name: caption, widget: string }
               - { label: "Category", name: category, widget: select, options: ["Hospital", "Camps", "Events"] }
               - { label: "Date", name: date, widget: datetime, required: false, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
 
@@ -229,9 +229,9 @@ collections:
           - label: "Numbers"
             name: items
             widget: list
-            summary: "{{fields.label.en}}: {{fields.value}}"
+            summary: "{{fields.label}}: {{fields.value}}"
             fields:
-              - { label: "Label", name: label, widget: object, fields: *en_te }
+              - { label: "Label", name: label, widget: string }
               - { label: "Value", name: value, widget: string, required: false, hint: "e.g. 12,500 or 100%" }
               - { label: "As of date", name: asOfDate, widget: datetime, required: false, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
               - { label: "Sort order", name: order, widget: number, value_type: int }
@@ -248,10 +248,10 @@ collections:
           - label: "Questions"
             name: items
             widget: list
-            summary: "[{{fields.page}}] {{fields.question.en}}"
+            summary: "[{{fields.page}}] {{fields.question}}"
             fields:
-              - { label: "Question", name: question, widget: object, fields: *en_te }
-              - { label: "Answer", name: answer, widget: object, required: false, fields: *en_te_text }
+              - { label: "Question", name: question, widget: string }
+              - { label: "Answer", name: answer, widget: text, required: false }
               - { label: "Page", name: page, widget: select, options: ["PatientGuide", "SupportUs", "Department"] }
               - { label: "Department slug (only for page = Department)", name: department, widget: string, required: false }
               - { label: "Sort order", name: order, widget: number, value_type: int }
@@ -327,7 +327,7 @@ collections:
             fields:
               - { label: "Name", name: name, widget: string }
               - { label: "Short name", name: short, widget: string, required: false }
-              - { label: "Description", name: description, widget: object, fields: *en_te_text }
+              - { label: "Description", name: description, widget: text }
               - { label: "Website", name: url, widget: string, required: false }
           - label: "Multi-speciality centre section"
             name: multiSpeciality

@@ -59,24 +59,18 @@ This guide is for hospital and Trust staff. You can change doctors, timings, dep
 3. Tick **Written consent received** *only* if you have the patient's signed consent. **Stories without consent are never shown.**
 4. **Publish**.
 
-## 4. Telugu (తెలుగు)
+## 4. "TODO" boxes on the site
 
-Most text fields have an **English** box and a **Telugu** box. If the Telugu box is empty, the Telugu site shows the English text.
+A dashed maroon **TODO** box means the information has not been confirmed yet. Fill in the matching field in the CMS and the box disappears. The full list is in `docs/CONTENT_TODO.md`.
 
-The Telugu site becomes visible to Google automatically once the button and menu labels (`src/i18n/te.json`) have been translated. A developer or translator does that part. Run `npm run i18n:status` to see progress.
-
-## 5. "TODO" boxes on the site
-
-A dashed orange **TODO** box means the information has not been confirmed yet. Fill in the matching field in the CMS and the box disappears. The full list is in `docs/CONTENT_TODO.md`.
-
-## 6. Rules
+## 5. Rules
 
 - **Never** put patient medical details, reports or diagnoses on the website.
 - Use **one** phone number and **one** email everywhere. They live in **Site settings**.
 - Photos: WebP or JPEG, under 150 KB for doctor photos and under 300 KB for others.
 - Describe every photo (the *caption* or *description* field). This helps blind visitors and Google.
 
-## 7. Help
+## 6. Help
 
 - The website was built by the project's UI/UX designer, Thiru. Contact them for anything the CMS can't do.
 - Technical details are in `README.md` (for developers).

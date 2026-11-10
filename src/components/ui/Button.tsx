@@ -1,78 +1,52 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-import { LLink } from "./LLink";
+import { SmartLink } from "./SmartLink";
 import { cn } from "./cn";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "light";
+export type ButtonVariant = "primary" | "soft" | "outline" | "ghost" | "onDark" | "onDarkOutline";
+export type ButtonSize = "md" | "lg";
 
-/** §6.4: Primary (saffron-700 fill), Secondary (maroon outline), Ghost (text + arrow); 12px radius; min 48px height. */
+/** Pill buttons, min 48px tall (§6.4 touch targets). Maroon only — no orange. */
 const base =
-  "inline-flex min-h-12 items-center justify-center gap-2 rounded-btn py-3 text-base font-semibold no-underline transition-colors duration-200";
+  "inline-flex items-center justify-center gap-2 rounded-full font-semibold no-underline transition duration-200 disabled:cursor-not-allowed disabled:opacity-60";
+const sizes: Record<ButtonSize, string> = {
+  md: "min-h-12 px-5 text-[15px]",
+  lg: "min-h-14 px-7 text-base",
+};
 const variants: Record<ButtonVariant, string> = {
-  primary: "px-5 bg-saffron-700 text-white hover:bg-[#9A3412]",
-  secondary: "px-5 border-2 border-maroon-700 bg-white text-maroon-700 hover:bg-maroon-50",
-  ghost: "justify-start text-maroon-700 hover:underline",
-  light: "px-5 border-2 border-white bg-transparent text-white hover:bg-white/10",
+  primary: "bg-maroon-700 text-white shadow-[0_8px_20px_-8px_rgba(122,12,12,.6)] hover:bg-maroon-800 active:bg-maroon-900",
+  soft: "bg-maroon-100 text-maroon-800 hover:bg-maroon-200",
+  outline: "border border-ink-200 bg-white text-ink-900 hover:border-maroon-200 hover:bg-maroon-50 hover:text-maroon-800",
+  ghost: "min-h-11 px-0 text-maroon-700 hover:text-maroon-900 [&>svg:last-child]:transition-transform hover:[&>svg:last-child]:translate-x-0.5",
+  onDark: "bg-white text-maroon-800 hover:bg-maroon-100",
+  onDarkOutline: "border border-white/40 text-white hover:bg-white/10",
 };
 
-interface CommonProps {
+export function buttonClass(variant: ButtonVariant = "primary", size: ButtonSize = "md", className?: string) {
+  return cn(base, variant === "ghost" ? "" : sizes[size], variants[variant], className);
+}
+
+interface Common {
   variant?: ButtonVariant;
+  size?: ButtonSize;
   icon?: ReactNode;
   className?: string;
   children: ReactNode;
 }
 
-export function buttonClass(variant: ButtonVariant = "primary", className?: string) {
-  return cn(base, variants[variant], className);
-}
-
-const isExternal = (to: string) => /^(https?:|mailto:|tel:|#)/.test(to);
-
-/**
- * Link styled as a button. Internal paths ("/x/") use the router and keep
- * the current language; tel:, mailto:, # and http(s) links render a plain <a>.
- * `track` adds a data-track attribute used by analytics (§8).
- */
-export function ButtonLink({
-  to,
-  variant = "primary",
-  icon,
-  className,
-  children,
-  newTab,
-  track,
-}: CommonProps & { to: string; newTab?: boolean; track?: string }) {
-  const content = (
-    <>
+export function ButtonLink({ to, variant = "primary", size = "md", icon, className, children, newTab, track }: Common & { to: string; newTab?: boolean; track?: string }) {
+  return (
+    <SmartLink to={to} newTab={newTab} track={track} className={buttonClass(variant, size, className)}>
       {icon}
       <span>{children}</span>
       {variant === "ghost" && <ArrowRight className="h-4 w-4" aria-hidden />}
-    </>
-  );
-  const cls = buttonClass(variant, className);
-  if (isExternal(to)) {
-    return (
-      <a href={to} className={cls} data-track={track} {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-        {content}
-      </a>
-    );
-  }
-  return (
-    <LLink to={to} className={cls} data-track={track}>
-      {content}
-    </LLink>
+    </SmartLink>
   );
 }
 
-export function Button({
-  variant = "primary",
-  icon,
-  className,
-  children,
-  ...rest
-}: CommonProps & ButtonHTMLAttributes<HTMLButtonElement>) {
+export function Button({ variant = "primary", size = "md", icon, className, children, ...rest }: Common & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button className={buttonClass(variant, className)} {...rest}>
+    <button className={buttonClass(variant, size, className)} {...rest}>
       {icon}
       <span>{children}</span>
     </button>

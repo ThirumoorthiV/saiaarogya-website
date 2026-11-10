@@ -1,6 +1,6 @@
 # Content TODO — information needed from the Hospital / Trust
 
-Everything on the new site that was **not** on the current website is shown as a visible **TODO** placeholder (dashed orange box). Nothing has been made up. This file lists every placeholder, where it appears and how to fill it in.
+Everything on the new site that was **not** on the current website is shown as a visible **TODO** placeholder (dashed maroon box). Nothing has been made up. This file lists every placeholder, where it appears and how to fill it in.
 
 - **How to fill a placeholder:** edit the named field in the CMS (`/admin/`), or the JSON file in `src/content/`. When the value is filled in, the TODO box disappears automatically.
 - **Code ids** (in backticks) match `data-todo="…"` in the HTML. Run `npm run todo:scan` to list every placeholder still in use.
@@ -102,11 +102,9 @@ All 12 doctors, with names and qualifications exactly as on the current site.
 | L1 | **Refund Policy** is e-commerce boilerplate (shipping, perishable items, warranties) | `policy-review` | Copied word for word from the current site | Review: does this make sense for donations? |
 | L2 | **Privacy Policy** mentions collecting "job title" and "promotional emails"; it does not cover the new enquiry/volunteer forms | `policy-review` | Copied word for word | Review and update for the new forms (no medical data is collected) |
 
-## T. Telugu (§3.1 goal 4, §13 #10)
+## T. Language
 
-| # | Item | Code id | Current state | Needed |
-|---|---|---|---|---|
-| T1 | **Telugu translations**: all UI strings (`src/i18n/te.json`, same keys as `en.json`, 207 strings), the `te` fields in the content files (59 fields), and the page titles and descriptions in `src/lib/pageMeta.ts` | `telugu-translation` | Empty. `/te/` pages work but show English with a notice, and are kept out of Google (noindex, no hreflang, not in the sitemap) until `te.json` has translations. Then they go live automatically. `npm run i18n:status` shows progress. | Professional translation: Home, Departments, Doctors, Patient Guide and Contact at minimum (§13 #10) |
+The site is **English only** (client decision, 10 Nov 2026). This overrides the bilingual goal in requirements §3.1 and §13 #10. There are no Telugu placeholders.
 
 ## G. Technical setup (Phase 5)
 

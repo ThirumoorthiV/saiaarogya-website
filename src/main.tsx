@@ -1,5 +1,4 @@
 import { ViteReactSSG } from "vite-react-ssg";
-import "@/i18n";
 import "@/styles/index.css";
 import { routes } from "./routes";
 

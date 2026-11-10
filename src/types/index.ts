@@ -1,40 +1,39 @@
 /**
- * Content data model — mirrors the CMS collections in requirements §10.
- * Every collection lives as a JSON file in src/content/ and is editable
- * by staff through Decap CMS (/admin/).
+ * Content data model — the CMS collections in requirements §10 (English only).
+ * Every collection is a JSON file in src/content/, editable through Decap CMS (/admin/).
  *
- * Convention for unconfirmed content: the value is `null` (or an empty
- * array) and the UI renders a visible <Todo> marker. Every such item is
- * listed in docs/CONTENT_TODO.md.
+ * Convention for unconfirmed content: the value is `null` (or an empty array)
+ * and the UI renders a visible <Todo> marker. Every marker is listed in
+ * docs/CONTENT_TODO.md.
  */
-
-export type Lang = "en" | "te";
-
-/** Text with an English value and an optional Telugu translation. */
-export interface LocalizedText {
-  en: string;
-  /** TODO(telugu): translation pending for most fields */
-  te?: string | null;
-}
 
 export type DayOfWeek = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
 export const DAYS: DayOfWeek[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+export const DAY_NAMES: Record<DayOfWeek, string> = {
+  Mon: "Monday",
+  Tue: "Tuesday",
+  Wed: "Wednesday",
+  Thu: "Thursday",
+  Fri: "Friday",
+  Sat: "Saturday",
+  Sun: "Sunday",
+};
 export type VisitingDay = DayOfWeek | "Daily";
 
-/** True when the doctor is available on the given day. */
+/** True when a doctor with these visiting days is available on `day`. */
 export const visitsOn = (days: VisitingDay[], day: DayOfWeek) => days.includes("Daily") || days.includes(day);
 
 export interface Department {
-  name: LocalizedText;
+  name: string;
   slug: string;
-  /** Lucide icon name, see src/components/ui/DepartmentIcon.tsx */
+  /** Icon key, see src/components/ui/DepartmentIcon.tsx */
   icon: string;
   /** One-line summary; null = not yet written (TODO) */
-  summary: LocalizedText | null;
-  /** Longer description paragraphs; empty = TODO */
-  description: LocalizedText[];
+  summary: string | null;
+  /** Description paragraphs; empty = TODO */
+  description: string[];
   /** Services & conditions treated; empty = TODO */
-  services: LocalizedText[];
+  services: string[];
   order: number;
   isActive: boolean;
 }
@@ -44,7 +43,7 @@ export type DoctorType = "Resident" | "Consultant";
 export interface Doctor {
   name: string;
   slug: string;
-  /** Path under /images/doctors/ ; null = photo pending (TODO) */
+  /** Image path; null = photo pending (TODO) */
   photo: string | null;
   qualification: string;
   /** Department slug (reference) */
@@ -61,7 +60,6 @@ export interface Doctor {
 }
 
 export interface OpdTiming {
-  /** Department slug (reference) */
   department: string;
   day: DayOfWeek;
   /** 24h "HH:MM" */
@@ -73,12 +71,11 @@ export interface OpdTiming {
 export type StoryCategory = "Patient" | "Camp" | "Update";
 
 export interface Story {
-  title: LocalizedText;
+  title: string;
   slug: string;
   coverImage: string | null;
   coverAlt: string;
-  /** Paragraphs */
-  body: LocalizedText[];
+  body: string[];
   category: StoryCategory;
   /** ISO date */
   date: string;
@@ -89,18 +86,16 @@ export type GalleryCategory = "Hospital" | "Camps" | "Events";
 
 export interface GalleryItem {
   image: string;
-  /** Used as alt text */
-  caption: LocalizedText;
+  /** Also used as alt text */
+  caption: string;
   category: GalleryCategory;
-  /** ISO date if known */
   date: string | null;
 }
 
 export interface ImpactStat {
-  label: LocalizedText;
+  label: string;
   /** null = number not yet confirmed (TODO) */
   value: string | null;
-  /** ISO date; null = TODO */
   asOfDate: string | null;
   order: number;
 }
@@ -108,18 +103,16 @@ export interface ImpactStat {
 export type FaqPage = "PatientGuide" | "SupportUs" | "Department";
 
 export interface Faq {
-  question: LocalizedText;
+  question: string;
   /** null = answer not yet confirmed (TODO) */
-  answer: LocalizedText | null;
+  answer: string | null;
   page: FaqPage;
-  /** For page = Department */
   department?: string | null;
   order: number;
 }
 
 export interface OpdHoursRule {
   days: DayOfWeek[];
-  /** 24h "HH:MM" */
   open: string;
   close: string;
 }
@@ -129,10 +122,8 @@ export interface SiteSettings {
   /** E.164, e.g. +918499991259 */
   phone: string;
   phoneDisplay: string;
-  /** null = no emergency number confirmed (TODO) */
   emergencyPhone: string | null;
   email: string;
-  /** null = no WhatsApp number confirmed (TODO) */
   whatsapp: string | null;
   address: {
     lines: string[];
@@ -142,29 +133,19 @@ export interface SiteSettings {
     postalCode: string;
     country: string;
   };
-  /** null = exact coordinates not confirmed (TODO) */
   geo: { lat: number; lng: number } | null;
   mapUrl: string;
   mapEmbedUrl: string;
-  /** General OPD hours; empty = not confirmed (TODO) */
+  /** General OPD hours; empty = TODO (drives the "Open now" badge) */
   opdHours: OpdHoursRule[];
-  /** Short human summary for the utility bar; null = TODO */
-  opdSummary: LocalizedText | null;
-  holidayNotice: LocalizedText | null;
-  trust: {
-    name: string;
-    url: string | null;
-    registeredOffice: string;
-  };
+  opdSummary: string | null;
+  holidayNotice: string | null;
+  trust: { name: string; url: string | null; registeredOffice: string };
   donation: {
-    /** External online donation link for Indian donors; null = TODO */
     indianDonorUrl: string | null;
     internationalEmail: string;
-    /** e.g. "₹X covers a day of OPD medicines"; empty = TODO */
     impactPerContribution: string[];
-    /** e.g. 80G details; null = TODO */
     taxInfo: string | null;
-    /** How funds are used; null = TODO */
     fundUse: string | null;
   };
   social: { label: string; url: string }[];
@@ -187,8 +168,7 @@ export interface GovernanceGroup {
 export interface NetworkOrg {
   name: string;
   short?: string | null;
-  description: LocalizedText;
-  /** null = official URL not yet confirmed (TODO) */
+  description: string;
   url: string | null;
 }
 
@@ -196,9 +176,4 @@ export interface TimelineEvent {
   date: string;
   title: string;
   text: string;
-}
-
-export interface EnquiryReason {
-  value: "patient" | "donation" | "volunteer" | "partnership" | "other";
-  label: string;
 }

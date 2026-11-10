@@ -1,7 +1,7 @@
 /**
- * Single list of every pre-rendered route (requirements §4.4).
+ * Every pre-rendered route (requirements §4.4), English only.
  * Used by vite-react-ssg (includedRoutes) and to generate sitemap.xml.
- * Kept free of React imports so vite.config.ts can import it.
+ * No React imports, so vite.config.ts can import it.
  */
 import departmentsJson from "../content/departments.json";
 import doctorsJson from "../content/doctors.json";
@@ -10,7 +10,6 @@ import policiesJson from "../content/policies.json";
 
 export const SITE_URL = "https://www.saiaarogya.hospital";
 
-/** Static (non-CMS) pages, English paths, with trailing slash. */
 export const STATIC_PAGES = [
   "/",
   "/about/",
@@ -36,8 +35,8 @@ export const STATIC_PAGES = [
   "/contact/",
 ] as const;
 
-/** All English paths including CMS-driven detail pages. */
-export function getEnglishPaths(): string[] {
+/** All public pages including CMS-driven detail pages. */
+export function getPagePaths(): string[] {
   const active = <T extends { isActive?: boolean }>(x: T) => x.isActive !== false;
   return [
     ...STATIC_PAGES,
@@ -48,11 +47,7 @@ export function getEnglishPaths(): string[] {
   ];
 }
 
-/** Telugu mirror of an English path. */
-export const toTelugu = (p: string) => (p === "/" ? "/te/" : `/te${p}`);
-
-/** Every route to pre-render (EN + TE + 404 page). */
+/** Every route to pre-render (pages + the 404 page). */
 export function getStaticPaths(): string[] {
-  const en = getEnglishPaths();
-  return [...en, ...en.map(toTelugu), "/404"];
+  return [...getPagePaths(), "/404"];
 }

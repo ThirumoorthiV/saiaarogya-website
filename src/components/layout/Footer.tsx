@@ -1,114 +1,133 @@
+import { Link } from "react-router-dom";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { policies, siteSettings } from "@/content";
-import { useT } from "@/i18n/LangContext";
+import { policies, siteSettings, tel } from "@/content";
+import { GUIDE_LINKS, SUPPORT_LINKS } from "@/lib/navigation";
 import { Container } from "@/components/ui/Container";
-import { LLink } from "@/components/ui/LLink";
+import { ButtonLink } from "@/components/ui/Button";
 import { Logo } from "./Logo";
 
-const quickLinks = [
-  { key: "nav.about", to: "/about/" },
-  { key: "nav.departments", to: "/departments/" },
-  { key: "nav.doctors", to: "/doctors/" },
-  { key: "nav.impact", to: "/impact/" },
-  { key: "nav.supportUs", to: "/support-us/" },
-  { key: "nav.contact", to: "/contact/" },
+const ABOUT_LINKS = [
+  { label: "Our story", to: "/about/" },
+  { label: "History", to: "/about/history/" },
+  { label: "Governance", to: "/about/governance/" },
+  { label: "Departments", to: "/departments/" },
+  { label: "Doctors", to: "/doctors/" },
+  { label: "Our impact", to: "/impact/" },
+  { label: "Contact", to: "/contact/" },
 ];
 
-const guideLinks = [
-  { label: "OPD timings", to: "/patient-guide/opd-timings/" },
-  { label: "How to reach", to: "/patient-guide/how-to-reach/" },
-  { label: "Registration", to: "/patient-guide/registration/" },
-  { label: "Facilities", to: "/patient-guide/facilities/" },
-  { label: "FAQs", to: "/patient-guide/faqs/" },
-];
-
-/** §5.1-11 footer: about · quick links · patient guide · contact · policies · © current year. */
+/** Footer (§5.1-11): about · quick links · patient guide · support · contact · policies · © current year. */
 export function Footer() {
-  const t = useT();
   const s = siteSettings;
   const year = new Date().getFullYear();
-  const heading = "mb-4 font-heading text-lg font-medium text-gold-400";
-  const link = "text-white/90 no-underline hover:text-white hover:underline";
+  const h = "font-heading text-sm font-semibold uppercase tracking-[0.14em] text-maroon-200";
+  const a = "text-[15px] text-white/80 no-underline transition-colors hover:text-white";
 
   return (
-    <footer className="bg-maroon-700 text-white">
-      <Container className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
-        <div>
-          <Logo onDark />
-          <p className="mt-4 max-w-sm text-base text-white/90">{t("footer.tagline")}</p>
-          <p className="mt-4 text-sm text-white/85">
-            {t("footer.unitOf")}
-            <br />
-            {t("footer.underMission")}
-          </p>
+    <footer className="bg-maroon-950 text-white">
+      <Container className="pt-14 md:pt-20">
+        {/* CTA card */}
+        <div className="flex flex-col gap-6 rounded-4xl bg-gradient-to-br from-maroon-800 to-maroon-900 p-7 ring-1 ring-white/10 md:flex-row md:items-center md:justify-between md:p-10">
+          <div className="max-w-xl">
+            <p className="font-heading text-2xl font-bold tracking-tight md:text-3xl">Need help planning your visit?</p>
+            <p className="mt-2 text-maroon-100">Call the hospital desk. Every consultation and treatment is free of charge.</p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <ButtonLink to={tel} variant="onDark" icon={<Phone className="h-[18px] w-[18px]" aria-hidden />} track="call-footer-cta">
+              {`Call ${s.phoneDisplay}`}
+            </ButtonLink>
+            <ButtonLink to="/patient-guide/" variant="onDarkOutline">
+              Patient Guide
+            </ButtonLink>
+          </div>
         </div>
 
-        <nav aria-labelledby="footer-quick">
-          <h2 id="footer-quick" className={heading}>
-            {t("footer.quickLinks")}
-          </h2>
-          <ul className="space-y-2.5 text-base">
-            {quickLinks.map((l) => (
-              <li key={l.to}>
-                <LLink to={l.to} className={link}>
-                  {t(l.key)}
-                </LLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div>
+            <Logo onDark />
+            <p className="mt-5 max-w-sm text-[15px] text-white/80">
+              Your one-stop destination for quality healthcare solutions, offered by medical specialists driven by compassion and expertise, free of charge.
+            </p>
+            <address className="mt-6 space-y-3 text-[15px] not-italic">
+              <p className="flex gap-3 text-white/80">
+                <MapPin className="mt-1 h-4 w-4 shrink-0 text-maroon-200" aria-hidden />
+                <span>
+                  {s.address.lines.join(", ")}, {s.address.district}, {s.address.region} – {s.address.postalCode}
+                </span>
+              </p>
+              <p className="flex items-center gap-3">
+                <Phone className="h-4 w-4 shrink-0 text-maroon-200" aria-hidden />
+                <a href={tel} className={a} data-track="call-footer">
+                  {s.phoneDisplay}
+                </a>
+              </p>
+              <p className="flex items-center gap-3">
+                <Mail className="h-4 w-4 shrink-0 text-maroon-200" aria-hidden />
+                <a href={`mailto:${s.email}`} className={`${a} break-all`}>
+                  {s.email}
+                </a>
+              </p>
+            </address>
+          </div>
 
-        <nav aria-labelledby="footer-guide">
-          <h2 id="footer-guide" className={heading}>
-            {t("footer.patientGuide")}
-          </h2>
-          <ul className="space-y-2.5 text-base">
-            {guideLinks.map((l) => (
-              <li key={l.to}>
-                <LLink to={l.to} className={link}>
-                  {l.label}
-                </LLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <nav aria-labelledby="f-hospital">
+            <h2 id="f-hospital" className={h}>
+              Hospital
+            </h2>
+            <ul className="mt-4 space-y-2.5">
+              {ABOUT_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className={a}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div>
-          <h2 className={heading}>{t("footer.contact")}</h2>
-          <address className="space-y-3 text-base not-italic">
-            <p className="flex gap-3">
-              <MapPin className="mt-1 h-5 w-5 shrink-0 text-gold-400" aria-hidden />
-              <span className="text-white/90">
-                {s.address.lines.join(", ")},<br />
-                {s.address.district}, {s.address.region} – {s.address.postalCode}
-              </span>
-            </p>
-            <p className="flex items-center gap-3">
-              <Phone className="h-5 w-5 shrink-0 text-gold-400" aria-hidden />
-              <a href={`tel:${s.phone}`} className={link} data-track="call-footer">
-                {s.phoneDisplay}
-              </a>
-            </p>
-            <p className="flex items-center gap-3">
-              <Mail className="h-5 w-5 shrink-0 text-gold-400" aria-hidden />
-              <a href={`mailto:${s.email}`} className={`${link} break-all`}>
-                {s.email}
-              </a>
-            </p>
-          </address>
+          <nav aria-labelledby="f-guide">
+            <h2 id="f-guide" className={h}>
+              Patient guide
+            </h2>
+            <ul className="mt-4 space-y-2.5">
+              {GUIDE_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className={a}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-labelledby="f-support">
+            <h2 id="f-support" className={h}>
+              Support us
+            </h2>
+            <ul className="mt-4 space-y-2.5">
+              {SUPPORT_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className={a}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </Container>
 
-      {/* Bottom padding on mobile leaves room for the fixed action bar */}
-      <div className="bg-maroon-900 pb-[calc(56px+env(safe-area-inset-bottom))] md:pb-0">
-        <Container className="flex flex-col gap-3 py-5 text-sm text-white/85 md:flex-row md:items-center md:justify-between">
-          <p>{t("footer.copyright", { year })}</p>
+      <div className="border-t border-white/10 pb-[104px] md:pb-0">
+        <Container className="flex flex-col gap-3 py-6 text-[13px] text-white/70 md:flex-row md:items-center md:justify-between">
+          <p>
+            © {year} Sai Aarogya Hospital. A unit of Sri Sathya Sai Sujala Sravanthi Trust, under the Sri Madhusudan Sai Global Humanitarian Mission.
+          </p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             {policies.map((p) => (
               <li key={p.slug}>
-                <LLink to={`/policies/${p.slug}/`} className={link}>
+                <Link to={`/policies/${p.slug}/`} className="text-white/70 no-underline hover:text-white">
                   {p.title}
-                </LLink>
+                </Link>
               </li>
             ))}
           </ul>

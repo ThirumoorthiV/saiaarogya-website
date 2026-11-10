@@ -88,7 +88,7 @@ export function physicianSchema(doctor: Doctor, path: string): Json {
     "@type": "Physician",
     name: doctor.name,
     url: `${SITE_URL}${path}`,
-    description: `${doctor.name}, ${doctor.qualification}${dept ? ` — ${dept.name.en}` : ""} at Sai Aarogya Hospital, Bapatla.`,
+    description: `${doctor.name}, ${doctor.qualification}${dept ? ` — ${dept.name}` : ""} at Sai Aarogya Hospital, Bapatla.`,
     medicalSpecialty: specialtyUrls(doctor.department),
     hospitalAffiliation: { "@type": "Hospital", "@id": HOSPITAL_ID, name: `${siteSettings.hospitalName}, Bapatla` },
     address: postalAddress(),
@@ -100,7 +100,7 @@ export function physicianSchema(doctor: Doctor, path: string): Json {
 }
 
 /** Only questions with a confirmed answer are included. */
-export function faqSchema(items: Faq[], lang: "en" | "te"): Json | null {
+export function faqSchema(items: Faq[]): Json | null {
   const answered = items.filter((f) => f.answer);
   if (!answered.length) return null;
   return {
@@ -108,8 +108,8 @@ export function faqSchema(items: Faq[], lang: "en" | "te"): Json | null {
     "@type": "FAQPage",
     mainEntity: answered.map((f) => ({
       "@type": "Question",
-      name: (lang === "te" && f.question.te) || f.question.en,
-      acceptedAnswer: { "@type": "Answer", text: (lang === "te" && f.answer?.te) || f.answer?.en },
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
     })),
   };
 }

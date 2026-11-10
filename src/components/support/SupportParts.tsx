@@ -3,58 +3,61 @@ import { siteSettings } from "@/content";
 import { ButtonLink } from "@/components/ui/Button";
 import { Todo } from "@/components/ui/Todo";
 
-/** Real copy from the current Donations page (Let's Do This Together!). */
+/** Real copy from the current Donations page ("Let's Do This Together!"). */
 export const DONATION_APPEAL = [
   "In today’s times of need, access to quality services and compassionate healthcare are among the most essential priorities for every individual on this planet.",
   "Let’s all join hands in this mission of delivering compassionate healthcare to those in need, absolutely free of cost! Every small step we take can make a big difference in giving someone a happier childhood and a healthier life.",
 ];
 
-/** Primary online donation button for Indian donors (link TODO until supplied). */
-export function IndianDonateButton() {
+/** Online donation button for Indian donors (TODO until the link is supplied). */
+export function IndianDonateButton({ onDark = false }: { onDark?: boolean }) {
   const url = siteSettings.donation.indianDonorUrl;
   return url ? (
-    <ButtonLink to={url} newTab icon={<HeartHandshake className="h-5 w-5" aria-hidden />} track="donate-indian">
+    <ButtonLink to={url} newTab variant={onDark ? "onDark" : "primary"} size="lg" icon={<HeartHandshake className="h-5 w-5" aria-hidden />} track="donate-indian">
       Donate online
     </ButtonLink>
   ) : (
-    <Todo id="donation-link">Online donation link for Indian donors (the current site loads it through a Wix widget, so the URL is not visible in the page).</Todo>
+    <Todo id="donation-link" onDark={onDark}>
+      Online donation link for Indian donors (the current site loads it through a Wix widget, so the URL is not visible in the page).
+    </Todo>
   );
 }
 
-/** §5.7 Donate paths: Indian donors → online; International donors → email/enquiry. */
+/** §5.7 Donate paths: Indian donors → online; international donors → email / enquiry. */
 export function DonatePaths() {
   const email = siteSettings.donation.internationalEmail;
   return (
-    <ul className="grid gap-6 md:grid-cols-2">
-      <li className="flex flex-col rounded-card bg-white p-6 shadow-card md:p-8">
-        <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-saffron-700 text-white">
+    <ul className="grid gap-5 md:grid-cols-2">
+      <li className="relative flex flex-col overflow-hidden rounded-4xl bg-gradient-to-br from-maroon-700 to-maroon-950 p-7 text-white md:p-9">
+        <div aria-hidden className="absolute -right-16 -top-16 h-56 w-56 rounded-full border-[32px] border-white/5" />
+        <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15">
           <HeartHandshake className="h-6 w-6" aria-hidden />
         </span>
-        <h3 className="h3 mt-4">For Indian Donors</h3>
-        <p className="mt-1 font-medium text-ink-600">Indian Passport Holders</p>
-        <p className="mt-3 flex-1 text-ink-900">Contribute online from India.</p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <IndianDonateButton />
-          <ButtonLink to="/support-us/donate/" variant="ghost">
+        <h3 className="relative mt-6 font-heading text-2xl font-bold text-white">For Indian Donors</h3>
+        <p className="relative mt-1 font-medium text-maroon-200">Indian Passport Holders</p>
+        <p className="relative mt-4 flex-1 text-maroon-100">Contribute online from India.</p>
+        <div className="relative mt-6 flex flex-wrap items-center gap-3">
+          <IndianDonateButton onDark />
+          <ButtonLink to="/support-us/donate/" variant="onDarkOutline">
             Details
           </ButtonLink>
         </div>
       </li>
-      <li className="flex flex-col rounded-card bg-white p-6 shadow-card md:p-8">
-        <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-maroon-700 text-white">
+      <li className="surface flex flex-col p-7 md:p-9">
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700">
           <Globe className="h-6 w-6" aria-hidden />
         </span>
-        <h3 className="h3 mt-4">International Donors</h3>
-        <p className="mt-1 font-medium text-ink-600">Foreign nationals</p>
-        <p className="mt-3 flex-1 text-ink-900">
+        <h3 className="mt-6 font-heading text-2xl font-bold text-ink-900">International Donors</h3>
+        <p className="mt-1 font-medium text-maroon-700">Foreign nationals</p>
+        <p className="mt-4 flex-1 text-ink-700">
           In case of foreign nationals who wish to contribute, please write to{" "}
           <a href={`mailto:${email}`} className="break-all font-semibold">
             {email}
           </a>
           .
         </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <ButtonLink to={`mailto:${email}`} variant="secondary" icon={<Mail className="h-5 w-5" aria-hidden />}>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <ButtonLink to={`mailto:${email}`} variant="soft" icon={<Mail className="h-[18px] w-[18px]" aria-hidden />}>
             Email the Trust
           </ButtonLink>
           <ButtonLink to="/support-us/international-donors/" variant="ghost">
@@ -72,7 +75,7 @@ export function ImpactPerContribution() {
   return list.length ? (
     <ul className="grid gap-4 md:grid-cols-3">
       {list.map((l) => (
-        <li key={l} className="rounded-card bg-maroon-700 p-6 font-heading text-xl text-white">
+        <li key={l} className="surface p-6 font-heading text-xl font-bold text-maroon-800">
           {l}
         </li>
       ))}
@@ -84,14 +87,14 @@ export function ImpactPerContribution() {
 
 export function PolicyLinks() {
   return (
-    <ul className="flex flex-wrap gap-3">
+    <ul className="flex flex-wrap gap-2">
       {[
         ["/policies/terms/", "Terms & Conditions"],
         ["/policies/privacy/", "Privacy Policy"],
         ["/policies/refund/", "Refund Policy"],
       ].map(([to, label]) => (
         <li key={to}>
-          <ButtonLink to={to!} variant="secondary" icon={<FileText className="h-4 w-4" aria-hidden />}>
+          <ButtonLink to={to!} variant="outline" icon={<FileText className="h-4 w-4" aria-hidden />}>
             {label!}
           </ButtonLink>
         </li>

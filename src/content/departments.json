@@ -1,21 +1,21 @@
 {
   "items": [
     {
-      "name": { "en": "General Medicine", "te": null },
+      "name": "General Medicine",
       "slug": "general-medicine",
       "icon": "stethoscope",
-      "summary": { "en": "Handles routine health concerns, diagnoses, and treatments for common illnesses and conditions.", "te": null },
+      "summary": "Handles routine health concerns, diagnoses, and treatments for common illnesses and conditions.",
       "description": [],
       "services": [
-        { "en": "Routine health concerns", "te": null },
-        { "en": "Diagnosis of common illnesses", "te": null },
-        { "en": "Treatment of common illnesses and conditions", "te": null }
+        "Routine health concerns",
+        "Diagnosis of common illnesses",
+        "Treatment of common illnesses and conditions"
       ],
       "order": 1,
       "isActive": true
     },
     {
-      "name": { "en": "General Surgery", "te": null },
+      "name": "General Surgery",
       "slug": "general-surgery",
       "icon": "scissors",
       "summary": null,
@@ -25,79 +25,79 @@
       "isActive": true
     },
     {
-      "name": { "en": "Dentistry", "te": null },
+      "name": "Dentistry",
       "slug": "dentistry",
       "icon": "smile",
-      "summary": { "en": "Focuses on oral health, including routine cleanings, cavity treatments, and dental surgeries.", "te": null },
+      "summary": "Focuses on oral health, including routine cleanings, cavity treatments, and dental surgeries.",
       "description": [],
       "services": [
-        { "en": "Routine cleanings", "te": null },
-        { "en": "Cavity treatments", "te": null },
-        { "en": "Dental surgeries", "te": null }
+        "Routine cleanings",
+        "Cavity treatments",
+        "Dental surgeries"
       ],
       "order": 3,
       "isActive": true
     },
     {
-      "name": { "en": "Orthopaedics", "te": null },
+      "name": "Orthopaedics",
       "slug": "orthopaedics",
       "icon": "bone",
-      "summary": { "en": "Deals with bone, joint, and muscle issues, including fractures, arthritis, and sports injuries.", "te": null },
+      "summary": "Deals with bone, joint, and muscle issues, including fractures, arthritis, and sports injuries.",
       "description": [],
       "services": [
-        { "en": "Fractures", "te": null },
-        { "en": "Arthritis", "te": null },
-        { "en": "Sports injuries", "te": null },
-        { "en": "Bone, joint and muscle issues", "te": null }
+        "Fractures",
+        "Arthritis",
+        "Sports injuries",
+        "Bone, joint and muscle issues"
       ],
       "order": 4,
       "isActive": true
     },
     {
-      "name": { "en": "Paediatrics", "te": null },
+      "name": "Paediatrics",
       "slug": "paediatrics",
       "icon": "baby",
-      "summary": { "en": "Provides healthcare services for infants, children, and adolescents, including immunisations and growth monitoring.", "te": null },
+      "summary": "Provides healthcare services for infants, children, and adolescents, including immunisations and growth monitoring.",
       "description": [],
       "services": [
-        { "en": "Care for infants, children and adolescents", "te": null },
-        { "en": "Immunisations", "te": null },
-        { "en": "Growth monitoring", "te": null }
+        "Care for infants, children and adolescents",
+        "Immunisations",
+        "Growth monitoring"
       ],
       "order": 5,
       "isActive": true
     },
     {
-      "name": { "en": "Ophthalmology", "te": null },
+      "name": "Ophthalmology",
       "slug": "ophthalmology",
       "icon": "eye",
-      "summary": { "en": "Provides eye care services, including vision correction, cataract surgery, and treatment of eye diseases.", "te": null },
+      "summary": "Provides eye care services, including vision correction, cataract surgery, and treatment of eye diseases.",
       "description": [],
       "services": [
-        { "en": "Vision correction", "te": null },
-        { "en": "Cataract surgery", "te": null },
-        { "en": "Treatment of eye diseases", "te": null }
+        "Vision correction",
+        "Cataract surgery",
+        "Treatment of eye diseases"
       ],
       "order": 6,
       "isActive": true
     },
     {
-      "name": { "en": "Obstetrics & Gynaecology", "te": null },
+      "name": "Obstetrics & Gynaecology",
       "slug": "obstetrics-gynaecology",
       "icon": "heart-handshake",
-      "summary": { "en": "Cares for women's reproductive health, including pregnancy, childbirth, and hormonal issues.", "te": null },
+      "summary": "Cares for women's reproductive health, including pregnancy, childbirth, and hormonal issues.",
       "description": [],
       "services": [
-        { "en": "Pregnancy care", "te": null },
-        { "en": "Childbirth", "te": null },
-        { "en": "Hormonal issues", "te": null },
-        { "en": "Women's reproductive health", "te": null }
+        "Pregnancy care",
+        "Childbirth",
+        "Hormonal issues",
+        "Women's reproductive health"
       ],
       "order": 7,
       "isActive": true
     },
     {
-      "name": { "en": "Cardiology", "te": null },
+      "name": "Cardiology",
       "slug": "cardiology",
       "icon": "heart-pulse",
       "summary": null,
@@ -107,7 +107,7 @@
       "isActive": true
     },
     {
-      "name": { "en": "Dermatology", "te": null },
+      "name": "Dermatology",
       "slug": "dermatology",
       "icon": "hand",
       "summary": null,
@@ -117,7 +117,7 @@
       "isActive": true
     },
     {
-      "name": { "en": "Urology", "te": null },
+      "name": "Urology",
       "slug": "urology",
       "icon": "droplets",
       "summary": null,

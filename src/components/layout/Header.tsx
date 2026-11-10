@@ -1,102 +1,179 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { HeartHandshake, Menu, X } from "lucide-react";
-import { useLocalizePath, useT } from "@/i18n/LangContext";
-import { MAIN_NAV } from "@/lib/nav";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ChevronDown, HeartHandshake, Menu, Phone, X } from "lucide-react";
+import { siteSettings, tel } from "@/content";
+import { MAIN_NAV, SUPPORT_LINKS, isActiveSection } from "@/lib/navigation";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
+import { DepartmentIcon } from "@/components/ui/DepartmentIcon";
 import { cn } from "@/components/ui/cn";
 import { Logo } from "./Logo";
-import { LanguageToggle } from "./LanguageToggle";
+import { NavDropdown } from "./NavDropdown";
 
-/** Sticky header (§5.9): logo, main nav, language toggle, Donate. Hamburger menu on mobile. */
+/** Sticky frosted header with dropdown navigation (desktop) and an accordion menu (mobile). */
 export function Header() {
-  const t = useT();
-  const lp = useLocalizePath();
   const { pathname } = useLocation();
-  // The menu remembers the page it was opened on, so it closes automatically after navigating.
+  // The menu remembers the page it was opened on, so it closes after navigating.
   const [openedOn, setOpenedOn] = useState<string | null>(null);
   const open = openedOn === pathname;
-  const setOpen = (next: boolean | ((o: boolean) => boolean)) =>
-    setOpenedOn((typeof next === "function" ? next(open) : next) ? pathname : null);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Close on Escape
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    const first = requestAnimationFrame(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(first);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenedOn(null);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
-  const linkClass = ({ isActive }: { isActive: boolean }) =>
-    cn(
-      "relative inline-flex min-h-12 items-center whitespace-nowrap px-1 text-[15px] font-medium no-underline transition-colors 2xl:text-base",
-      "after:absolute after:inset-x-1 after:bottom-2 after:h-0.5 after:rounded after:bg-saffron-500 after:transition-transform after:duration-200",
-      isActive ? "text-maroon-700 after:scale-x-100" : "text-ink-900 after:scale-x-0 hover:text-maroon-700 hover:after:scale-x-100",
-    );
-
   return (
-    <header className="sticky top-0 z-40 border-b border-maroon-700/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90">
+    <header className={cn("sticky top-0 z-40 border-b bg-white/85 backdrop-blur-xl transition-shadow", scrolled ? "border-ink-200 shadow-soft" : "border-transparent")}>
       <Container className="flex min-h-[72px] items-center justify-between gap-4">
-        <Logo className="shrink-0" />
+        <Logo />
 
-        <nav aria-label={t("a11y.mainNav")} className="hidden xl:block">
-          <ul className="flex items-center gap-3 2xl:gap-5">
-            {MAIN_NAV.map((item) => (
-              <li key={item.key}>
-                <NavLink to={lp(item.to)} end={item.to === "/"} className={linkClass}>
-                  {t(`nav.${item.key}`)}
-                </NavLink>
-              </li>
-            ))}
+        <nav aria-label="Main" className="hidden xl:block">
+          <ul className="flex items-center gap-0.5">
+            {MAIN_NAV.map((item) =>
+              item.children ? (
+                <li key={item.label}>
+                  <NavDropdown item={item} />
+                </li>
+              ) : (
+                <li key={item.label}>
+                  <NavLink
+                    to={item.to}
+                    end={item.to === "/"}
+                    className={({ isActive }) =>
+                      cn(
+                        "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-3.5 text-[15px] font-medium no-underline transition-colors",
+                        isActive ? "text-maroon-700" : "text-ink-700 hover:bg-maroon-50 hover:text-maroon-800",
+                      )
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ),
+            )}
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-3 xl:flex">
-          <LanguageToggle />
-          <ButtonLink to="/support-us/donate/" icon={<HeartHandshake className="h-5 w-5" aria-hidden />} track="donate-header">
-            {t("nav.donate")}
+        <div className="hidden items-center gap-2 xl:flex">
+          <a
+            href={tel}
+            className="hidden min-h-11 items-center gap-2 whitespace-nowrap rounded-full px-3.5 text-[15px] font-semibold text-ink-900 no-underline hover:bg-maroon-50 hover:text-maroon-800 2xl:inline-flex"
+            data-track="call-header"
+          >
+            <Phone className="h-4 w-4 text-maroon-700" aria-hidden />
+            {siteSettings.phoneDisplay}
+          </a>
+          <ButtonLink to="/support-us/donate/" icon={<HeartHandshake className="h-[18px] w-[18px]" aria-hidden />} track="donate-header">
+            Donate
           </ButtonLink>
         </div>
 
         <button
           type="button"
-          className="inline-flex h-12 w-12 items-center justify-center rounded-btn text-maroon-700 hover:bg-maroon-50 xl:hidden"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-full text-ink-900 hover:bg-maroon-50 xl:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => setOpenedOn(open ? null : pathname)}
         >
-          {open ? <X className="h-7 w-7" aria-hidden /> : <Menu className="h-7 w-7" aria-hidden />}
-          <span className="sr-only">{open ? t("a11y.closeMenu") : t("a11y.openMenu")}</span>
+          {open ? <X className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
+          <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
         </button>
       </Container>
 
-      <div id="mobile-menu" hidden={!open} className="border-t border-maroon-700/10 bg-white xl:hidden">
-        <Container className="max-h-[calc(100vh-120px)] overflow-y-auto pb-6 pt-2">
-          <nav aria-label={t("a11y.mainNav")}>
-            <ul className="divide-y divide-maroon-700/10">
-              {MAIN_NAV.map((item) => (
-                <li key={item.key}>
-                  <NavLink
-                    to={lp(item.to)}
-                    end={item.to === "/"}
-                    className={({ isActive }) =>
-                      cn(
-                        "flex min-h-12 items-center text-lg font-medium no-underline",
-                        isActive ? "text-maroon-700" : "text-ink-900",
-                      )
-                    }
-                  >
-                    {t(`nav.${item.key}`)}
-                  </NavLink>
+      <div id="mobile-menu" hidden={!open} className="border-t border-ink-200 bg-white xl:hidden">
+        <Container className="max-h-[calc(100dvh-112px)] overflow-y-auto pb-32 pt-3">
+          <nav aria-label="Main">
+            <ul className="space-y-1">
+              {MAIN_NAV.map((item) =>
+                item.children ? (
+                  <li key={item.label}>
+                    <details className="group" open={isActiveSection(pathname, item.to) && item.to !== "/"}>
+                      <summary
+                        className={cn(
+                          "flex min-h-12 cursor-pointer list-none items-center justify-between rounded-2xl px-4 text-lg font-semibold transition-colors hover:bg-maroon-50 group-open:bg-maroon-50",
+                          isActiveSection(pathname, item.to) ? "text-maroon-700" : "text-ink-900",
+                        )}
+                      >
+                        {item.label}
+                        <ChevronDown className="h-5 w-5 text-maroon-700 transition-transform group-open:rotate-180" aria-hidden />
+                      </summary>
+                      <ul className="mt-1 space-y-0.5 pb-2 pl-2">
+                        {item.children.map((l) => (
+                          <li key={l.to}>
+                            <Link
+                              to={l.to}
+                              aria-current={pathname === l.to ? "page" : undefined}
+                              className={cn(
+                                "flex min-h-11 items-center gap-3 rounded-xl px-3 text-base no-underline transition-colors hover:bg-maroon-100",
+                                pathname === l.to ? "bg-maroon-100 font-semibold text-maroon-900" : "text-ink-700",
+                              )}
+                            >
+                              {l.deptIcon ? (
+                                <DepartmentIcon name={l.deptIcon} className="h-[18px] w-[18px] text-maroon-700" />
+                              ) : l.icon ? (
+                                <l.icon className="h-[18px] w-[18px] text-maroon-700" aria-hidden />
+                              ) : null}
+                              {l.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  </li>
+                ) : (
+                  <li key={item.label}>
+                    <NavLink
+                      to={item.to}
+                      end={item.to === "/"}
+                      className={({ isActive }) =>
+                        cn(
+                          "flex min-h-12 items-center rounded-2xl px-4 text-lg font-semibold no-underline transition-colors hover:bg-maroon-50",
+                          isActive ? "text-maroon-700" : "text-ink-900",
+                        )
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ),
+              )}
+            </ul>
+          </nav>
+          <div className="mt-5 rounded-3xl bg-maroon-50 p-4">
+            <p className="px-1 text-sm font-semibold uppercase tracking-wider text-maroon-800">Support us</p>
+            <ul className="mt-2 grid grid-cols-2 gap-1">
+              {SUPPORT_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="flex min-h-11 items-center rounded-xl px-3 text-[15px] text-ink-900 no-underline hover:bg-maroon-100">
+                    {l.label}
+                  </Link>
                 </li>
               ))}
             </ul>
-          </nav>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <LanguageToggle />
-            <ButtonLink to="/support-us/donate/" icon={<HeartHandshake className="h-5 w-5" aria-hidden />} className="flex-1" track="donate-menu">
-              {t("nav.donate")}
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <ButtonLink to={tel} variant="outline" icon={<Phone className="h-[18px] w-[18px]" aria-hidden />} track="call-menu">
+              Call
+            </ButtonLink>
+            <ButtonLink to="/support-us/donate/" icon={<HeartHandshake className="h-[18px] w-[18px]" aria-hidden />} track="donate-menu">
+              Donate
             </ButtonLink>
           </div>
         </Container>

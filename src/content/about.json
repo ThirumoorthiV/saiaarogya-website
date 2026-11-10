@@ -42,48 +42,144 @@
     "The Sai Aarogya Hospital in Bapatla represents a significant expansion of this effort, with preparations for the new facility commencing in January 2024. Inaugurated on December 13, 2024, the hospital will operate in collaboration with the Sri Madhusudan Sai Institute of Medical Sciences and Research (SMSIMSR) and the Sanjeevani Hospitals, a chain of paediatric cardiac hospitals that are also part of the Mission. This collaborative approach exemplifies the Mission’s holistic vision of providing free, high-quality healthcare to underserved communities, ensuring well-being for all."
   ],
   "timeline": [
-    { "date": "Early years", "title": "Aravinda Ashramam", "text": "Healthcare at Kajipalem Village began with a 20-bed hospital operated by a group of NRI philanthropists." },
-    { "date": "COVID-19 pandemic", "title": "Challenges", "text": "A shortage of doctors and resources led to a decline in healthcare services." },
-    { "date": "August 2023", "title": "Partnership", "text": "The Aravinda Ashramam team approached the Sri Sathya Sai Sujala Sravanthi Trust to rejuvenate healthcare in the region." },
-    { "date": "October 2023", "title": "Sai Swasthya Wellness Centre", "text": "A Sai Swasthya Wellness Centre was established to provide immediate healthcare support." },
-    { "date": "January 2024", "title": "Building begins", "text": "Preparations for the new hospital facility commenced." },
-    { "date": "13 December 2024", "title": "Inauguration", "text": "Sai Aarogya Hospital, Bapatla was inaugurated." }
+    {
+      "date": "Early years",
+      "title": "Aravinda Ashramam",
+      "text": "Healthcare at Kajipalem Village began with a 20-bed hospital operated by a group of NRI philanthropists."
+    },
+    {
+      "date": "COVID-19 pandemic",
+      "title": "Challenges",
+      "text": "A shortage of doctors and resources led to a decline in healthcare services."
+    },
+    {
+      "date": "August 2023",
+      "title": "Partnership",
+      "text": "The Aravinda Ashramam team approached the Sri Sathya Sai Sujala Sravanthi Trust to rejuvenate healthcare in the region."
+    },
+    {
+      "date": "October 2023",
+      "title": "Sai Swasthya Wellness Centre",
+      "text": "A Sai Swasthya Wellness Centre was established to provide immediate healthcare support."
+    },
+    {
+      "date": "January 2024",
+      "title": "Building begins",
+      "text": "Preparations for the new hospital facility commenced."
+    },
+    {
+      "date": "13 December 2024",
+      "title": "Inauguration",
+      "text": "Sai Aarogya Hospital, Bapatla was inaugurated."
+    }
   ],
   "governance": [
     {
       "title": "Board of Trustees",
       "subtitle": null,
       "people": [
-        { "name": "R Venkateswara Rao", "slug": "r-venkateswara-rao", "photo": "/images/people/r-venkateswara-rao.webp", "role": null, "bio": "An M.Tech graduate in Civil Engineering, R. Venkateswara Rao retired as Engineer-in-Chief from the Panchayat Raj Engineering Department after 39 years of service. Currently, he serves as a Technical Advisor to APMSIDC, contributing to hospital infrastructure development and overseeing the construction of 16 medical colleges under the Nadu-Nedu program." },
-        { "name": "R Kondala Rao", "slug": "r-kondala-rao", "photo": "/images/people/r-kondala-rao.webp", "role": null, "bio": "Retired Engineer-in-Chief of the Panchayat Raj and Rural Water Supply Departments, R. Kondala Rao played a pivotal role in Sri Sathya Sai Water Supply Projects. He continues to serve as a Technical Advisor to the Government of Andhra Pradesh, contributing to public service and rural infrastructure development." },
-        { "name": "Veeramachaneni Sivaprasad", "slug": "veeramachaneni-sivaprasad", "photo": "/images/people/veeramachaneni-sivaprasad.webp", "role": null, "bio": "As the proprietor of Saiteja Constructions, Veeramachaneni Sivaprasad has delivered large-scale construction projects while also engaging deeply in philanthropic efforts, including building free schools and hostels for underserved communities." },
-        { "name": "Kalyan Chakravarthy Konduri", "slug": "kalyan-chakravarthy-konduri", "photo": "/images/people/kalyan-chakravarthy-konduri.webp", "role": "Trustee and Secretary", "bio": "With over 20 years of experience in the BFSI sector, Kalyan is a Trustee and Secretary of the Trust. A long-time associate of Sri Sathya Sai’s mission, he has actively contributed to projects in rural infrastructure, healthcare, and education." },
-        { "name": "G Dharma Data", "slug": "g-dharma-data", "photo": "/images/people/g-dharma-data.webp", "role": null, "bio": "A retired Director of Drugs Control Administration, Andhra Pradesh, G Dharma Data is an esteemed pharmaceutical leader and academic. He continues to impact the field as an Adjunct Professor, Regulatory Advisor, and President of the Indian Pharmacy Graduates Association." }
+        {
+          "name": "R Venkateswara Rao",
+          "slug": "r-venkateswara-rao",
+          "photo": "/images/people/r-venkateswara-rao.webp",
+          "role": null,
+          "bio": "An M.Tech graduate in Civil Engineering, R. Venkateswara Rao retired as Engineer-in-Chief from the Panchayat Raj Engineering Department after 39 years of service. Currently, he serves as a Technical Advisor to APMSIDC, contributing to hospital infrastructure development and overseeing the construction of 16 medical colleges under the Nadu-Nedu program."
+        },
+        {
+          "name": "R Kondala Rao",
+          "slug": "r-kondala-rao",
+          "photo": "/images/people/r-kondala-rao.webp",
+          "role": null,
+          "bio": "Retired Engineer-in-Chief of the Panchayat Raj and Rural Water Supply Departments, R. Kondala Rao played a pivotal role in Sri Sathya Sai Water Supply Projects. He continues to serve as a Technical Advisor to the Government of Andhra Pradesh, contributing to public service and rural infrastructure development."
+        },
+        {
+          "name": "Veeramachaneni Sivaprasad",
+          "slug": "veeramachaneni-sivaprasad",
+          "photo": "/images/people/veeramachaneni-sivaprasad.webp",
+          "role": null,
+          "bio": "As the proprietor of Saiteja Constructions, Veeramachaneni Sivaprasad has delivered large-scale construction projects while also engaging deeply in philanthropic efforts, including building free schools and hostels for underserved communities."
+        },
+        {
+          "name": "Kalyan Chakravarthy Konduri",
+          "slug": "kalyan-chakravarthy-konduri",
+          "photo": "/images/people/kalyan-chakravarthy-konduri.webp",
+          "role": "Trustee and Secretary",
+          "bio": "With over 20 years of experience in the BFSI sector, Kalyan is a Trustee and Secretary of the Trust. A long-time associate of Sri Sathya Sai’s mission, he has actively contributed to projects in rural infrastructure, healthcare, and education."
+        },
+        {
+          "name": "G Dharma Data",
+          "slug": "g-dharma-data",
+          "photo": "/images/people/g-dharma-data.webp",
+          "role": null,
+          "bio": "A retired Director of Drugs Control Administration, Andhra Pradesh, G Dharma Data is an esteemed pharmaceutical leader and academic. He continues to impact the field as an Adjunct Professor, Regulatory Advisor, and President of the Indian Pharmacy Graduates Association."
+        }
       ]
     },
     {
       "title": "Advisors",
       "subtitle": null,
       "people": [
-        { "name": "Hari Umakanta Rao", "slug": "hari-umakanta-rao", "photo": "/images/people/hari-umakanta-rao.webp", "role": null, "bio": null },
-        { "name": "K V Rambabu", "slug": "k-v-rambabu", "photo": "/images/people/k-v-rambabu.webp", "role": null, "bio": null }
+        {
+          "name": "Hari Umakanta Rao",
+          "slug": "hari-umakanta-rao",
+          "photo": "/images/people/hari-umakanta-rao.webp",
+          "role": null,
+          "bio": null
+        },
+        {
+          "name": "K V Rambabu",
+          "slug": "k-v-rambabu",
+          "photo": "/images/people/k-v-rambabu.webp",
+          "role": null,
+          "bio": null
+        }
       ]
     },
     {
       "title": "Management Committee",
       "subtitle": "President of the Advisory Committee",
       "people": [
-        { "name": "Dr Narsaraju", "slug": "dr-narsaraju", "photo": "/images/people/dr-narsaraju.webp", "role": "President of the Advisory Committee", "bio": null }
+        {
+          "name": "Dr Narsaraju",
+          "slug": "dr-narsaraju",
+          "photo": "/images/people/dr-narsaraju.webp",
+          "role": "President of the Advisory Committee",
+          "bio": null
+        }
       ]
     },
     {
       "title": "Management Committee",
       "subtitle": "Committee Members",
       "people": [
-        { "name": "DVN Raju", "slug": "dvn-raju", "photo": "/images/people/dvn-raju.webp", "role": "Committee Member", "bio": "Whole-time Director of Island Veerchemie, a pioneer in manufacturing Sodium Azide, and an active philanthropist." },
-        { "name": "Nagaraju Penumetsa", "slug": "nagaraju-penumetsa", "photo": "/images/people/nagaraju-penumetsa.webp", "role": "Committee Member", "bio": "An entrepreneur with over 32 years of global corporate experience, Nagaraju brings his vision to initiatives like the Suryalanka Shivakshetram Temple project." },
-        { "name": "Karuna Raju Manthena", "slug": "karuna-raju-manthena", "photo": "/images/people/karuna-raju-manthena.webp", "role": "Committee Member", "bio": "With 25 years of association with Sri Sathya Sai’s mission, Karuna Raju leverages his expertise in construction, hospital management, and strategic planning." },
-        { "name": "R Lakshmipathi", "slug": "r-lakshmipathi", "photo": "/images/people/r-lakshmipathi.webp", "role": "Committee Member", "bio": "Former Chairman of APMSIDC, R Lakshmipathi has a distinguished career in infrastructure and community development." }
+        {
+          "name": "DVN Raju",
+          "slug": "dvn-raju",
+          "photo": "/images/people/dvn-raju.webp",
+          "role": "Committee Member",
+          "bio": "Whole-time Director of Island Veerchemie, a pioneer in manufacturing Sodium Azide, and an active philanthropist."
+        },
+        {
+          "name": "Nagaraju Penumetsa",
+          "slug": "nagaraju-penumetsa",
+          "photo": "/images/people/nagaraju-penumetsa.webp",
+          "role": "Committee Member",
+          "bio": "An entrepreneur with over 32 years of global corporate experience, Nagaraju brings his vision to initiatives like the Suryalanka Shivakshetram Temple project."
+        },
+        {
+          "name": "Karuna Raju Manthena",
+          "slug": "karuna-raju-manthena",
+          "photo": "/images/people/karuna-raju-manthena.webp",
+          "role": "Committee Member",
+          "bio": "With 25 years of association with Sri Sathya Sai’s mission, Karuna Raju leverages his expertise in construction, hospital management, and strategic planning."
+        },
+        {
+          "name": "R Lakshmipathi",
+          "slug": "r-lakshmipathi",
+          "photo": "/images/people/r-lakshmipathi.webp",
+          "role": "Committee Member",
+          "bio": "Former Chairman of APMSIDC, R Lakshmipathi has a distinguished career in infrastructure and community development."
+        }
       ]
     }
   ],
@@ -91,29 +187,41 @@
     {
       "name": "Sri Madhusudan Sai Institute of Medical Sciences and Research",
       "short": "SMSIMSR",
-      "description": { "en": "Sai Aarogya Hospital operates in collaboration with SMSIMSR, part of the Sri Madhusudan Sai Global Humanitarian Mission.", "te": null },
+      "description": "Sai Aarogya Hospital operates in collaboration with SMSIMSR, part of the Sri Madhusudan Sai Global Humanitarian Mission.",
       "url": null
     },
     {
       "name": "Sanjeevani Hospitals",
       "short": null,
-      "description": { "en": "A chain of paediatric cardiac hospitals that are also part of the Mission.", "te": null },
+      "description": "A chain of paediatric cardiac hospitals that are also part of the Mission.",
       "url": null
     },
     {
       "name": "Sai Swasthya Wellness Centres",
       "short": null,
-      "description": { "en": "Primary care centres whose services the hospital complements with secondary care.", "te": null },
+      "description": "Primary care centres whose services the hospital complements with secondary care.",
       "url": null
     }
   ],
   "multiSpeciality": {
     "heading": "Building a World-Class Multi-Speciality Centre",
     "points": [
-      { "title": "Delivering Excellence in Healthcare", "text": "Patient-centred care delivered by expert medical professionals equipped with advanced technologies." },
-      { "title": "Redefining Specialty Care", "text": "Providing cutting-edge treatments across multiple disciplines with a commitment to innovation and quality." },
-      { "title": "Global Standards, Local Care", "text": "Offering world-class medical services tailored to meet the unique needs of our community." },
-      { "title": "Shaping the Future of Healthcare", "text": "Dedicated to pioneering healthcare solutions and improving lives." }
+      {
+        "title": "Delivering Excellence in Healthcare",
+        "text": "Patient-centred care delivered by expert medical professionals equipped with advanced technologies."
+      },
+      {
+        "title": "Redefining Specialty Care",
+        "text": "Providing cutting-edge treatments across multiple disciplines with a commitment to innovation and quality."
+      },
+      {
+        "title": "Global Standards, Local Care",
+        "text": "Offering world-class medical services tailored to meet the unique needs of our community."
+      },
+      {
+        "title": "Shaping the Future of Healthcare",
+        "text": "Dedicated to pioneering healthcare solutions and improving lives."
+      }
     ],
     "published": false
   }

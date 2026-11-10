@@ -1,41 +1,38 @@
-import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 import type { Department } from "@/types";
 import { doctorsInDepartment } from "@/content";
-import { usePick, useT } from "@/i18n/LangContext";
-import { LLink } from "@/components/ui/LLink";
 import { DepartmentIcon } from "@/components/ui/DepartmentIcon";
 import { Todo } from "@/components/ui/Todo";
 
-/** Department tile (§5.1-4, §5.3): icon, name, one-line summary, doctor count, link. */
+/** Department tile (§5.1-4, §5.3): icon, name, one-line summary, doctor count. Whole card is clickable. */
 export function DepartmentCard({ department, showCount = false }: { department: Department; showCount?: boolean }) {
-  const pick = usePick();
-  const t = useT();
   const count = doctorsInDepartment(department.slug).length;
   return (
-    <article className="group relative grid h-full grid-cols-[auto_1fr] gap-x-4 rounded-card bg-white p-4 shadow-card transition-shadow hover:shadow-lg sm:flex sm:flex-col sm:p-5 md:p-6">
-      <span className="row-span-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700">
-        <DepartmentIcon name={department.icon} />
-      </span>
-      <h3 className="font-heading text-xl font-medium text-maroon-700 sm:mt-4">
-        <LLink to={`/departments/${department.slug}/`} className="no-underline after:absolute after:inset-0 after:rounded-card">
-          {pick(department.name)}
-        </LLink>
+    <article className="group surface surface-hover relative flex h-full flex-col p-6">
+      <div className="flex items-start justify-between gap-3">
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700 transition-colors duration-200 group-hover:bg-maroon-700 group-hover:text-white">
+          <DepartmentIcon name={department.icon} />
+        </span>
+        <ArrowUpRight className="h-5 w-5 text-ink-300 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-maroon-700" aria-hidden />
+      </div>
+      <h3 className="mt-5 font-heading text-lg font-bold text-ink-900">
+        <Link to={`/departments/${department.slug}/`} className="text-ink-900 no-underline after:absolute after:inset-0 after:rounded-3xl group-hover:text-maroon-800">
+          {department.name}
+        </Link>
       </h3>
-      <div className="mt-1 flex-1 text-base text-ink-600 sm:mt-2">
+      <div className="mt-2 flex-1 text-[15px] text-ink-600">
         {department.summary ? (
-          <p>{pick(department.summary)}</p>
+          <p className="line-clamp-3">{department.summary}</p>
         ) : (
           <Todo id="department-summary" inline>
             summary
           </Todo>
         )}
       </div>
-      <p className="mt-2 flex items-center justify-between gap-2 text-sm font-semibold text-maroon-700 sm:mt-4">
-        {showCount ? <span className="font-medium text-ink-600">{t("departmentsPage.doctorCount", { count })}</span> : <span />}
-        <span className="inline-flex items-center gap-1 group-hover:underline">
-          {t("departmentsPage.view")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-        </span>
-      </p>
+      {showCount && (
+        <p className="mt-5 border-t border-ink-200/70 pt-4 text-sm font-medium text-ink-600">{count === 1 ? "1 doctor" : `${count} doctors`}</p>
+      )}
     </article>
   );
 }

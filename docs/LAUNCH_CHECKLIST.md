@@ -49,7 +49,6 @@ This covers the steps to take the new site live on Netlify at `www.saiaarogya.ho
 - [ ] Submit the sitemap: `https://www.saiaarogya.hospital/sitemap.xml`.
 - [ ] Request indexing for the Home, Doctors, Departments and Patient Guide pages.
 - [ ] Bing Webmaster Tools: import from Search Console.
-- [ ] **When Telugu is translated:** the `/te/` pages go live automatically (`TELUGU_READY`). Re-submit the sitemap, which will then include them with hreflang.
 
 ## 6. Off-site visibility (§9)
 

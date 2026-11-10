@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CircleCheck, CircleX, Send } from "lucide-react";
-import { siteSettings } from "@/content";
-import { useT } from "@/i18n/LangContext";
+import { Send } from "lucide-react";
 import { SITE_URL } from "@/lib/staticPaths";
 import { formsConfigured, submitToWeb3Forms, WEB3FORMS_ENDPOINT, WEB3FORMS_KEY } from "@/lib/web3forms";
 import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
 import { Todo } from "@/components/ui/Todo";
-import { Field, describedBy, inputClass } from "./Field";
+import { Field, describedBy, inputClass } from "@/components/ui/Field";
+import { cn } from "@/components/ui/cn";
 import { INDIAN_PHONE, normalizePhone } from "./EnquiryForm";
+import { FormError, FormSuccess } from "./FormStatus";
 
 const AREAS = {
-  medical: "Medical (doctor, nurse, pharmacist, technician…)",
-  "non-medical": "Non-medical (registration desk, patient guidance, camps, admin…)",
-  either: "Either — wherever I am needed",
+  medical: { title: "Medical", text: "Doctor, nurse, pharmacist, technician…" },
+  "non-medical": { title: "Non-medical", text: "Registration desk, patient guidance, camps, admin…" },
+  either: { title: "Either", text: "Wherever I am needed" },
 } as const;
 type Area = keyof typeof AREAS;
 
@@ -38,7 +38,6 @@ type Out = z.output<typeof schema>;
 
 /** Volunteer sign-up (§5.7) with "Area of interest". Sent via Web3Forms. */
 export function VolunteerForm() {
-  const t = useT();
   const path = "/support-us/volunteer/";
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
   const statusRef = useRef<HTMLDivElement>(null);
@@ -46,36 +45,30 @@ export function VolunteerForm() {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<In, unknown, Out>({
     resolver: zodResolver(schema),
     defaultValues: { name: "", phone: "", email: "", area: "" as Area, profession: "", availability: "", message: "", botcheck: false },
   });
+  const area = useWatch({ control, name: "area" });
 
   useEffect(() => {
     if (status !== "idle") statusRef.current?.focus();
   }, [status]);
 
   const onSubmit = async (d: Out) => {
-    const { botcheck, area, ...rest } = d;
-    const res = await submitToWeb3Forms(`Volunteer sign-up — ${d.name}`, { ...rest, area_of_interest: AREAS[area], page: path } as Record<string, string>, Boolean(botcheck));
+    const { botcheck, area: a, ...rest } = d;
+    const res = await submitToWeb3Forms(`Volunteer sign-up — ${d.name}`, { ...rest, area_of_interest: AREAS[a].title, page: path } as Record<string, string>, Boolean(botcheck));
     if (res.ok) {
-      trackEvent("form_submit", { form: "volunteer", area });
+      trackEvent("form_submit", { form: "volunteer", area: a });
       reset();
       setStatus("sent");
     } else setStatus("error");
   };
 
   if (status === "sent") {
-    return (
-      <div ref={statusRef} tabIndex={-1} role="status" className="rounded-card bg-[#E7F3EA] p-6 outline-none">
-        <p className="flex items-center gap-2 font-heading text-xl font-medium text-success-700">
-          <CircleCheck className="h-6 w-6" aria-hidden />
-          Thank you for offering to volunteer!
-        </p>
-        <p className="mt-2 text-ink-900">Our team will contact you soon.</p>
-      </div>
-    );
+    return <FormSuccess ref={statusRef} title="Thank you for offering to volunteer!" text="Our team will contact you soon." />;
   }
 
   return (
@@ -88,41 +81,41 @@ export function VolunteerForm() {
           Form not connected yet — set <code>VITE_WEB3FORMS_ACCESS_KEY</code>.
         </Todo>
       )}
-      {status === "error" && (
-        <div ref={statusRef} tabIndex={-1} role="alert" className="rounded-btn bg-[#FDECEC] p-4 outline-none">
-          <p className="flex items-center gap-2 font-semibold text-alert-700">
-            <CircleX className="h-5 w-5" aria-hidden />
-            {t("form.errorTitle")}
-          </p>
-          <p className="mt-1">
-            {t("form.errorText")}{" "}
-            <a href={`tel:${siteSettings.phone}`} className="font-semibold">
-              {siteSettings.phoneDisplay}
-            </a>
-          </p>
-        </div>
-      )}
+      {status === "error" && <FormError ref={statusRef} />}
 
-      <Field id="vol-name" label={t("form.name")} required error={errors.name?.message}>
+      <Field id="vol-name" label="Your name" required error={errors.name?.message}>
         <input id="vol-name" autoComplete="name" className={inputClass(!!errors.name)} aria-required="true" aria-invalid={!!errors.name} aria-describedby={describedBy("vol-name", false, !!errors.name)} {...register("name")} />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        <Field id="vol-phone" label={t("form.phone")} required hint={t("form.phoneHint")} error={errors.phone?.message}>
+        <Field id="vol-phone" label="Phone number" required hint="10-digit Indian mobile number" error={errors.phone?.message}>
           <input id="vol-phone" type="tel" inputMode="tel" autoComplete="tel" className={inputClass(!!errors.phone)} aria-required="true" aria-invalid={!!errors.phone} aria-describedby={describedBy("vol-phone", true, !!errors.phone)} {...register("phone")} />
         </Field>
-        <Field id="vol-email" label={t("form.email")} optionalLabel={t("form.optional")} error={errors.email?.message}>
-          <input id="vol-email" type="email" autoComplete="email" className={inputClass(!!errors.email)} aria-invalid={!!errors.email} aria-describedby={describedBy("vol-email", false, !!errors.email)} {...register("email")} />
+        <Field id="vol-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
+          <input id="vol-email" type="email" autoComplete="email" className={inputClass(!!errors.email)} aria-invalid={!!errors.email} aria-describedby={describedBy("vol-email", true, !!errors.email)} {...register("email")} />
         </Field>
       </div>
+
       <fieldset aria-describedby={errors.area ? "vol-area-error" : undefined}>
-        <legend className="mb-2 font-semibold text-ink-900">
-          Area of interest <span className="text-alert-700" aria-hidden>*</span>
+        <legend className="mb-2 text-[15px] font-semibold text-ink-900">
+          Area of interest{" "}
+          <span className="text-alert-700" aria-hidden>
+            *
+          </span>
         </legend>
-        <div className="space-y-2">
+        <div className="grid gap-3 sm:grid-cols-3">
           {(Object.keys(AREAS) as Area[]).map((a) => (
-            <label key={a} className="flex min-h-12 cursor-pointer items-center gap-3 rounded-btn border border-ink-600/30 bg-white px-4 py-3 has-[:checked]:border-maroon-700 has-[:checked]:bg-maroon-50">
-              <input type="radio" value={a} className="h-5 w-5 accent-maroon-700" {...register("area")} />
-              <span>{AREAS[a]}</span>
+            <label
+              key={a}
+              className={cn(
+                "flex cursor-pointer flex-col gap-1 rounded-2xl border p-4 transition-colors hover:border-maroon-300 hover:bg-maroon-50",
+                area === a ? "border-maroon-700 bg-maroon-50 ring-4 ring-maroon-100" : "border-ink-200 bg-white",
+              )}
+            >
+              <span className="flex items-center gap-2.5 font-semibold text-ink-900">
+                <input type="radio" value={a} className="h-5 w-5" {...register("area")} />
+                {AREAS[a].title}
+              </span>
+              <span className="pl-[30px] text-sm text-ink-600">{AREAS[a].text}</span>
             </label>
           ))}
         </div>
@@ -132,20 +125,21 @@ export function VolunteerForm() {
           </p>
         )}
       </fieldset>
+
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        <Field id="vol-profession" label="Profession / skills" optionalLabel={t("form.optional")}>
+        <Field id="vol-profession" label="Profession / skills" optional>
           <input id="vol-profession" className={inputClass(false)} {...register("profession")} />
         </Field>
-        <Field id="vol-availability" label="Availability" optionalLabel={t("form.optional")}>
+        <Field id="vol-availability" label="Availability" optional>
           <input id="vol-availability" placeholder="e.g. weekends, during camps" className={inputClass(false)} {...register("availability")} />
         </Field>
       </div>
-      <Field id="vol-message" label="Anything else you’d like to tell us?" optionalLabel={t("form.optional")}>
+      <Field id="vol-message" label="Anything else you’d like to tell us?" optional>
         <textarea id="vol-message" rows={4} className={inputClass(false)} {...register("message")} />
       </Field>
       <input type="checkbox" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("botcheck")} />
-      <Button type="submit" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full sm:w-auto">
-        {isSubmitting ? t("form.sending") : "Send volunteer request"}
+      <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full sm:w-auto">
+        {isSubmitting ? "Sending…" : "Send volunteer request"}
       </Button>
     </form>
   );

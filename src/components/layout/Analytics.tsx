@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Cookie } from "lucide-react";
-import { LLink } from "@/components/ui/LLink";
 
 /**
- * Analytics (§8): page views + Call / Directions / Form-submit events, with
- * a cookie notice (§5.9). Nothing loads unless:
- *   1. a GA4 measurement ID is set in VITE_GA_ID (TODO analytics-id), and
- *   2. the visitor accepts the cookie notice.
- * Any element with a `data-track` attribute reports a click event; forms
- * call trackEvent().
+ * Analytics (§8): page views + Call / Directions / Form-submit events, with a
+ * cookie notice (§5.9). Nothing loads unless VITE_GA_ID is set (TODO
+ * analytics-id) AND the visitor accepts. Elements with `data-track` report
+ * clicks; forms call trackEvent().
  */
 declare global {
   interface Window {
@@ -39,7 +36,7 @@ function writeConsent(v: "granted" | "denied") {
   try {
     window.localStorage.setItem(KEY, v);
   } catch {
-    /* storage unavailable — choice lasts for this page view only */
+    /* storage unavailable — choice applies to this page view only */
   }
   listeners.forEach((l) => l());
 }
@@ -67,25 +64,22 @@ export function Analytics() {
   const { pathname } = useLocation();
   // "pending" while pre-rendering / hydrating, then the stored choice (null = not chosen yet)
   const consent = useSyncExternalStore<Consent | "pending">(subscribe, readConsent, () => "pending");
-  const [dismissedThisView, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const enabled = Boolean(GA_ID) && consent === "granted";
 
   useEffect(() => {
     if (enabled) loadGtag();
   }, [enabled]);
-
   useEffect(() => {
     if (enabled) trackEvent("page_view", { page_path: pathname, page_location: window.location.href });
   }, [pathname, enabled]);
-
   useEffect(() => {
     if (!enabled) return;
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement | null)?.closest<HTMLElement>("[data-track]");
       if (!el) return;
       const id = el.dataset.track ?? "";
-      const kind = id.startsWith("call") ? "call_click" : id.startsWith("directions") ? "directions_click" : "cta_click";
-      trackEvent(kind, { id, page_path: window.location.pathname });
+      trackEvent(id.startsWith("call") ? "call_click" : id.startsWith("directions") ? "directions_click" : "cta_click", { id, page_path: window.location.pathname });
     };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
@@ -96,27 +90,21 @@ export function Analytics() {
     setDismissed(true);
   }, []);
 
-  if (!GA_ID || consent !== null || dismissedThisView) return null;
-
+  if (!GA_ID || consent !== null || dismissed) return null;
   return (
-    <div
-      role="dialog"
-      aria-live="polite"
-      aria-label="Cookie notice"
-      className="fixed inset-x-3 bottom-[72px] z-50 mx-auto max-w-xl rounded-card bg-white p-4 shadow-[0_8px_40px_rgba(0,0,0,.18)] md:bottom-4 md:p-5"
-    >
+    <div role="dialog" aria-live="polite" aria-label="Cookie notice" className="fixed inset-x-3 bottom-[96px] z-50 mx-auto max-w-xl rounded-3xl border border-ink-200 bg-white p-5 shadow-menu md:bottom-5">
       <p className="flex gap-3 text-sm text-ink-900">
         <Cookie className="h-5 w-5 shrink-0 text-maroon-700" aria-hidden />
         <span>
           We use cookies to understand how visitors use this website, so we can improve it. No medical information is collected.{" "}
-          <LLink to="/policies/privacy/">Privacy Policy</LLink>
+          <Link to="/policies/privacy/">Privacy Policy</Link>
         </span>
       </p>
-      <div className="mt-3 flex justify-end gap-2">
-        <button type="button" onClick={() => choose("denied")} className="min-h-11 rounded-btn px-4 text-sm font-semibold text-maroon-700 hover:bg-maroon-50">
+      <div className="mt-4 flex justify-end gap-2">
+        <button type="button" onClick={() => choose("denied")} className="min-h-11 rounded-full px-4 text-sm font-semibold text-maroon-700 hover:bg-maroon-50">
           No thanks
         </button>
-        <button type="button" onClick={() => choose("granted")} className="min-h-11 rounded-btn bg-saffron-700 px-4 text-sm font-semibold text-white">
+        <button type="button" onClick={() => choose("granted")} className="min-h-11 rounded-full bg-maroon-700 px-5 text-sm font-semibold text-white hover:bg-maroon-800">
           Accept
         </button>
       </div>

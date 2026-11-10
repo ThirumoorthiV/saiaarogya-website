@@ -1,11 +1,10 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getPolicy, policies } from "@/content";
 import { fitDescription } from "@/lib/describe";
 import { Seo } from "@/components/seo/Seo";
-import { PageHeader } from "@/components/layout/PageHeader";
-import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/layout/PageHero";
+import { Container } from "@/components/ui/Container";
 import { Todo } from "@/components/ui/Todo";
-import { LLink } from "@/components/ui/LLink";
 import { Component as NotFound } from "@/pages/NotFound";
 
 const DESCRIPTIONS: Record<string, string> = {
@@ -20,48 +19,49 @@ export function Component() {
   const policy = getPolicy(slug);
   if (!policy) return <NotFound />;
   const path = `/policies/${policy.slug}/`;
-
   return (
     <>
       <Seo title={policy.title} description={fitDescription([DESCRIPTIONS[policy.slug] ?? policy.title])} path={path} />
-      <PageHeader title={policy.title} crumbs={[{ label: "Policies" }, { label: policy.title }]} path={path} />
-      <Section>
-        <div className="max-w-prose space-y-8 text-ink-900">
-          {(policy.slug === "refund" || policy.slug === "privacy") && (
-            <Todo id="policy-review">
-              {policy.slug === "refund"
-                ? "This refund policy is e-commerce boilerplate (shipping, perishable items). Please review it for donations."
-                : "Please review: this policy mentions job titles and promotional emails, and does not cover the new enquiry and volunteer forms."}
-            </Todo>
-          )}
-          {policy.sections.map((s, i) => (
-            <section key={i} className="space-y-4">
-              {s.heading && <h2 className="h3">{s.heading}</h2>}
-              {s.paragraphs.map((p, j) => (
-                <p key={j}>{p}</p>
-              ))}
-              {s.list.length > 0 && (
-                <ul className="list-disc space-y-2 pl-6 marker:text-saffron-700">
-                  {s.list.map((l, j) => (
-                    <li key={j}>{l}</li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          ))}
-          <nav aria-label="Other policies" className="border-t border-maroon-700/10 pt-6">
-            <ul className="flex flex-wrap gap-4">
-              {policies
-                .filter((p) => p.slug !== policy.slug)
-                .map((p) => (
-                  <li key={p.slug}>
-                    <LLink to={`/policies/${p.slug}/`}>{p.title}</LLink>
-                  </li>
+      <PageHero title={policy.title} eyebrow={<p className="eyebrow">Policies</p>} crumbs={[{ label: "Policies" }, { label: policy.title }]} path={path} />
+      <div className="py-14 md:py-20">
+        <Container>
+          <div className="mx-auto max-w-prose space-y-8 text-ink-700">
+            {(policy.slug === "refund" || policy.slug === "privacy") && (
+              <Todo id="policy-review">
+                {policy.slug === "refund"
+                  ? "This refund policy is e-commerce boilerplate (shipping, perishable items). Please review it for donations."
+                  : "Please review: this policy mentions job titles and promotional emails, and does not cover the new enquiry and volunteer forms."}
+              </Todo>
+            )}
+            {policy.sections.map((s, i) => (
+              <section key={i} className="space-y-4">
+                {s.heading && <h2 className="text-h3 text-ink-900">{s.heading}</h2>}
+                {s.paragraphs.map((p, j) => (
+                  <p key={j}>{p}</p>
                 ))}
-            </ul>
-          </nav>
-        </div>
-      </Section>
+                {s.list.length > 0 && (
+                  <ul className="list-disc space-y-2 pl-6 marker:text-maroon-700">
+                    {s.list.map((l, j) => (
+                      <li key={j}>{l}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+            <nav aria-label="Other policies" className="border-t border-ink-200 pt-6">
+              <ul className="flex flex-wrap gap-4">
+                {policies
+                  .filter((p) => p.slug !== policy.slug)
+                  .map((p) => (
+                    <li key={p.slug}>
+                      <Link to={`/policies/${p.slug}/`}>{p.title}</Link>
+                    </li>
+                  ))}
+              </ul>
+            </nav>
+          </div>
+        </Container>
+      </div>
     </>
   );
 }

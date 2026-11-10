@@ -1,20 +1,60 @@
 {
   "items": [
     {
-      "question": { "en": "Is everything really free?", "te": null },
-      "answer": { "en": "Yes. All services at Sai Aarogya Hospital are offered completely free of charge to every individual, without discrimination based on caste, creed, religion, or economic status.", "te": null },
-      "page": "PatientGuide", "department": null, "order": 1
+      "question": "Is everything really free?",
+      "answer": "Yes. All services at Sai Aarogya Hospital are offered completely free of charge to every individual, without discrimination based on caste, creed, religion, or economic status.",
+      "page": "PatientGuide",
+      "department": null,
+      "order": 1
     },
-    { "question": { "en": "Do I need an appointment?", "te": null }, "answer": null, "page": "PatientGuide", "department": null, "order": 2 },
-    { "question": { "en": "Is there emergency care?", "te": null }, "answer": null, "page": "PatientGuide", "department": null, "order": 3 },
-    { "question": { "en": "Are medicines free?", "te": null }, "answer": null, "page": "PatientGuide", "department": null, "order": 4 },
-    { "question": { "en": "Can I bring an attendant?", "te": null }, "answer": null, "page": "PatientGuide", "department": null, "order": 5 },
     {
-      "question": { "en": "How can donors outside India contribute?", "te": null },
-      "answer": { "en": "Foreign nationals who wish to contribute can write to info@saisujalasravanthi.in.", "te": null },
-      "page": "SupportUs", "department": null, "order": 1
+      "question": "Do I need an appointment?",
+      "answer": null,
+      "page": "PatientGuide",
+      "department": null,
+      "order": 2
     },
-    { "question": { "en": "Are donations tax-exempt?", "te": null }, "answer": null, "page": "SupportUs", "department": null, "order": 2 },
-    { "question": { "en": "Will I receive a receipt for my donation?", "te": null }, "answer": null, "page": "SupportUs", "department": null, "order": 3 }
+    {
+      "question": "Is there emergency care?",
+      "answer": null,
+      "page": "PatientGuide",
+      "department": null,
+      "order": 3
+    },
+    {
+      "question": "Are medicines free?",
+      "answer": null,
+      "page": "PatientGuide",
+      "department": null,
+      "order": 4
+    },
+    {
+      "question": "Can I bring an attendant?",
+      "answer": null,
+      "page": "PatientGuide",
+      "department": null,
+      "order": 5
+    },
+    {
+      "question": "How can donors outside India contribute?",
+      "answer": "Foreign nationals who wish to contribute can write to info@saisujalasravanthi.in.",
+      "page": "SupportUs",
+      "department": null,
+      "order": 1
+    },
+    {
+      "question": "Are donations tax-exempt?",
+      "answer": null,
+      "page": "SupportUs",
+      "department": null,
+      "order": 2
+    },
+    {
+      "question": "Will I receive a receipt for my donation?",
+      "answer": null,
+      "page": "SupportUs",
+      "department": null,
+      "order": 3
+    }
   ]
 }
