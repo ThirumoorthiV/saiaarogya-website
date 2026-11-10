@@ -17,7 +17,10 @@ A patient-first website for Sai Aarogya Hospital, Bapatla, a unit of Sri Sathya 
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript, with no emit |
 | `npm run build` | Pre-render every page to `dist/`, and write `sitemap.xml`, `robots.txt` and `404.html` |
-| `npm run check` | lint + typecheck + build + SEO meta check (run before every commit) |
+| `npm run check` | lint + typecheck + build + meta check + structured-data check + TODO scan (run before every commit) |
+| `npm run check:schema` | Validate the JSON-LD on every page (Hospital, Physician, FAQPage, BreadcrumbList…) |
+| `npm run i18n:status` | Telugu translation progress |
+| `npm run a11y` | axe-core WCAG 2.1 A/AA audit of every built page at 360 and 1440 px, plus a keyboard skip-link check |
 | `npm run check:meta` | Check that each built page has one H1, a unique title, and a 140–160 character description |
 | `npm run qa` | Open every built page in Chrome at 360, 768 and 1440 px and check for overflow, H1, alt text and console errors (`--shots <dir>` saves screenshots) |
 | `npm run todo:scan` | List every content placeholder and check each is documented in `docs/CONTENT_TODO.md` |
@@ -41,7 +44,13 @@ src/
 └── main.tsx
 docs/
 ├── CONTENT_TODO.md      Every placeholder waiting for information from the hospital
+├── LAUNCH_CHECKLIST.md  Netlify, domain, Search Console, Google Business Profile, off-site (§9)
+├── STAFF_GUIDE.md       How hospital staff update content in the CMS
 └── PHASE0_WIX_FIXES.md  Quick fixes for the current Wix site
+public/
+├── admin/               Decap CMS (config.yml = content collections)
+├── _redirects           301s from old Wix URLs
+└── fonts/, images/      Self-hosted fonts and optimised images
 ```
 
 ## Content rules
@@ -57,4 +66,4 @@ docs/
 - [x] Phase 2 — Patient essentials: Home, Patient Guide, Contact
 - [x] Phase 3 — Departments & Doctors, CMS admin, schema markup
 - [x] Phase 4 — About, Impact, Stories, Gallery, Support Us, Policies
-- [ ] Phase 5 — Telugu, redirects, analytics, launch QA
+- [x] Phase 5 — Telugu readiness, redirects, analytics + cookie notice, performance, launch docs (`docs/LAUNCH_CHECKLIST.md`, `docs/STAFF_GUIDE.md`)

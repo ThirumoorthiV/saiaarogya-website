@@ -1,0 +1,8 @@
+# Netlify redirects — requirements §4.4 and §8 (301 from all old Wix URLs)
+/donormanagement      /support-us/donate/      301
+/donormanagement/*    /support-us/donate/      301
+/terms                /policies/terms/         301
+/privacypolicy        /policies/privacy/       301
+/refundpolicy         /policies/refund/        301
+/home                 /                        301
+/te                   /te/                     301

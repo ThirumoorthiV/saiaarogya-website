@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Check, Phone, Stethoscope } from "lucide-react";
 import { doctorsInDepartment, faqsFor, getDepartment, siteSettings } from "@/content";
-import { useLang, usePick } from "@/i18n/LangContext";
+import { useLang, usePick, useT } from "@/i18n/LangContext";
 import { fitDescription } from "@/lib/describe";
 import { faqSchema, HOSPITAL_ID } from "@/lib/schema";
 import { SITE_URL } from "@/lib/staticPaths";
@@ -24,6 +24,7 @@ export function Component() {
   const { slug = "" } = useParams();
   const lang = useLang();
   const pick = usePick();
+  const t = useT();
   const dept = getDepartment(slug);
   if (!dept) return <NotFound />;
 
@@ -53,7 +54,7 @@ export function Component() {
       <Seo title={`${dept.name.en} – Free Treatment in Bapatla`} description={description} path={path} schema={[deptSchema, faqSchema(faqs, lang)]} />
       <PageHeader
         title={name}
-        crumbs={[{ label: "Departments", to: "/departments/" }, { label: name }]}
+        crumbs={[{ label: t("nav.departments"), to: "/departments/" }, { label: name }]}
         path={path}
         eyebrow={
           <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-maroon-700 text-white">
@@ -64,16 +65,16 @@ export function Component() {
         actions={
           <>
             <ButtonLink to={`tel:${siteSettings.phone}`} icon={<Phone className="h-5 w-5" aria-hidden />} track="call-department">
-              Call to enquire
+              {t("actions.callToEnquire")}
             </ButtonLink>
             <ButtonLink to="/patient-guide/opd-timings/" variant="secondary">
-              OPD timings
+              {t("actions.opdTimings")}
             </ButtonLink>
           </>
         }
       />
 
-      <Section id="about-dept" title={`About ${name}`}>
+      <Section id="about-dept" title={t("departmentsPage.aboutTitle", { name })}>
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="prose-body max-w-prose text-ink-900">
             {dept.description.length ? (
@@ -83,7 +84,7 @@ export function Component() {
             )}
           </div>
           <div>
-            <h3 className="h3 mb-4">Services &amp; conditions treated</h3>
+            <h3 className="h3 mb-4">{t("departmentsPage.servicesTitle")}</h3>
             {dept.services.length ? (
               <ul className="grid gap-3 sm:grid-cols-2">
                 {dept.services.map((s) => (
@@ -105,7 +106,7 @@ export function Component() {
         </div>
       </Section>
 
-      <Section id="dept-doctors" tone="cream" title={`Doctors in ${name}`}>
+      <Section id="dept-doctors" tone="cream" title={t("departmentsPage.doctorsTitle", { name })}>
         {docs.length ? (
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {docs.map((d) => (
@@ -118,7 +119,7 @@ export function Component() {
           <div className="flex flex-col items-start gap-4 rounded-card bg-white p-6 shadow-card">
             <Stethoscope className="h-8 w-8 text-maroon-700" aria-hidden />
             <Todo id="department-no-doctor">The current website lists no doctor for this department — which doctor covers it?</Todo>
-            <p className="text-ink-600">Please call us to check doctor availability.</p>
+            <p className="text-ink-600">{t("departmentsPage.noDoctorText")}</p>
           </div>
         )}
       </Section>
@@ -128,16 +129,16 @@ export function Component() {
       </Section>
 
       {faqs.length > 0 && (
-        <Section id="dept-faqs" tone="cream" title="Frequently asked questions">
+        <Section id="dept-faqs" tone="cream" title={t("departmentsPage.faqsTitle")}>
           <FaqList items={faqs} idPrefix={`${dept.slug}-faq`} />
         </Section>
       )}
 
       <section className="bg-maroon-700 text-white">
         <div className="mx-auto flex max-w-content flex-col items-start gap-4 px-4 py-12 md:flex-row md:items-center md:justify-between md:px-6">
-          <p className="font-heading text-2xl">Have a question about {name}?</p>
+          <p className="font-heading text-2xl">{t("departmentsPage.questionAbout", { name })}</p>
           <ButtonLink to={`tel:${siteSettings.phone}`} icon={<Phone className="h-5 w-5" aria-hidden />} track="call-department-footer">
-            {`Call ${siteSettings.phoneDisplay}`}
+            {t("departmentsPage.callPhone", { phone: siteSettings.phoneDisplay })}
           </ButtonLink>
         </div>
       </section>

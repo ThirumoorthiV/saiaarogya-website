@@ -106,7 +106,7 @@ All 12 doctors, with names and qualifications exactly as on the current site.
 
 | # | Item | Code id | Current state | Needed |
 |---|---|---|---|---|
-| T1 | **Telugu translations** of all UI text (`src/i18n/te.json`) and the `te` fields in the content files | `telugu-translation` | Empty. `/te/` pages show English with a notice. | Professional translation of Home, Departments, Doctors, Patient Guide and Contact at minimum |
+| T1 | **Telugu translations**: all UI strings (`src/i18n/te.json`, same keys as `en.json`, 207 strings), the `te` fields in the content files (59 fields), and the page titles and descriptions in `src/lib/pageMeta.ts` | `telugu-translation` | Empty. `/te/` pages work but show English with a notice, and are kept out of Google (noindex, no hreflang, not in the sitemap) until `te.json` has translations. Then they go live automatically. `npm run i18n:status` shows progress. | Professional translation: Home, Departments, Doctors, Patient Guide and Contact at minimum (§13 #10) |
 
 ## G. Technical setup (Phase 5)
 

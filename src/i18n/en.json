@@ -100,7 +100,9 @@
     "consultant": "Consultant",
     "daily": "Daily",
     "visiting": "Visiting: {{days}}",
-    "photoPending": "Photo coming soon"
+    "photoPending": "Photo coming soon",
+    "photoAlt": "Portrait of {{name}}",
+    "photoPendingAlt": "{{name}} — photo coming soon"
   },
   "guide": {
     "overviewIntro": "Everything you need to plan your visit.",
@@ -137,7 +139,15 @@
     "bringMedicines": "A list of the medicines you are taking",
     "photosTitle": "Inside the hospital",
     "stillQuestions": "Still have a question?",
-    "stillQuestionsText": "Call us — our team is happy to help."
+    "stillQuestionsText": "Call us — our team is happy to help.",
+    "sectionsNav": "Patient Guide sections",
+    "overview": "Overview",
+    "step": "Step {{n}}",
+    "directionsTitle": "Directions",
+    "landmarks": "Landmarks",
+    "busStop": "Nearest bus stop",
+    "fromBapatla": "From Bapatla town",
+    "freeForAll": "All services are offered completely free of charge to every individual, without discrimination based on caste, creed, religion, or economic status."
   },
   "contact": {
     "detailsTitle": "Get in touch",
@@ -175,5 +185,55 @@
       "partnership": "Partnership",
       "other": "Other"
     }
+  },
+  "departmentsPage": {
+    "searchLabel": "Search departments, treatments or conditions",
+    "searchPlaceholder": "e.g. cataract, fracture, pregnancy",
+    "clearSearch": "Clear search",
+    "countAll": "{{count}} specialities — all treatment is free of charge.",
+    "countMatch": "{{shown}} of {{total}} departments match “{{query}}”.",
+    "noMatch": "No department matches “{{query}}”.",
+    "noMatchText": "Call us and our team will guide you to the right doctor.",
+    "doctorCount_one": "{{count}} doctor",
+    "doctorCount_other": "{{count}} doctors",
+    "view": "View",
+    "aboutTitle": "About {{name}}",
+    "servicesTitle": "Services & conditions treated",
+    "doctorsTitle": "Doctors in {{name}}",
+    "noDoctorText": "Please call us to check doctor availability.",
+    "faqsTitle": "Frequently asked questions",
+    "questionAbout": "Have a question about {{name}}?",
+    "callPhone": "Call {{phone}}"
+  },
+  "doctorsPage": {
+    "filterLabel": "Filter doctors",
+    "department": "Department",
+    "allDepartments": "All departments",
+    "visitingDay": "Visiting day",
+    "anyDay": "Any day",
+    "doctorType": "Doctor type",
+    "all": "All",
+    "showing": "Showing {{shown}} of {{total}} doctors",
+    "total": "{{count}} doctors",
+    "clearFilters": "Clear filters",
+    "noneOnDay": "No doctor visiting on this day — call us for help",
+    "noneMatch": "No doctor matches these filters — call us for help",
+    "speciality": "Speciality",
+    "qualifications": "Qualifications",
+    "visitingDays": "Visiting days",
+    "consultationTime": "Consultation time",
+    "languages": "Languages spoken",
+    "callConfirm": "Call to confirm availability",
+    "freeNote": "Consultations are free of charge. Online appointment booking is not available on this website.",
+    "otherDoctors": "Other doctors in {{name}}"
+  },
+  "days": {
+    "Mon": "Monday",
+    "Tue": "Tuesday",
+    "Wed": "Wednesday",
+    "Thu": "Thursday",
+    "Fri": "Friday",
+    "Sat": "Saturday",
+    "Sun": "Sunday"
   }
 }

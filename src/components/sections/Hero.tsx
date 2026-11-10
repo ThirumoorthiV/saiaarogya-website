@@ -11,7 +11,8 @@ export function Hero() {
       {/* Decorative saffron/maroon shape echoing the logo */}
       <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-saffron-500/10 md:h-[520px] md:w-[520px]" />
       <Container className="relative grid items-center gap-10 py-10 md:grid-cols-[1.1fr_1fr] md:gap-14 md:py-20">
-        <div className="animate-fade-up">
+        {/* No entrance animation here: the H1 is the LCP element and must paint immediately */}
+        <div>
           <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-success-700 shadow-sm">
             <BadgeCheck className="h-4 w-4" aria-hidden />
             {t("common.freeOfCharge")}

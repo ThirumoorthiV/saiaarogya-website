@@ -53,7 +53,7 @@ for (const f of files) {
 }
 
 console.log(`Checked ${files.length} pages.`);
-if (noindexPages.length) console.log(`${noindexPages.length} page(s) are noindex (placeholders) and were skipped for uniqueness.`);
+if (noindexPages.length) console.log(`${noindexPages.length} page(s) are noindex (e.g. Telugu mirrors until translated) and were skipped for uniqueness.`);
 if (problems.length) {
   console.log(problems.join("\n"));
   process.exit(1);

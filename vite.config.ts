@@ -13,6 +13,8 @@ export default defineConfig({
     entry: "src/main.tsx",
     dirStyle: "nested",
     formatting: "none",
+    // Inline above-the-fold CSS and load the rest without blocking first paint
+    beastiesOptions: { preload: "media", pruneSource: false, reduceInlineStyles: false, preloadFonts: false },
     // Pre-render every static and CMS-driven route (EN + /te/)
     includedRoutes: () => getStaticPaths(),
     onFinished: (dir) => writeSeoFiles(dir, getStaticPaths()),

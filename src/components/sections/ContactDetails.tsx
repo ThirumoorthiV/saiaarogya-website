@@ -8,12 +8,12 @@ import { OpenNowBadge } from "@/components/ui/OpenNowBadge";
 
 function Row({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
-    <div className="flex gap-4">
-      <span className="mt-0.5 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700">{icon}</span>
-      <div className="min-w-0">
-        <dt className="text-sm font-semibold uppercase tracking-wide text-ink-600">{label}</dt>
-        <dd className="mt-0.5 text-ink-900">{children}</dd>
-      </div>
+    <div className="relative min-h-11 pl-[60px]">
+      <dt className="text-sm font-semibold uppercase tracking-wide text-ink-600">
+        <span className="absolute left-0 top-0.5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700">{icon}</span>
+        {label}
+      </dt>
+      <dd className="mt-0.5 min-w-0 text-ink-900">{children}</dd>
     </div>
   );
 }

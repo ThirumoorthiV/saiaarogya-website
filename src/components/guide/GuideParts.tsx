@@ -22,7 +22,7 @@ export function GuideSubnav() {
   const { pathname } = useLocation();
   const current = pathname.replace(/^\/te(?=\/)/, "");
   return (
-    <nav aria-label="Patient Guide sections" className="border-b border-maroon-700/10 bg-white">
+    <nav aria-label={t("guide.sectionsNav")} className="border-b border-maroon-700/10 bg-white">
       <Container>
         <ul className="-mx-4 flex gap-2 overflow-x-auto px-4 py-3 md:mx-0 md:flex-wrap md:px-0">
           <li>
@@ -32,7 +32,7 @@ export function GuideSubnav() {
               className={chip(current === "/patient-guide/")}
             >
               <BookOpen className="h-4 w-4" aria-hidden />
-              Overview
+              {t("guide.overview")}
             </LLink>
           </li>
           {GUIDE_SECTIONS.map((s) => (
@@ -87,7 +87,7 @@ export function RegistrationSteps() {
             {i + 1}
           </span>
           <h3 className="mt-4 font-heading text-xl font-medium text-maroon-700">
-            <span className="sr-only">Step {i + 1}: </span>
+            <span className="sr-only">{t("guide.step", { n: i + 1 })}: </span>
             {s.title}
           </h3>
           <p className="mt-1 text-ink-600">{s.text}</p>

@@ -1,4 +1,5 @@
 import { Quote } from "lucide-react";
+import { Head } from "vite-react-ssg";
 import { about, departments } from "@/content";
 import { useT } from "@/i18n/LangContext";
 import { getPageMeta } from "@/lib/pageMeta";
@@ -31,6 +32,17 @@ export function Component() {
         imageAlt="Inpatient ward at Sai Aarogya Hospital, Bapatla"
         schema={[hospitalSchema()]}
       />
+      <Head>
+        {/* Hero photo is above the fold on every screen size — fetch it with the HTML */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/consultation.webp"
+          imageSrcSet="/images/consultation-sm.webp 640w, /images/consultation.webp 1040w"
+          imageSizes="(min-width: 768px) 45vw, 100vw"
+          fetchPriority="high"
+        />
+      </Head>
 
       {/* 1. Hero */}
       <Hero />

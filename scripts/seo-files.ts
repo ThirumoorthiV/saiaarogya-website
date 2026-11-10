@@ -7,14 +7,22 @@
 import { copyFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { SITE_URL, toTelugu } from "../src/lib/staticPaths";
+import { TELUGU_READY } from "../src/i18n/status";
 
 export async function writeSeoFiles(dir: string, paths: string[]) {
   const en = paths.filter((p) => !p.startsWith("/te/") && p !== "/404");
   const today = new Date().toISOString().slice(0, 10);
 
+  // Telugu URLs (and hreflang alternates) are listed only once translations exist.
   const urls = en
-    .flatMap((p) => [p, toTelugu(p)])
+    .flatMap((p) => (TELUGU_READY ? [p, toTelugu(p)] : [p]))
     .map((p) => {
+      if (!TELUGU_READY) {
+        return `  <url>
+    <loc>${SITE_URL}${p}</loc>
+    <lastmod>${today}</lastmod>
+  </url>`;
+      }
       const enPath = p.startsWith("/te/") ? p.replace(/^\/te/, "") || "/" : p;
       const tePath = toTelugu(enPath);
       return `  <url>

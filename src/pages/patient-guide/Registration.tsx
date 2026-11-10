@@ -16,7 +16,7 @@ export function Component() {
         <RegistrationSteps />
         <p className="flex items-start gap-2 text-ink-900">
           <BadgeCheck className="mt-1 h-5 w-5 shrink-0 text-success-700" aria-hidden />
-          All services are offered completely free of charge to every individual, without discrimination based on caste, creed, religion, or economic status.
+          {t("guide.freeForAll")}
         </p>
       </section>
       <section aria-labelledby="reg-bring" className="space-y-6">

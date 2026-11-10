@@ -1,21 +1,23 @@
 import { Bus, Landmark, Route } from "lucide-react";
+import { useT } from "@/i18n/LangContext";
 import { GuidePage } from "@/components/guide/GuidePage";
 import { VisitUs } from "@/components/sections/VisitUs";
 import { Todo } from "@/components/ui/Todo";
 
 /** How to Reach (§5.5): map, landmarks, nearest bus stop, road directions from Bapatla town. */
 export function Component() {
+  const t = useT();
   const items = [
-    { icon: Landmark, title: "Landmarks", todo: "Nearby landmarks to help people find the hospital." },
-    { icon: Bus, title: "Nearest bus stop", todo: "Nearest bus stop and how far it is from the hospital (auto / walk)." },
-    { icon: Route, title: "From Bapatla town", todo: "Road route and approximate distance from Bapatla town." },
+    { icon: Landmark, title: t("guide.landmarks"), todo: "Nearby landmarks to help people find the hospital." },
+    { icon: Bus, title: t("guide.busStop"), todo: "Nearest bus stop and how far it is from the hospital (auto / walk)." },
+    { icon: Route, title: t("guide.fromBapatla"), todo: "Road route and approximate distance from Bapatla town." },
   ];
   return (
     <GuidePage path="/patient-guide/how-to-reach/">
       <VisitUs showDirectionsTodo={false} />
       <section aria-labelledby="reach-directions">
         <h2 id="reach-directions" className="h2 mb-6">
-          Directions
+          {t("guide.directionsTitle")}
         </h2>
         <ul className="grid gap-4 md:grid-cols-3 md:gap-6">
           {items.map((i) => (

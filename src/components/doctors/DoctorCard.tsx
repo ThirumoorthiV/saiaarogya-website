@@ -9,11 +9,12 @@ import { cn } from "@/components/ui/cn";
 
 /** Initials avatar shown until the doctor's photo is supplied (TODO doctor-photo). */
 export function DoctorPhoto({ doctor, className }: { doctor: Doctor; className?: string }) {
+  const t = useT();
   if (doctor.photo) {
     return (
       <img
         src={doctor.photo}
-        alt={`Portrait of ${doctor.name}`}
+        alt={t("doctor.photoAlt", { name: doctor.name })}
         width={400}
         height={400}
         loading="lazy"
@@ -32,7 +33,7 @@ export function DoctorPhoto({ doctor, className }: { doctor: Doctor; className?:
     <div
       data-todo="doctor-photo"
       role="img"
-      aria-label={`${doctor.name} — photo coming soon`}
+      aria-label={t("doctor.photoPendingAlt", { name: doctor.name })}
       className={cn(
         "flex aspect-square w-full items-center justify-center rounded-xl bg-gradient-to-br from-maroon-50 to-cream-100",
         className,

@@ -51,7 +51,7 @@ export function Gallery({ limit, showFilters = true }: { limit?: number; showFil
                 className="group relative block w-full overflow-hidden rounded-card bg-cream-100 shadow-card"
               >
                 <span className="sr-only">View larger: </span>
-                <img src={g.image} alt={pick(g.caption)} width={640} height={480} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+                <img src={g.image} alt={pick(g.caption)} width={640} height={480} loading={i < 4 ? "eager" : "lazy"} className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
                 <span className="absolute right-2 top-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-maroon-700 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                   <Expand className="h-4 w-4" aria-hidden />
                 </span>
