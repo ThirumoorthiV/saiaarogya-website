@@ -1,91 +1,84 @@
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { HeartHandshake } from "lucide-react";
+import { HeartHandshake, Lock } from "lucide-react";
 import { siteSettings } from "@/content";
-import { SITE_URL } from "@/lib/staticPaths";
-import { formsConfigured, submitToWeb3Forms, WEB3FORMS_ENDPOINT, WEB3FORMS_KEY } from "@/lib/web3forms";
+import { DONATION_TYPES, FREQUENCIES, PURPOSES, SALUTATIONS, donationSchema, type Donation, type DonationInput } from "@/lib/donation";
 import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { cn } from "@/components/ui/cn";
-import { INDIAN_PHONE, normalizePhone } from "./EnquiryForm";
 import { FormError, FormSuccess } from "./FormStatus";
 
-/* Field options copied from the donation form on the current website (/donateus). */
-export const PURPOSES = ["Healthcare", "Social Welfare", "Education", "Surgery Gap Funding", "Nutrition"] as const;
-export const SALUTATIONS = ["Mr", "Mrs", "Ms", "M/s"] as const;
-export const DONATION_TYPES = ["One time donation", "Recurring donations"] as const;
-export const FREQUENCIES = ["Weekly", "Monthly", "Quarterly", "Yearly"] as const;
-
-const PAN = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
-const PIN = /^[1-9][0-9]{5}$/;
 const inr = (v: string | number) => `₹${Number(v).toLocaleString("en-IN")}`;
-const req = (label: string) => z.string().trim().min(1, `Please enter your ${label}.`);
+const CHECKOUT_JS = "https://checkout.razorpay.com/v1/checkout.js";
 
-const schema = z
-  .object({
-    purpose: z.enum(PURPOSES, { message: "Please choose a donation purpose." }),
-    salutation: z.union([z.literal(""), z.enum(SALUTATIONS)]),
-    firstName: req("first name").max(60),
-    lastName: req("last name").max(60),
-    email: z.string().trim().email("Please enter a valid email address."),
-    mobile: z
-      .string()
-      .transform(normalizePhone)
-      .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
-    dob: z.string().optional(),
-    pan: z
-      .string()
-      .trim()
-      .transform((v) => v.toUpperCase())
-      .refine((v) => PAN.test(v), "Please enter a valid PAN, e.g. ABCDE1234F."),
-    address: req("address").max(300),
-    city: req("city").max(80),
-    state: req("state").max(80),
-    zip: z
-      .string()
-      .trim()
-      .refine((v) => PIN.test(v), "Please enter a valid 6-digit PIN code."),
-    country: req("country").max(80),
-    donationType: z.enum(DONATION_TYPES, { message: "Please choose a donation type." }),
-    frequency: z.union([z.literal(""), z.enum(FREQUENCIES)]),
-    occurrences: z.string().trim().optional(),
-    amount: z
-      .string()
-      .trim()
-      .refine((v) => /^\d+$/.test(v) && Number(v) >= 1, "Please enter the amount in rupees."),
-    terms: z.boolean().refine((v) => v, "Please agree to the terms & conditions."),
-    botcheck: z.boolean().optional(),
-  })
-  .superRefine((d, ctx) => {
-    if (d.donationType !== "Recurring donations") return;
-    if (!d.frequency) ctx.addIssue({ code: "custom", path: ["frequency"], message: "Please choose how often." });
-    const n = Number(d.occurrences);
-    if (!Number.isInteger(n) || n < 1 || n > 120) ctx.addIssue({ code: "custom", path: ["occurrences"], message: "Please enter the number of occurrences (1–120)." });
+/* Minimal typing for Razorpay Checkout (https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/) */
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id?: string;
+  razorpay_subscription_id?: string;
+  razorpay_signature: string;
+}
+interface RazorpayInstance {
+  open(): void;
+  on(event: "payment.failed", cb: (r: { error?: { description?: string } }) => void): void;
+}
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => RazorpayInstance;
+  }
+}
+interface CreateResponse {
+  keyId: string;
+  orderId?: string;
+  subscriptionId?: string;
+  amount: number;
+  currency: string;
+  purpose: string;
+  donor: { name: string; email: string; contact: string };
+  error?: string;
+}
+
+let checkoutLoading: Promise<void> | null = null;
+/** Load Razorpay Checkout only when the donor clicks Donate. */
+function loadCheckout(): Promise<void> {
+  if (window.Razorpay) return Promise.resolve();
+  checkoutLoading ??= new Promise<void>((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = CHECKOUT_JS;
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => {
+      checkoutLoading = null;
+      reject(new Error("Could not load Razorpay"));
+    };
+    document.head.appendChild(s);
   });
-type In = z.input<typeof schema>;
-type Out = z.output<typeof schema>;
+  return checkoutLoading;
+}
+
+type Status = { kind: "idle" } | { kind: "paid"; paymentId: string } | { kind: "error"; title: string } | { kind: "cancelled" };
 
 /**
- * Donation form for Indian passport holders (§5.7), with the same fields as the
- * current website's form. Until an online payment gateway is connected, the
- * details are sent to the Trust via Web3Forms and the Trust follows up.
+ * Donation form for Indian passport holders (§5.7), with the same fields as the current
+ * website's form. Donate → /api/donations/create (Netlify Function: Razorpay Order or
+ * Subscription with the form details in its notes) → Razorpay Checkout → signature check.
+ * Razorpay's webhook then sends the details to Frappe (netlify/functions/razorpay-webhook.ts).
  */
 export function DonationForm() {
-  const path = "/support-us/donate/";
-  const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [busy, setBusy] = useState(false);
   const statusRef = useRef<HTMLDivElement>(null);
   const {
     register,
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, submitCount },
-  } = useForm<In, unknown, Out>({
-    resolver: zodResolver(schema),
+    formState: { errors, submitCount },
+  } = useForm<DonationInput, unknown, Donation>({
+    resolver: zodResolver(donationSchema),
     defaultValues: {
       purpose: "Healthcare",
       salutation: "",
@@ -105,7 +98,6 @@ export function DonationForm() {
       occurrences: "",
       amount: "1000",
       terms: false,
-      botcheck: false,
     },
   });
   const [donationType, amount] = useWatch({ control, name: ["donationType", "amount"] });
@@ -113,50 +105,70 @@ export function DonationForm() {
   const validAmount = /^\d+$/.test(amount ?? "") && Number(amount) >= 1;
 
   useEffect(() => {
-    if (status !== "idle") statusRef.current?.focus();
+    if (status.kind !== "idle") statusRef.current?.focus();
   }, [status]);
 
-  const onSubmit = async (d: Out) => {
-    const name = [d.salutation, d.firstName, d.lastName].filter(Boolean).join(" ");
-    const res = await submitToWeb3Forms(
-      `Donation: ${inr(d.amount)} — ${d.purpose} — ${name}`,
-      {
-        donation_purpose: d.purpose,
-        salutation: d.salutation || "—",
-        first_name: d.firstName,
-        last_name: d.lastName,
-        email: d.email,
-        mobile: d.mobile,
-        dob: d.dob || "—",
-        pan: d.pan,
-        address: d.address,
-        city: d.city,
-        state: d.state,
-        zip: d.zip,
-        country: d.country,
-        donation_type: d.donationType,
-        frequency: recurring ? d.frequency : "—",
-        no_of_occurrence: recurring ? (d.occurrences ?? "") : "—",
-        amount: inr(d.amount),
-        terms_accepted: "Yes",
-        page: path,
-      },
-      Boolean(d.botcheck),
-    );
-    if (res.ok) {
-      trackEvent("form_submit", { form: "donation", purpose: d.purpose, type: d.donationType });
-      reset();
-      setStatus("sent");
-    } else setStatus("error");
+  const fail = (title: string) => {
+    setBusy(false);
+    setStatus({ kind: "error", title });
   };
 
-  if (status === "sent") {
+  const onSubmit = async (d: Donation) => {
+    setStatus({ kind: "idle" });
+    setBusy(true);
+    let order: CreateResponse;
+    try {
+      const res = await fetch("/api/donations/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(d) });
+      order = (await res.json().catch(() => ({}))) as CreateResponse;
+      if (!res.ok || (!order.orderId && !order.subscriptionId))
+        return fail(res.status === 503 || res.status === 404 ? "Online donations are being set up." : (order.error ?? "We could not start the payment."));
+      await loadCheckout();
+    } catch {
+      return fail("We could not start the payment.");
+    }
+    if (!window.Razorpay) return fail("We could not start the payment.");
+
+    trackEvent("donation_checkout_open", { purpose: d.purpose, type: d.donationType });
+    const rzp = new window.Razorpay({
+      key: order.keyId,
+      ...(order.orderId ? { order_id: order.orderId, amount: order.amount, currency: order.currency } : { subscription_id: order.subscriptionId }),
+      name: "Sri Sathya Sai Sujala Sravanthi Trust",
+      description: `Donation – ${order.purpose}`,
+      image: `${window.location.origin}/images/logo-mark.png`,
+      prefill: order.donor,
+      theme: { color: "#7A0C0C" },
+      modal: {
+        ondismiss: () => {
+          setBusy(false);
+          setStatus({ kind: "cancelled" });
+        },
+      },
+      handler: async (r: RazorpayResponse) => {
+        try {
+          const v = await fetch("/api/donations/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(r) });
+          const ok = v.ok && ((await v.json()) as { ok?: boolean }).ok;
+          setBusy(false);
+          if (!ok) return fail("We could not confirm your payment.");
+          trackEvent("donation_paid", { purpose: d.purpose, type: d.donationType });
+          reset();
+          setStatus({ kind: "paid", paymentId: r.razorpay_payment_id });
+        } catch {
+          fail("We could not confirm your payment.");
+        }
+      },
+    });
+    rzp.on("payment.failed", (r) => fail(r.error?.description ? `Payment failed: ${r.error.description}` : "The payment failed."));
+    rzp.open();
+  };
+
+  if (status.kind === "paid") {
     return (
       <FormSuccess
         ref={statusRef}
         title="Thank you for your generosity!"
-        text={`The Trust will contact you with the payment details and your receipt. For any questions, call ${siteSettings.phoneDisplay}.`}
-        onReset={() => setStatus("idle")}
+        text={`Your donation was received (payment ID ${status.paymentId}). The Trust will email your receipt. For any questions, call ${siteSettings.donation.contactPhone}.`}
+        resetLabel="Make another donation"
+        onReset={() => setStatus({ kind: "idle" })}
       />
     );
   }
@@ -218,13 +230,16 @@ export function DonationForm() {
 
   const hasErrors = Object.keys(errors).length > 0;
   return (
-    <form action={WEB3FORMS_ENDPOINT} method="POST" noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
-      <input type="hidden" name="subject" value="Donation" />
-      <input type="hidden" name="redirect" value={`${SITE_URL}${path}?sent=1`} />
-
-      {!formsConfigured && <p className="rounded-2xl bg-maroon-50 px-4 py-3 text-sm text-maroon-900">Online donations are being set up. Please call or email us in the meantime.</p>}
-      {status === "error" && <FormError ref={statusRef} />}
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <noscript>
+        <p className="rounded-2xl bg-maroon-50 px-4 py-3 text-sm text-maroon-900">Please enable JavaScript to donate online, or contact the Trust using the details on this page.</p>
+      </noscript>
+      {status.kind === "error" && <FormError ref={statusRef} title={status.title} />}
+      {status.kind === "cancelled" && (
+        <p ref={statusRef} tabIndex={-1} role="status" className="rounded-2xl bg-ink-100 px-4 py-3 text-ink-900 outline-none">
+          Payment cancelled. Your details are still filled in. Press Donate to try again.
+        </p>
+      )}
       {hasErrors && submitCount > 0 && (
         <p role="alert" className="font-medium text-alert-700">
           Please correct the highlighted fields.
@@ -234,8 +249,8 @@ export function DonationForm() {
       {select("don-purpose", "purpose", "Donation Purpose", PURPOSES)}
       {select("don-salutation", "salutation", "Salutation", SALUTATIONS, false, "Select")}
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-first", "firstName", "First name", { autoComplete: "given-name" })}
-        {input("don-last", "lastName", "Last name", { autoComplete: "family-name" })}
+        {input("don-first", "firstName", "First name", { autoComplete: "given-name", maxLength: 60 })}
+        {input("don-last", "lastName", "Last name", { autoComplete: "family-name", maxLength: 60 })}
       </div>
       <div className="grid items-start gap-5 sm:grid-cols-2">
         {input("don-email", "email", "Email", { type: "email", autoComplete: "email" })}
@@ -245,14 +260,14 @@ export function DonationForm() {
         {input("don-dob", "dob", "DOB", { type: "date", autoComplete: "bday", required: false })}
         {input("don-pan", "pan", "PAN", { autoComplete: "off", placeholder: "ABCDE1234F", className: "uppercase", maxLength: 10 })}
       </div>
-      {input("don-address", "address", "Address", { autoComplete: "street-address" })}
+      {input("don-address", "address", "Address", { autoComplete: "street-address", maxLength: 250 })}
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-city", "city", "City", { autoComplete: "address-level2" })}
-        {input("don-state", "state", "State", { autoComplete: "address-level1" })}
+        {input("don-city", "city", "City", { autoComplete: "address-level2", maxLength: 80 })}
+        {input("don-state", "state", "State", { autoComplete: "address-level1", maxLength: 80 })}
       </div>
       <div className="grid items-start gap-5 sm:grid-cols-2">
         {input("don-zip", "zip", "Zip/Postal Code", { inputMode: "numeric", autoComplete: "postal-code", placeholder: "522329", maxLength: 6 })}
-        {input("don-country", "country", "Country", { autoComplete: "country-name" })}
+        {input("don-country", "country", "Country", { autoComplete: "country-name", maxLength: 80 })}
       </div>
       {select("don-type", "donationType", "Donation Type", DONATION_TYPES)}
       {recurring && (
@@ -297,10 +312,13 @@ export function DonationForm() {
         )}
       </div>
 
-      <input type="checkbox" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("botcheck")} />
-      <Button type="submit" size="lg" disabled={isSubmitting} icon={<HeartHandshake className="h-5 w-5" aria-hidden />} className="w-full">
-        {isSubmitting ? "Sending…" : validAmount ? `Donate ${inr(amount ?? 0)}` : "Donate"}
+      <Button type="submit" size="lg" disabled={busy} icon={<HeartHandshake className="h-5 w-5" aria-hidden />} className="w-full">
+        {busy ? "Opening secure payment…" : validAmount ? `Donate ${inr(amount ?? 0)}` : "Donate"}
       </Button>
+      <p className="flex items-center justify-center gap-2 text-sm text-ink-600">
+        <Lock className="h-4 w-4" aria-hidden />
+        Secure payment by Razorpay · UPI, cards and netbanking
+      </p>
     </form>
   );
 }

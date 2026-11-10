@@ -6,6 +6,11 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Donation API (Razorpay → Frappe): netlify/functions/*.ts, routes /api/donations/* and /api/razorpay/webhook
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Long-term caching for fingerprinted assets
 [[headers]]
   for = "/assets/*"

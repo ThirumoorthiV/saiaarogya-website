@@ -80,7 +80,7 @@ export function Component() {
                 Terms &amp; Conditions
               </h2>
               <p className="mt-3 text-[15px] text-ink-700">
-                You agree to share information entered on this page with SRI SATHYA SAI SUJALA SRAVANTHI TRUST (owner of this page), adhering to applicable laws.
+                You agree to share information entered on this page with SRI SATHYA SAI SUJALA SRAVANTHI TRUST (owner of this page) and Razorpay, adhering to applicable laws.
               </p>
             </section>
           </div>
