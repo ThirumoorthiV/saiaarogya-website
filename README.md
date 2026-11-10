@@ -5,7 +5,8 @@ A patient-first website for Sai Aarogya Hospital, Bapatla, a unit of Sri Sathya 
 **Stack (§7):** React 18 · TypeScript · Vite · Tailwind CSS · Lucide React · React Router.
 - **Pre-rendering:** every route is pre-rendered to static HTML with `vite-react-ssg`, in English and under `/te/`.
 - **Content:** JSON files in `src/content/`, edited with Decap CMS.
-- **Hosting:** Netlify, which also handles redirects, forms and CMS logins.
+- **Hosting:** Netlify, which also handles redirects and CMS logins.
+- **Forms:** sent through [Web3Forms](https://web3forms.com). Set `VITE_WEB3FORMS_ACCESS_KEY` (see `.env.example`). Forms also work without JavaScript.
 
 ## Commands
 
@@ -53,7 +54,7 @@ docs/
 
 - [x] Phase 0 — Quick-fix checklist for the current Wix site (`docs/PHASE0_WIX_FIXES.md`)
 - [x] Phase 1 — Foundation: project setup, design system, layout, routing for the full sitemap, SEO component, content model
-- [ ] Phase 2 — Patient essentials: Home, Patient Guide, Contact
+- [x] Phase 2 — Patient essentials: Home, Patient Guide, Contact
 - [ ] Phase 3 — Departments & Doctors, CMS admin, schema markup
 - [ ] Phase 4 — About, Impact, Stories, Gallery, Support Us
 - [ ] Phase 5 — Telugu, redirects, analytics, launch QA

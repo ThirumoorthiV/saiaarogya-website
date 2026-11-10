@@ -10,7 +10,7 @@ const placeholder = () => import("@/pages/Placeholder");
 
 /** Fresh route objects per language tree — the router assigns ids by mutating them. */
 const pageRoutes = (): RouteRecord[] => [
-  { index: true, lazy: placeholder },
+  { index: true, lazy: () => import("@/pages/Home") },
 
   { path: "about", lazy: placeholder },
   { path: "about/history", lazy: placeholder },
@@ -22,12 +22,12 @@ const pageRoutes = (): RouteRecord[] => [
   { path: "doctors", lazy: placeholder },
   { path: "doctors/:slug", lazy: placeholder },
 
-  { path: "patient-guide", lazy: placeholder },
-  { path: "patient-guide/opd-timings", lazy: placeholder },
-  { path: "patient-guide/how-to-reach", lazy: placeholder },
-  { path: "patient-guide/registration", lazy: placeholder },
-  { path: "patient-guide/facilities", lazy: placeholder },
-  { path: "patient-guide/faqs", lazy: placeholder },
+  { path: "patient-guide", lazy: () => import("@/pages/patient-guide/Index") },
+  { path: "patient-guide/opd-timings", lazy: () => import("@/pages/patient-guide/OpdTimings") },
+  { path: "patient-guide/how-to-reach", lazy: () => import("@/pages/patient-guide/HowToReach") },
+  { path: "patient-guide/registration", lazy: () => import("@/pages/patient-guide/Registration") },
+  { path: "patient-guide/facilities", lazy: () => import("@/pages/patient-guide/Facilities") },
+  { path: "patient-guide/faqs", lazy: () => import("@/pages/patient-guide/Faqs") },
 
   { path: "impact", lazy: placeholder },
   { path: "impact/stories", lazy: placeholder },
@@ -41,7 +41,7 @@ const pageRoutes = (): RouteRecord[] => [
   { path: "support-us/volunteer", lazy: placeholder },
   { path: "support-us/transparency", lazy: placeholder },
 
-  { path: "contact", lazy: placeholder },
+  { path: "contact", lazy: () => import("@/pages/Contact") },
 
   { path: "policies/:slug", lazy: placeholder },
 

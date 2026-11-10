@@ -24,7 +24,7 @@ export function Component() {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={normalized} noindex />
-      <PageHeader title={meta.title} intro={meta.description} crumbs={meta.crumbs} path={normalized} />
+      <PageHeader title={meta.h1 ?? meta.title} intro={meta.description} crumbs={meta.crumbs} path={normalized} />
       <Section>
         <div className="flex max-w-prose flex-col gap-6">
           <p className="flex items-center gap-3 text-ink-600">

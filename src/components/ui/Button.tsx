@@ -7,12 +7,12 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "light";
 
 /** §6.4: Primary (saffron-700 fill), Secondary (maroon outline), Ghost (text + arrow); 12px radius; min 48px height. */
 const base =
-  "inline-flex min-h-12 items-center justify-center gap-2 rounded-btn px-5 py-3 text-base font-semibold no-underline transition-colors duration-200";
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-btn py-3 text-base font-semibold no-underline transition-colors duration-200";
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-saffron-700 text-white hover:bg-[#9A3412]",
-  secondary: "border-2 border-maroon-700 bg-white text-maroon-700 hover:bg-maroon-50",
-  ghost: "px-0 text-maroon-700 hover:underline",
-  light: "border-2 border-white bg-transparent text-white hover:bg-white/10",
+  primary: "px-5 bg-saffron-700 text-white hover:bg-[#9A3412]",
+  secondary: "px-5 border-2 border-maroon-700 bg-white text-maroon-700 hover:bg-maroon-50",
+  ghost: "justify-start text-maroon-700 hover:underline",
+  light: "px-5 border-2 border-white bg-transparent text-white hover:bg-white/10",
 };
 
 interface CommonProps {
