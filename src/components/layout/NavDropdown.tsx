@@ -104,7 +104,7 @@ export function NavDropdown({ item }: { item: NavItem }) {
         onClick={() => setOpen((o) => !o)}
         onKeyDown={onTriggerKey}
         className={cn(
-          "inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-full px-3.5 text-[15px] font-medium transition-colors",
+          "inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-full px-2.5 text-[15px] font-medium transition-colors",
           open
             ? "bg-maroon-100 text-maroon-900 [&_svg]:!text-maroon-800"
             : active
@@ -117,7 +117,12 @@ export function NavDropdown({ item }: { item: NavItem }) {
         {active && <span className="sr-only">(current section)</span>}
       </button>
 
-      <div id={panelId} hidden={!open} onKeyDown={onPanelKey} className={cn("absolute left-1/2 top-full z-50 pt-3", item.wide ? "w-[640px] -translate-x-[40%]" : "w-[340px] -translate-x-1/2")}>
+      <div
+        id={panelId}
+        hidden={!open}
+        onKeyDown={onPanelKey}
+        className={cn("absolute top-full z-50 pt-3", item.wide ? "left-1/2 w-[640px] -translate-x-[40%]" : item.alignRight ? "right-0 w-[340px]" : "left-1/2 w-[340px] -translate-x-1/2")}
+      >
         <div data-panel className="animate-menu-in overflow-hidden rounded-3xl border border-maroon-100 bg-white p-2 shadow-menu">
           {lead && (
             <Link

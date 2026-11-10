@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChevronDown, HeartHandshake, Menu, Phone, X } from "lucide-react";
 import { tel } from "@/content";
-import { MAIN_NAV, SUPPORT_LINKS, isActiveSection } from "@/lib/navigation";
+import { MAIN_NAV, isActiveSection } from "@/lib/navigation";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { DepartmentIcon } from "@/components/ui/DepartmentIcon";
@@ -58,7 +58,7 @@ export function Header() {
                     end={item.to === "/"}
                     className={({ isActive }) =>
                       cn(
-                        "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-3.5 text-[15px] font-medium no-underline transition-colors",
+                        "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-2.5 text-[15px] font-medium no-underline transition-colors",
                         isActive ? "bg-yellow-400 font-semibold text-maroon-900 shadow-sm" : "text-maroon-50 hover:bg-white/10 hover:text-white",
                       )
                     }
@@ -145,18 +145,6 @@ export function Header() {
               )}
             </ul>
           </nav>
-          <div className="mt-5 rounded-3xl bg-maroon-50 p-4">
-            <p className="px-1 text-sm font-semibold uppercase tracking-wider text-maroon-800">Support us</p>
-            <ul className="mt-2 grid grid-cols-2 gap-1">
-              {SUPPORT_LINKS.map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="flex min-h-11 items-center rounded-xl px-3 text-[15px] text-ink-900 no-underline hover:bg-maroon-100">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
           <div className="mt-4 grid grid-cols-2 gap-3">
             <ButtonLink to={tel} variant="outline" icon={<Phone className="h-[18px] w-[18px]" aria-hidden />} track="call-menu">
               Call

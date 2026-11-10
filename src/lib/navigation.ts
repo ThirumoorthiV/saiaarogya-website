@@ -38,12 +38,21 @@ export interface NavItem {
   children?: NavLink[];
   /** Two-column dropdown */
   wide?: boolean;
+  /** Open the dropdown aligned to the trigger's right edge (last menu items) */
+  alignRight?: boolean;
 }
 
 const deptLinks: NavLink[] = (departmentsJson.items as { name: string; slug: string; icon: string; isActive: boolean; order: number }[])
   .filter((d) => d.isActive)
   .sort((a, b) => a.order - b.order)
   .map((d) => ({ label: d.name, to: `/departments/${d.slug}/`, deptIcon: d.icon }));
+
+export const SUPPORT_LINKS: NavLink[] = [
+  { label: "Donate", to: "/support-us/donate/", description: "Indian donors", icon: HeartHandshake },
+  { label: "International donors", to: "/support-us/international-donors/", description: "Foreign nationals", icon: Globe },
+  { label: "Volunteer", to: "/support-us/volunteer/", description: "Medical and non-medical", icon: HandHeart },
+  { label: "Transparency", to: "/support-us/transparency/", description: "How funds are used", icon: ShieldCheck },
+];
 
 /** Main navigation — requirements §4.2, with dropdowns for sections that have sub-pages. */
 export const MAIN_NAV: NavItem[] = [
@@ -58,7 +67,12 @@ export const MAIN_NAV: NavItem[] = [
       { label: "Our network", to: "/about/#network", description: "SMSIMSR, Sanjeevani, Sai Swasthya", icon: Network },
     ],
   },
-  { label: "Departments", to: "/departments/", wide: true, children: [{ label: "All departments", to: "/departments/", icon: Building2, description: "10 specialities, all free of charge" }, ...deptLinks] },
+  {
+    label: "Departments",
+    to: "/departments/",
+    wide: true,
+    children: [{ label: "All departments", to: "/departments/", icon: Building2, description: "10 specialities, all free of charge" }, ...deptLinks],
+  },
   { label: "Doctors", to: "/doctors/" },
   {
     label: "Patient Guide",
@@ -82,13 +96,12 @@ export const MAIN_NAV: NavItem[] = [
     ],
   },
   { label: "Contact", to: "/contact/" },
-];
-
-export const SUPPORT_LINKS: NavLink[] = [
-  { label: "Donate", to: "/support-us/donate/", description: "Indian donors", icon: HeartHandshake },
-  { label: "International donors", to: "/support-us/international-donors/", description: "Foreign nationals", icon: Globe },
-  { label: "Volunteer", to: "/support-us/volunteer/", description: "Medical and non-medical", icon: HandHeart },
-  { label: "Transparency", to: "/support-us/transparency/", description: "How funds are used", icon: ShieldCheck },
+  {
+    label: "Support Us",
+    to: "/support-us/",
+    alignRight: true,
+    children: [{ label: "Ways to support", to: "/support-us/", description: "Donate, volunteer or partner with us", icon: Sparkles }, ...SUPPORT_LINKS],
+  },
 ];
 
 export const GUIDE_LINKS = MAIN_NAV.find((n) => n.label === "Patient Guide")!.children!;
