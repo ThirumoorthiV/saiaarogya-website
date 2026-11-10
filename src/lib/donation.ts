@@ -110,8 +110,8 @@ export function toRazorpayNotes(d: Donation): Record<string, string> {
 }
 
 /**
- * Keys sent to the Frappe webhook. The first 12 match the existing Wix automation
- * (DonateUsForm → Frappe). The rest are additional and must exist in Frappe (or be ignored by it).
+ * Keys sent to the Frappe webhook. The first 12 are the Frappe donation field names
+ * (pan_card … donation_type). The rest are additional and must exist in Frappe (or be ignored by it).
  */
 export const FRAPPE_FORM_KEYS = ["pan_card", "salutation", "email", "first_name", "last_name", "address", "city", "state", "pincode", "country", "donation_purpose", "donation_type"] as const;
 
@@ -130,7 +130,7 @@ export function toFrappePayload(notes: Record<string, string | undefined>, payme
   const [frequency = "", occurrences = ""] = (notes.recurrence ?? "").split("|");
   return {
     ...form,
-    // Additional fields (not in the Wix automation)
+    // Additional fields (confirm these exist in Frappe)
     mobile: notes.mobile ?? "",
     dob: notes.dob ?? "",
     frequency,

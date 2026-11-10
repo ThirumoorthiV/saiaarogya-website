@@ -3,7 +3,7 @@
  * variables and never reach the browser:
  *   RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET   — Dashboard → Account & Settings → API keys
  *   RAZORPAY_WEBHOOK_SECRET                — Dashboard → Webhooks (the secret you set there)
- *   FRAPPE_WEBHOOK_URL                     — the same URL the Wix automation posts to
+ *   FRAPPE_WEBHOOK_URL                     — the Frappe endpoint that records donations
  *   FRAPPE_WEBHOOK_AUTH (optional)         — sent as the Authorization header, e.g. "token key:secret"
  *   ALLOWED_ORIGINS (optional)             — comma-separated origins allowed to create orders
  */

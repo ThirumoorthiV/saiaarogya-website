@@ -3,8 +3,8 @@
  * Events: order.paid (one-time) and subscription.charged (each recurring instalment).
  *
  * Verifies X-Razorpay-Signature, then forwards the donor's form details (from the Razorpay
- * notes) plus the payment details to the Frappe webhook — the same keys the Wix automation
- * used. Frappe is called once per successful payment. If Frappe fails we return 502 so
+ * notes) plus the payment details to the Frappe webhook, using the Frappe field names.
+ * Frappe is called once per successful payment. If Frappe fails we return 502 so
  * Razorpay retries the webhook later (Frappe should treat razorpay_payment_id as unique).
  */
 import { toFrappePayload, type RazorpayPayment } from "../../src/lib/donation";
