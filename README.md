@@ -56,5 +56,5 @@ docs/
 - [x] Phase 1 — Foundation: project setup, design system, layout, routing for the full sitemap, SEO component, content model
 - [x] Phase 2 — Patient essentials: Home, Patient Guide, Contact
 - [x] Phase 3 — Departments & Doctors, CMS admin, schema markup
-- [ ] Phase 4 — About, Impact, Stories, Gallery, Support Us
+- [x] Phase 4 — About, Impact, Stories, Gallery, Support Us, Policies
 - [ ] Phase 5 — Telugu, redirects, analytics, launch QA

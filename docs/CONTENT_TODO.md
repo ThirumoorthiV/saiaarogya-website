@@ -82,7 +82,7 @@ All 12 doctors, with names and qualifications exactly as on the current site.
 | A3 | Advisors' bios (Hari Umakanta Rao, K V Rambabu) and Dr Narsaraju's bio | `governance-bio` | Name only on the current site | Optional one-line bios |
 | A4 | Roles of trustees (Chairman, etc.) | — | Only Kalyan Chakravarthy Konduri has a stated role (Trustee and Secretary) | Optional |
 | A5 | Hospital photo for the About hero | — | Using the ward photo | Exterior photo preferred |
-| A6 | **"Building a World-Class Multi-Speciality Centre"** | — | Copied into `about.json` with `published: false` | Publish or remove? (§14 Q7) |
+| A6 | **"Building a World-Class Multi-Speciality Centre"** | `multi-speciality` | Copied into `about.json` with `published: false` | Publish or remove? (§14 Q7) |
 
 ## S. Support Us / donations
 
@@ -116,9 +116,3 @@ All 12 doctors, with names and qualifications exactly as on the current site.
 | G2 | **Web3Forms access key** — the contact form cannot send until this is set. Create a free key at https://web3forms.com **using the official hospital email** (submissions are emailed there), then set `VITE_WEB3FORMS_ACCESS_KEY` in Netlify → Site settings → Environment variables and redeploy | `form-access-key` | Access key + confirm which inbox receives enquiries |
 | G3 | **Logo source file (SVG)** and official colours | — | The site uses the logo PNG from the current website (§11) |
 | G4 | **Domain / DNS access** for launch | — | Who manages `saiaarogya.hospital` DNS? |
-
-## Temporary (removed as phases complete)
-
-| Code id | Meaning |
-|---|---|
-| `page-in-progress` | Shown on pages that will be built in a later roadmap phase. Removed by the end of Phase 4. |

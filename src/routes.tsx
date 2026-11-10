@@ -6,15 +6,13 @@ import { Layout } from "@/components/layout/Layout";
  * The same page routes are mounted under "/" (English) and "/te" (Telugu).
  * Each page is code-split with `lazy`; modules export `Component`.
  */
-const placeholder = () => import("@/pages/Placeholder");
-
 /** Fresh route objects per language tree — the router assigns ids by mutating them. */
 const pageRoutes = (): RouteRecord[] => [
   { index: true, lazy: () => import("@/pages/Home") },
 
-  { path: "about", lazy: placeholder },
-  { path: "about/history", lazy: placeholder },
-  { path: "about/governance", lazy: placeholder },
+  { path: "about", lazy: () => import("@/pages/about/Index") },
+  { path: "about/history", lazy: () => import("@/pages/about/History") },
+  { path: "about/governance", lazy: () => import("@/pages/about/Governance") },
 
   { path: "departments", lazy: () => import("@/pages/departments/Index") },
   { path: "departments/:slug", lazy: () => import("@/pages/departments/Detail") },
@@ -29,21 +27,21 @@ const pageRoutes = (): RouteRecord[] => [
   { path: "patient-guide/facilities", lazy: () => import("@/pages/patient-guide/Facilities") },
   { path: "patient-guide/faqs", lazy: () => import("@/pages/patient-guide/Faqs") },
 
-  { path: "impact", lazy: placeholder },
-  { path: "impact/stories", lazy: placeholder },
-  { path: "impact/stories/:slug", lazy: placeholder },
-  { path: "impact/camps", lazy: placeholder },
-  { path: "impact/gallery", lazy: placeholder },
+  { path: "impact", lazy: () => import("@/pages/impact/Index") },
+  { path: "impact/stories", lazy: () => import("@/pages/impact/Stories") },
+  { path: "impact/stories/:slug", lazy: () => import("@/pages/impact/StoryDetail") },
+  { path: "impact/camps", lazy: () => import("@/pages/impact/Camps") },
+  { path: "impact/gallery", lazy: () => import("@/pages/impact/GalleryPage") },
 
-  { path: "support-us", lazy: placeholder },
-  { path: "support-us/donate", lazy: placeholder },
-  { path: "support-us/international-donors", lazy: placeholder },
-  { path: "support-us/volunteer", lazy: placeholder },
-  { path: "support-us/transparency", lazy: placeholder },
+  { path: "support-us", lazy: () => import("@/pages/support/Index") },
+  { path: "support-us/donate", lazy: () => import("@/pages/support/Donate") },
+  { path: "support-us/international-donors", lazy: () => import("@/pages/support/International") },
+  { path: "support-us/volunteer", lazy: () => import("@/pages/support/Volunteer") },
+  { path: "support-us/transparency", lazy: () => import("@/pages/support/Transparency") },
 
   { path: "contact", lazy: () => import("@/pages/Contact") },
 
-  { path: "policies/:slug", lazy: placeholder },
+  { path: "policies/:slug", lazy: () => import("@/pages/Policy") },
 
   { path: "*", lazy: () => import("@/pages/NotFound") },
 ];
