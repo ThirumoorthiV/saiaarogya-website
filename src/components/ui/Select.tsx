@@ -5,6 +5,8 @@ import { cn } from "./cn";
 export interface SelectOption {
   value: string;
   label: string;
+  /** Optional second line shown in the list */
+  description?: string;
 }
 
 interface SelectProps {
@@ -33,7 +35,12 @@ interface SelectProps {
 export function Select({ id, labelId, value, onChange, options, placeholder = "Choose…", name, invalid, describedBy, required, onBlur, className }: SelectProps) {
   const listId = useId();
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(() => Math.max(0, options.findIndex((o) => o.value === value)));
+  const [active, setActive] = useState(() =>
+    Math.max(
+      0,
+      options.findIndex((o) => o.value === value),
+    ),
+  );
   const root = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLUListElement>(null);
   const selected = options.find((o) => o.value === value);
@@ -54,7 +61,12 @@ export function Select({ id, labelId, value, onChange, options, placeholder = "C
   }, [open, active]);
 
   const openList = () => {
-    setActive(Math.max(0, options.findIndex((o) => o.value === value)));
+    setActive(
+      Math.max(
+        0,
+        options.findIndex((o) => o.value === value),
+      ),
+    );
     setOpen(true);
   };
   const choose = (i: number) => {
@@ -170,7 +182,10 @@ export function Select({ id, labelId, value, onChange, options, placeholder = "C
                 isSelected && "font-semibold",
               )}
             >
-              <span>{o.label}</span>
+              <span className="flex flex-col">
+                <span>{o.label}</span>
+                {o.description && <span className={cn("text-sm font-normal", i === active ? "text-maroon-800" : "text-ink-600")}>{o.description}</span>}
+              </span>
               {isSelected && <Check className="h-4 w-4 shrink-0 text-maroon-700" aria-hidden />}
             </li>
           );

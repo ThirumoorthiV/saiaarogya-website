@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Send } from "lucide-react";
@@ -8,7 +8,7 @@ import { formsConfigured, submitToWeb3Forms, WEB3FORMS_ENDPOINT, WEB3FORMS_KEY }
 import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
-import { cn } from "@/components/ui/cn";
+import { Select } from "@/components/ui/Select";
 import { INDIAN_PHONE, normalizePhone } from "./EnquiryForm";
 import { FormError, FormSuccess } from "./FormStatus";
 
@@ -64,7 +64,6 @@ export function VolunteerForm() {
       botcheck: false,
     },
   });
-  const area = useWatch({ control, name: "area" });
 
   useEffect(() => {
     if (status !== "idle") statusRef.current?.focus();
@@ -130,36 +129,27 @@ export function VolunteerForm() {
         </Field>
       </div>
 
-      <fieldset aria-describedby={errors.area ? "vol-area-error" : undefined}>
-        <legend className="mb-2 text-[15px] font-semibold text-ink-900">
-          Area of interest{" "}
-          <span className="text-alert-700" aria-hidden>
-            *
-          </span>
-        </legend>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {(Object.keys(AREAS) as Area[]).map((a) => (
-            <label
-              key={a}
-              className={cn(
-                "flex cursor-pointer flex-col gap-1 rounded-2xl border p-4 transition-colors hover:border-maroon-300 hover:bg-maroon-50",
-                area === a ? "border-maroon-700 bg-maroon-50 ring-4 ring-maroon-100" : "border-ink-200 bg-white",
-              )}
-            >
-              <span className="flex items-center gap-2.5 font-semibold text-ink-900">
-                <input type="radio" value={a} className="h-5 w-5" {...register("area")} />
-                {AREAS[a].title}
-              </span>
-              <span className="pl-[30px] text-sm text-ink-600">{AREAS[a].text}</span>
-            </label>
-          ))}
-        </div>
-        {errors.area && (
-          <p id="vol-area-error" className="mt-1.5 text-sm font-medium text-alert-700">
-            {errors.area.message}
-          </p>
-        )}
-      </fieldset>
+      <Field id="vol-area" label="Area of interest" required error={errors.area?.message}>
+        <Controller
+          control={control}
+          name="area"
+          render={({ field }) => (
+            <Select
+              id="vol-area"
+              labelId="vol-area-label"
+              name="area"
+              value={field.value ?? ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              options={(Object.keys(AREAS) as Area[]).map((a) => ({ value: a, label: AREAS[a].title, description: AREAS[a].text }))}
+              placeholder="Choose an area"
+              required
+              invalid={!!errors.area}
+              describedBy={describedBy("vol-area", false, !!errors.area)}
+            />
+          )}
+        />
+      </Field>
 
       <div className="grid items-start gap-5 sm:grid-cols-2">
         <Field id="vol-profession" label="Profession / skills" optional>
