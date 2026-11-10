@@ -18,7 +18,7 @@ export function Component() {
             <li key={s.to}>
               <Link to={s.to} className="group surface surface-hover flex h-full flex-col p-6 no-underline md:p-7">
                 <span className="flex items-start justify-between">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700 transition-colors group-hover:bg-maroon-700 group-hover:text-white">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700 transition-colors group-hover:bg-maroon-100 group-hover:text-maroon-800">
                     <Icon className="h-6 w-6" aria-hidden strokeWidth={1.75} />
                   </span>
                   <ArrowUpRight className="h-5 w-5 text-ink-300 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-maroon-700" aria-hidden />

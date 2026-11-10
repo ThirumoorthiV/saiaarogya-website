@@ -2,7 +2,7 @@
   "hospitalName": "Sai Aarogya Hospital",
   "phone": "+918499991259",
   "phoneDisplay": "+91 84999 91259",
-  "emergencyPhone": null,
+  "emergencyPhone": "108",
   "email": "info@saisujalasravanthi.com",
   "whatsapp": null,
   "address": {
@@ -20,8 +20,21 @@
   "geo": null,
   "mapUrl": "https://www.google.com/maps/search/?api=1&query=Sai+Aarogya+Hospital+Khajipalem+Bapatla+Andhra+Pradesh+522329",
   "mapEmbedUrl": "https://maps.google.com/maps?q=Sai%20Aarogya%20Hospital%2C%20Khajipalem%2C%20Pittlavanipalem%20Mandal%2C%20Bapatla%2C%20Andhra%20Pradesh%20522329&z=14&output=embed",
-  "opdHours": [],
-  "opdSummary": null,
+  "opdHours": [
+    {
+      "days": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "open": "09:00",
+      "close": "16:00"
+    }
+  ],
+  "opdSummary": "Mon–Sat, 9 AM – 4 PM",
   "holidayNotice": null,
   "trust": {
     "name": "Sri Sathya Sai Sujala Sravanthi Trust",
@@ -31,9 +44,13 @@
   "donation": {
     "indianDonorUrl": null,
     "internationalEmail": "info@saisujalasravanthi.in",
-    "impactPerContribution": [],
-    "taxInfo": null,
-    "fundUse": null
+    "impactPerContribution": [
+      "Free OPD consultations for patients",
+      "Medicines and diagnostic tests at no cost",
+      "Free medical camps in nearby villages"
+    ],
+    "taxInfo": "For donation receipts and tax-exemption details, please write to info@saisujalasravanthi.in. The Trust will reply with the receipt and the applicable details.",
+    "fundUse": "Every donation goes towards free patient care at Sai Aarogya Hospital: doctor consultations, medicines, diagnostic tests, in-patient care and medical camps for nearby villages."
   },
   "social": []
 }

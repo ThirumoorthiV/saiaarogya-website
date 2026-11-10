@@ -4,7 +4,6 @@ import { getPageMeta } from "@/lib/pageMeta";
 import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
-import { Todo } from "@/components/ui/Todo";
 import { ButtonLink } from "@/components/ui/Button";
 import { DONATION_APPEAL, ImpactPerContribution, IndianDonateButton } from "@/components/support/SupportParts";
 
@@ -29,7 +28,7 @@ export function Component() {
           <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700">
             <Receipt className="h-6 w-6" aria-hidden />
           </span>
-          <div className="flex-1">{tax ? <p className="text-ink-900">{tax}</p> : <Todo id="tax-exemption">Are donations tax-exempt (e.g. 80G)? Registration number and how receipts are issued.</Todo>}</div>
+          <div className="flex-1">{tax ? <p className="text-ink-900">{tax}</p> : <p>For donation receipts and tax-exemption details, please write to info@saisujalasravanthi.in.</p>}</div>
         </div>
       </Section>
       <Section id="abroad">

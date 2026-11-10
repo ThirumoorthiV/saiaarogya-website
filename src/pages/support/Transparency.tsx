@@ -5,7 +5,6 @@ import { getPageMeta } from "@/lib/pageMeta";
 import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
-import { Todo } from "@/components/ui/Todo";
 import { PolicyLinks } from "@/components/support/SupportParts";
 
 function Block({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
@@ -33,10 +32,10 @@ export function Component() {
       <div className="py-14 md:py-20">
         <Container className="grid gap-5 md:grid-cols-2">
           <Block icon={<PieChart className={ic} aria-hidden />} title="How funds are used">
-            {d.fundUse ? <p>{d.fundUse}</p> : <Todo id="fund-use">Short statement on how donations are used, or a link to the annual report.</Todo>}
+            {d.fundUse ? <p>{d.fundUse}</p> : <p>Donations go towards free patient care: consultations, medicines, tests and medical camps.</p>}
           </Block>
           <Block icon={<Receipt className={ic} aria-hidden />} title="Receipts and tax exemption">
-            {d.taxInfo ? <p>{d.taxInfo}</p> : <Todo id="tax-exemption">Tax-exemption status (e.g. 80G), registration number and how receipts are issued.</Todo>}
+            {d.taxInfo ? <p>{d.taxInfo}</p> : <p>For donation receipts and tax-exemption details, please write to info@saisujalasravanthi.in.</p>}
           </Block>
           <Block icon={<Landmark className={ic} aria-hidden />} title="The Trust">
             <p>

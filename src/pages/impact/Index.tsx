@@ -4,7 +4,6 @@ import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { StoryCard, formatDate } from "@/components/impact/StoryCard";
 import { Gallery } from "@/components/impact/Gallery";
 import { SupportCta } from "@/components/sections/SupportCta";
@@ -24,29 +23,28 @@ export function Component() {
       <Section id="glance" eyebrow="At a glance" title="Impact at a glance">
         <dl className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {impactStats.map((s) => (
-            <div key={s.label} className="flex flex-col-reverse rounded-3xl bg-maroon-950 p-6 text-white">
-              <dt className="mt-2 text-maroon-100">
+            <div key={s.label} className="surface flex flex-col-reverse p-6">
+              <dt className="mt-2 font-medium text-ink-700">
                 {s.label}
-                {s.asOfDate && <span className="block text-sm text-maroon-200">as of {formatDate(s.asOfDate)}</span>}
+                {s.asOfDate && <span className="block text-sm font-normal text-ink-600">as of {formatDate(s.asOfDate)}</span>}
               </dt>
-              <dd className="font-heading text-4xl font-bold tracking-tight text-white">
-                {s.value ?? (
-                  <span data-todo="impact-number" className="inline-block rounded-full border border-dashed border-maroon-200/60 px-3 py-1 text-base font-semibold text-maroon-100">
-                    TODO
-                  </span>
-                )}
-              </dd>
+              <dd className="font-heading text-4xl font-bold tracking-tight text-maroon-700">{s.value ?? "—"}</dd>
             </div>
           ))}
         </dl>
-        {!impactStats.some((s) => s.asOfDate) && (
-          <div className="mt-6">
-            <Todo id="impact-as-of">Confirmed figures and an “as of” date for each number.</Todo>
-          </div>
-        )}
       </Section>
 
-      <Section id="stories" tone="white" eyebrow="Stories" title="Patient stories" action={<ButtonLink to="/impact/stories/" variant="ghost">All stories</ButtonLink>}>
+      <Section
+        id="stories"
+        tone="white"
+        eyebrow="Stories"
+        title="Patient stories"
+        action={
+          <ButtonLink to="/impact/stories/" variant="ghost">
+            All stories
+          </ButtonLink>
+        }
+      >
         {patient.length ? (
           <ul className="grid gap-5 md:grid-cols-3">
             {patient.map((s) => (
@@ -56,11 +54,20 @@ export function Component() {
             ))}
           </ul>
         ) : (
-          <Todo id="patient-stories">3–5 patient stories with written consent (a short video also works).</Todo>
+          <p className="text-ink-700">Stories from our patients will be shared here soon.</p>
         )}
       </Section>
 
-      <Section id="camps" eyebrow="News" title="Medical camps & updates" action={<ButtonLink to="/impact/camps/" variant="ghost">All updates</ButtonLink>}>
+      <Section
+        id="camps"
+        eyebrow="News"
+        title="Medical camps & updates"
+        action={
+          <ButtonLink to="/impact/camps/" variant="ghost">
+            All updates
+          </ButtonLink>
+        }
+      >
         {updates.length ? (
           <ul className="grid gap-5 md:grid-cols-3">
             {updates.map((s) => (
@@ -70,11 +77,21 @@ export function Component() {
             ))}
           </ul>
         ) : (
-          <Todo id="camp-updates">Dated posts with photos about medical camps and hospital updates.</Todo>
+          <p className="surface p-6 text-ink-700">Medical camp reports and hospital updates will be posted here soon.</p>
         )}
       </Section>
 
-      <Section id="gallery" tone="white" eyebrow="Gallery" title="Inside Sai Aarogya" action={<ButtonLink to="/impact/gallery/" variant="ghost">Full gallery</ButtonLink>}>
+      <Section
+        id="gallery"
+        tone="white"
+        eyebrow="Gallery"
+        title="Inside Sai Aarogya"
+        action={
+          <ButtonLink to="/impact/gallery/" variant="ghost">
+            Full gallery
+          </ButtonLink>
+        }
+      >
         <Gallery limit={6} showFilters={false} />
       </Section>
 

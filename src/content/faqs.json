@@ -9,28 +9,28 @@
     },
     {
       "question": "Do I need an appointment?",
-      "answer": null,
+      "answer": "No appointment is needed. Walk in during OPD hours (Mon–Sat, 9 AM – 4 PM) and register at the hospital desk. To see a visiting specialist, please call us first to check their day.",
       "page": "PatientGuide",
       "department": null,
       "order": 2
     },
     {
       "question": "Is there emergency care?",
-      "answer": null,
+      "answer": "For urgent help, call the hospital desk on +91 84999 91259. In a life-threatening emergency, call 108 for an ambulance.",
       "page": "PatientGuide",
       "department": null,
       "order": 3
     },
     {
       "question": "Are medicines free?",
-      "answer": null,
+      "answer": "Yes. Consultations, treatment and the medicines prescribed at the hospital are provided free of charge.",
       "page": "PatientGuide",
       "department": null,
       "order": 4
     },
     {
       "question": "Can I bring an attendant?",
-      "answer": null,
+      "answer": "Yes. One family member or attendant may accompany each patient.",
       "page": "PatientGuide",
       "department": null,
       "order": 5
@@ -44,14 +44,14 @@
     },
     {
       "question": "Are donations tax-exempt?",
-      "answer": null,
+      "answer": "For tax-exemption details, please write to info@saisujalasravanthi.in and the Trust will share the applicable information.",
       "page": "SupportUs",
       "department": null,
       "order": 2
     },
     {
       "question": "Will I receive a receipt for my donation?",
-      "answer": null,
+      "answer": "Yes. Write to info@saisujalasravanthi.in with your donation details and the Trust will send you a receipt.",
       "page": "SupportUs",
       "department": null,
       "order": 3

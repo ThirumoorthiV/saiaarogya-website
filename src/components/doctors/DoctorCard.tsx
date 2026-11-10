@@ -4,7 +4,6 @@ import type { Doctor } from "@/types";
 import { getDepartment } from "@/content";
 import { DepartmentIcon } from "@/components/ui/DepartmentIcon";
 import { Badge } from "@/components/ui/Badge";
-import { Todo } from "@/components/ui/Todo";
 import { cn } from "@/components/ui/cn";
 
 const initials = (name: string) =>
@@ -32,7 +31,6 @@ export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doct
   }
   return (
     <div
-      data-todo="doctor-photo"
       role="img"
       aria-label={`${doctor.name} — photo coming soon`}
       className={cn(
@@ -71,11 +69,7 @@ export function VisitingBadge({ doctor }: { doctor: Doctor }) {
       </Badge>
     );
   }
-  return (
-    <Todo id="doctor-visiting-days" inline>
-      visiting days
-    </Todo>
-  );
+  return <span className="text-ink-600">Call to check days</span>;
 }
 
 /** Doctor card (§5.4): photo, name, qualification, speciality, visiting-day badge. Whole card is clickable. */

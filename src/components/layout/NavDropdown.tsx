@@ -105,7 +105,7 @@ export function NavDropdown({ item }: { item: NavItem }) {
         onKeyDown={onTriggerKey}
         className={cn(
           "inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-full px-3.5 text-[15px] font-medium transition-colors",
-          open ? "bg-maroon-100 text-maroon-900" : active ? "text-maroon-700" : "text-ink-700 hover:bg-maroon-50 hover:text-maroon-800",
+          open ? "bg-white text-maroon-800" : active ? "bg-white/15 text-white" : "text-maroon-50 hover:bg-white/10 hover:text-white",
         )}
       >
         {item.label}
@@ -113,16 +113,8 @@ export function NavDropdown({ item }: { item: NavItem }) {
         {active && <span className="sr-only">(current section)</span>}
       </button>
 
-      <div
-        id={panelId}
-        hidden={!open}
-        onKeyDown={onPanelKey}
-        className={cn(
-          "absolute left-1/2 top-full z-50 pt-3",
-          item.wide ? "w-[640px] -translate-x-[40%]" : "w-[340px] -translate-x-1/2",
-        )}
-      >
-        <div className="animate-menu-in overflow-hidden rounded-3xl border border-maroon-100 bg-white p-2 shadow-menu">
+      <div id={panelId} hidden={!open} onKeyDown={onPanelKey} className={cn("absolute left-1/2 top-full z-50 pt-3", item.wide ? "w-[640px] -translate-x-[40%]" : "w-[340px] -translate-x-1/2")}>
+        <div data-panel className="animate-menu-in overflow-hidden rounded-3xl border border-maroon-100 bg-white p-2 shadow-menu">
           {lead && (
             <Link
               to={lead.to}
@@ -146,11 +138,7 @@ export function NavDropdown({ item }: { item: NavItem }) {
                     to={l!.to}
                     data-menu-link
                     aria-current={current ? "page" : undefined}
-                    className={cn(
-                      "flex items-center gap-3 rounded-2xl px-3 py-2.5 no-underline transition-colors",
-                      "hover:bg-maroon-100 focus-visible:bg-maroon-100",
-                      current && "bg-maroon-50",
-                    )}
+                    className={cn("flex items-center gap-3 rounded-2xl px-3 py-2.5 no-underline transition-colors", "hover:bg-maroon-100 focus-visible:bg-maroon-100", current && "bg-maroon-50")}
                   >
                     <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700">
                       {l!.deptIcon ? <DepartmentIcon name={l!.deptIcon} className="h-[18px] w-[18px]" /> : Icon ? <Icon className="h-[18px] w-[18px]" aria-hidden /> : null}

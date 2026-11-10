@@ -7,7 +7,6 @@ import { SITE_URL } from "@/lib/staticPaths";
 import { formsConfigured, submitToWeb3Forms, WEB3FORMS_ENDPOINT, WEB3FORMS_KEY } from "@/lib/web3forms";
 import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { cn } from "@/components/ui/cn";
 import { INDIAN_PHONE, normalizePhone } from "./EnquiryForm";
@@ -15,7 +14,10 @@ import { FormError, FormSuccess } from "./FormStatus";
 
 const AREAS = {
   medical: { title: "Medical", text: "Doctor, nurse, pharmacist, technician…" },
-  "non-medical": { title: "Non-medical", text: "Registration desk, patient guidance, camps, admin…" },
+  "non-medical": {
+    title: "Non-medical",
+    text: "Registration desk, patient guidance, camps, admin…",
+  },
   either: { title: "Either", text: "Wherever I am needed" },
 } as const;
 type Area = keyof typeof AREAS;
@@ -27,7 +29,9 @@ const schema = z.object({
     .transform(normalizePhone)
     .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
   email: z.union([z.literal(""), z.string().trim().email("Please enter a valid email address, or leave it empty.")]),
-  area: z.enum(Object.keys(AREAS) as [Area, ...Area[]], { message: "Please choose an area of interest." }),
+  area: z.enum(Object.keys(AREAS) as [Area, ...Area[]], {
+    message: "Please choose an area of interest.",
+  }),
   profession: z.string().trim().max(120).optional(),
   availability: z.string().trim().max(200).optional(),
   message: z.string().trim().max(2000).optional(),
@@ -49,7 +53,16 @@ export function VolunteerForm() {
     formState: { errors, isSubmitting },
   } = useForm<In, unknown, Out>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", phone: "", email: "", area: "" as Area, profession: "", availability: "", message: "", botcheck: false },
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      area: "" as Area,
+      profession: "",
+      availability: "",
+      message: "",
+      botcheck: false,
+    },
   });
   const area = useWatch({ control, name: "area" });
 
@@ -76,22 +89,44 @@ export function VolunteerForm() {
       <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="subject" value="Volunteer sign-up" />
       <input type="hidden" name="redirect" value={`${SITE_URL}${path}?sent=1`} />
-      {!formsConfigured && (
-        <Todo id="form-access-key">
-          Form not connected yet — set <code>VITE_WEB3FORMS_ACCESS_KEY</code>.
-        </Todo>
-      )}
+      {!formsConfigured && <p className="rounded-2xl bg-maroon-50 px-4 py-3 text-sm text-maroon-900">Online messages are being set up. Please call or email us in the meantime.</p>}
       {status === "error" && <FormError ref={statusRef} />}
 
       <Field id="vol-name" label="Your name" required error={errors.name?.message}>
-        <input id="vol-name" autoComplete="name" className={inputClass(!!errors.name)} aria-required="true" aria-invalid={!!errors.name} aria-describedby={describedBy("vol-name", false, !!errors.name)} {...register("name")} />
+        <input
+          id="vol-name"
+          autoComplete="name"
+          className={inputClass(!!errors.name)}
+          aria-required="true"
+          aria-invalid={!!errors.name}
+          aria-describedby={describedBy("vol-name", false, !!errors.name)}
+          {...register("name")}
+        />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
         <Field id="vol-phone" label="Phone number" required hint="10-digit Indian mobile number" error={errors.phone?.message}>
-          <input id="vol-phone" type="tel" inputMode="tel" autoComplete="tel" className={inputClass(!!errors.phone)} aria-required="true" aria-invalid={!!errors.phone} aria-describedby={describedBy("vol-phone", true, !!errors.phone)} {...register("phone")} />
+          <input
+            id="vol-phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            className={inputClass(!!errors.phone)}
+            aria-required="true"
+            aria-invalid={!!errors.phone}
+            aria-describedby={describedBy("vol-phone", true, !!errors.phone)}
+            {...register("phone")}
+          />
         </Field>
         <Field id="vol-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
-          <input id="vol-email" type="email" autoComplete="email" className={inputClass(!!errors.email)} aria-invalid={!!errors.email} aria-describedby={describedBy("vol-email", true, !!errors.email)} {...register("email")} />
+          <input
+            id="vol-email"
+            type="email"
+            autoComplete="email"
+            className={inputClass(!!errors.email)}
+            aria-invalid={!!errors.email}
+            aria-describedby={describedBy("vol-email", true, !!errors.email)}
+            {...register("email")}
+          />
         </Field>
       </div>
 

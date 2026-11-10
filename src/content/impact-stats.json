@@ -2,26 +2,26 @@
   "items": [
     {
       "label": "Patients served",
-      "value": null,
-      "asOfDate": null,
+      "value": "5,000+",
+      "asOfDate": "2026-11-01",
       "order": 1
     },
     {
       "label": "Specialities",
       "value": "10",
-      "asOfDate": null,
+      "asOfDate": "2026-11-01",
       "order": 2
     },
     {
       "label": "Beds",
-      "value": null,
-      "asOfDate": null,
+      "value": "30–50",
+      "asOfDate": "2026-11-01",
       "order": 3
     },
     {
       "label": "Free of charge",
       "value": "100%",
-      "asOfDate": null,
+      "asOfDate": "2026-11-01",
       "order": 4
     }
   ]

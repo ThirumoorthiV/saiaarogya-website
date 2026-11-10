@@ -1,3 +1,186 @@
 {
-  "items": []
+  "items": [
+    {
+      "department": "general-medicine",
+      "day": "Mon",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "notes": null
+    },
+    {
+      "department": "general-medicine",
+      "day": "Tue",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "notes": null
+    },
+    {
+      "department": "general-medicine",
+      "day": "Wed",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "notes": null
+    },
+    {
+      "department": "general-medicine",
+      "day": "Thu",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "notes": null
+    },
+    {
+      "department": "general-medicine",
+      "day": "Fri",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "notes": null
+    },
+    {
+      "department": "general-medicine",
+      "day": "Sat",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "notes": null
+    },
+    {
+      "department": "cardiology",
+      "day": "Mon",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "cardiology",
+      "day": "Tue",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "cardiology",
+      "day": "Thu",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "cardiology",
+      "day": "Fri",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "dentistry",
+      "day": "Mon",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "dentistry",
+      "day": "Wed",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "dentistry",
+      "day": "Thu",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "dentistry",
+      "day": "Sat",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "dermatology",
+      "day": "Tue",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "dermatology",
+      "day": "Fri",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "general-surgery",
+      "day": "Wed",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "general-surgery",
+      "day": "Sat",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "obstetrics-gynaecology",
+      "day": "Mon",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "obstetrics-gynaecology",
+      "day": "Thu",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "ophthalmology",
+      "day": "Tue",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "ophthalmology",
+      "day": "Fri",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "orthopaedics",
+      "day": "Wed",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "orthopaedics",
+      "day": "Sat",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "urology",
+      "day": "Mon",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    },
+    {
+      "department": "urology",
+      "day": "Thu",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "notes": null
+    }
+  ]
 }

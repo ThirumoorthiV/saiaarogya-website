@@ -8,7 +8,7 @@ import { OpenNowBadge } from "@/components/ui/OpenNowBadge";
 export function TopBar() {
   const s = siteSettings;
   return (
-    <div className="bg-maroon-900 text-[13px] text-maroon-100">
+    <div className="on-dark border-b border-white/10 bg-maroon-900 text-[13px] text-maroon-100">
       <Container className="flex min-h-10 flex-wrap items-center justify-between gap-x-6 gap-y-1 py-1.5">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <span className="inline-flex items-center gap-1.5">
@@ -19,9 +19,9 @@ export function TopBar() {
                 {s.emergencyPhone}
               </a>
             ) : (
-              <span data-todo="emergency-number" className="rounded-full border border-dashed border-maroon-200/50 px-2 text-maroon-100">
-                TODO: number to be confirmed
-              </span>
+              <a href="tel:108" className="font-semibold text-white decoration-white/40">
+                108
+              </a>
             )}
           </span>
           <span className="hidden items-center gap-1.5 sm:inline-flex">
@@ -32,12 +32,8 @@ export function TopBar() {
                 {s.opdSummary}
               </Link>
             ) : (
-              <Link
-                to="/patient-guide/opd-timings/"
-                data-todo="opd-summary"
-                className="rounded-full border border-dashed border-maroon-200/50 px-2 text-maroon-100 no-underline hover:text-white"
-              >
-                TODO: timings to be confirmed
+              <Link to="/patient-guide/opd-timings/" className="text-maroon-100 decoration-white/30 hover:text-white">
+                See timings
               </Link>
             )}
             <OpenNowBadge onDark />

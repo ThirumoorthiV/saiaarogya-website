@@ -4,7 +4,6 @@ import { fitDescription } from "@/lib/describe";
 import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
-import { Todo } from "@/components/ui/Todo";
 import { Component as NotFound } from "@/pages/NotFound";
 
 const DESCRIPTIONS: Record<string, string> = {
@@ -26,13 +25,6 @@ export function Component() {
       <div className="py-14 md:py-20">
         <Container>
           <div className="mx-auto max-w-prose space-y-8 text-ink-700">
-            {(policy.slug === "refund" || policy.slug === "privacy") && (
-              <Todo id="policy-review">
-                {policy.slug === "refund"
-                  ? "This refund policy is e-commerce boilerplate (shipping, perishable items). Please review it for donations."
-                  : "Please review: this policy mentions job titles and promotional emails, and does not cover the new enquiry and volunteer forms."}
-              </Todo>
-            )}
             {policy.sections.map((s, i) => (
               <section key={i} className="space-y-4">
                 {s.heading && <h2 className="text-h3 text-ink-900">{s.heading}</h2>}

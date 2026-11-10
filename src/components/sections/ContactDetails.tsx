@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Clock, Mail, MapPin, MessageCircle, Phone, Siren } from "lucide-react";
 import { siteSettings, tel } from "@/content";
-import { Todo } from "@/components/ui/Todo";
 import { OpenNowBadge } from "@/components/ui/OpenNowBadge";
 
 function Row({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
@@ -47,9 +46,7 @@ export function ContactDetails({ showEmergency = true }: { showEmergency?: boole
               {s.emergencyPhone}
             </a>
           ) : (
-            <Todo id="emergency-number" inline>
-              emergency number
-            </Todo>
+            <a href="tel:108">108 (ambulance)</a>
           )}
         </Row>
       )}
@@ -58,26 +55,16 @@ export function ContactDetails({ showEmergency = true }: { showEmergency?: boole
           {s.email}
         </a>
       </Row>
-      <Row icon={<MessageCircle className={ic} aria-hidden />} label="WhatsApp">
-        {s.whatsapp ? (
+      {s.whatsapp && (
+        <Row icon={<MessageCircle className={ic} aria-hidden />} label="WhatsApp">
           <a href={`https://wa.me/${s.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">
             {s.whatsapp}
           </a>
-        ) : (
-          <Todo id="whatsapp" inline>
-            WhatsApp number, if available
-          </Todo>
-        )}
-      </Row>
+        </Row>
+      )}
       <Row icon={<Clock className={ic} aria-hidden />} label="OPD hours">
         <span className="flex flex-wrap items-center gap-2">
-          {s.opdSummary ? (
-            <Link to="/patient-guide/opd-timings/">{s.opdSummary}</Link>
-          ) : (
-            <Todo id="opd-summary" inline>
-              OPD timings
-            </Todo>
-          )}
+          {s.opdSummary ? <Link to="/patient-guide/opd-timings/">{s.opdSummary}</Link> : <span>Call for timings</span>}
           <OpenNowBadge />
         </span>
       </Row>

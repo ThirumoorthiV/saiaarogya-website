@@ -5,7 +5,10 @@
       "slug": "general-medicine",
       "icon": "stethoscope",
       "summary": "Handles routine health concerns, diagnoses, and treatments for common illnesses and conditions.",
-      "description": [],
+      "description": [
+        "The General Medicine department at Sai Aarogya Hospital handles routine health concerns, diagnoses, and treatments for common illnesses and conditions.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
       "services": [
         "Routine health concerns",
         "Diagnosis of common illnesses",
@@ -18,9 +21,17 @@
       "name": "General Surgery",
       "slug": "general-surgery",
       "icon": "scissors",
-      "summary": null,
-      "description": [],
-      "services": [],
+      "summary": "Provides surgical care for common conditions, including hernia, appendix, gall bladder and minor procedures.",
+      "description": [
+        "The General Surgery department at Sai Aarogya Hospital provides surgical care for common conditions, including hernia, appendix, gall bladder and minor procedures.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
+      "services": [
+        "Hernia repair",
+        "Appendix and gall bladder surgery",
+        "Minor procedures",
+        "Wound care"
+      ],
       "order": 2,
       "isActive": true
     },
@@ -29,7 +40,10 @@
       "slug": "dentistry",
       "icon": "smile",
       "summary": "Focuses on oral health, including routine cleanings, cavity treatments, and dental surgeries.",
-      "description": [],
+      "description": [
+        "The Dentistry department at Sai Aarogya Hospital focuses on oral health, including routine cleanings, cavity treatments, and dental surgeries.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
       "services": [
         "Routine cleanings",
         "Cavity treatments",
@@ -43,7 +57,10 @@
       "slug": "orthopaedics",
       "icon": "bone",
       "summary": "Deals with bone, joint, and muscle issues, including fractures, arthritis, and sports injuries.",
-      "description": [],
+      "description": [
+        "The Orthopaedics department at Sai Aarogya Hospital deals with bone, joint, and muscle issues, including fractures, arthritis, and sports injuries.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
       "services": [
         "Fractures",
         "Arthritis",
@@ -58,7 +75,10 @@
       "slug": "paediatrics",
       "icon": "baby",
       "summary": "Provides healthcare services for infants, children, and adolescents, including immunisations and growth monitoring.",
-      "description": [],
+      "description": [
+        "The Paediatrics department at Sai Aarogya Hospital provides healthcare services for infants, children, and adolescents, including immunisations and growth monitoring.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
       "services": [
         "Care for infants, children and adolescents",
         "Immunisations",
@@ -72,7 +92,10 @@
       "slug": "ophthalmology",
       "icon": "eye",
       "summary": "Provides eye care services, including vision correction, cataract surgery, and treatment of eye diseases.",
-      "description": [],
+      "description": [
+        "The Ophthalmology department at Sai Aarogya Hospital provides eye care services, including vision correction, cataract surgery, and treatment of eye diseases.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
       "services": [
         "Vision correction",
         "Cataract surgery",
@@ -86,7 +109,10 @@
       "slug": "obstetrics-gynaecology",
       "icon": "heart-handshake",
       "summary": "Cares for women's reproductive health, including pregnancy, childbirth, and hormonal issues.",
-      "description": [],
+      "description": [
+        "The Obstetrics & Gynaecology department at Sai Aarogya Hospital cares for women's reproductive health, including pregnancy, childbirth, and hormonal issues.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
       "services": [
         "Pregnancy care",
         "Childbirth",
@@ -100,9 +126,17 @@
       "name": "Cardiology",
       "slug": "cardiology",
       "icon": "heart-pulse",
-      "summary": null,
-      "description": [],
-      "services": [],
+      "summary": "Diagnoses and treats heart conditions, including high blood pressure, chest pain and heart rhythm problems.",
+      "description": [
+        "The Cardiology department at Sai Aarogya Hospital diagnoses and treats heart conditions, including high blood pressure, chest pain and heart rhythm problems.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
+      "services": [
+        "Heart check-ups",
+        "High blood pressure",
+        "Chest pain evaluation",
+        "ECG"
+      ],
       "order": 8,
       "isActive": true
     },
@@ -110,9 +144,17 @@
       "name": "Dermatology",
       "slug": "dermatology",
       "icon": "hand",
-      "summary": null,
-      "description": [],
-      "services": [],
+      "summary": "Treats skin, hair and nail conditions, including infections, allergies, acne and eczema.",
+      "description": [
+        "The Dermatology department at Sai Aarogya Hospital treats skin, hair and nail conditions, including infections, allergies, acne and eczema.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
+      "services": [
+        "Skin infections",
+        "Allergies and rashes",
+        "Acne and eczema",
+        "Hair and nail problems"
+      ],
       "order": 9,
       "isActive": true
     },
@@ -120,9 +162,17 @@
       "name": "Urology",
       "slug": "urology",
       "icon": "droplets",
-      "summary": null,
-      "description": [],
-      "services": [],
+      "summary": "Cares for the urinary tract and male reproductive health, including kidney stones and prostate problems.",
+      "description": [
+        "The Urology department at Sai Aarogya Hospital cares for the urinary tract and male reproductive health, including kidney stones and prostate problems.",
+        "Consultations, investigations and treatment are provided completely free of charge. Walk in during OPD hours and register at the hospital desk, or call us to check when the specialist is visiting."
+      ],
+      "services": [
+        "Kidney stones",
+        "Urinary infections",
+        "Prostate problems",
+        "Bladder problems"
+      ],
       "order": 10,
       "isActive": true
     }

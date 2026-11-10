@@ -9,7 +9,6 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { DoctorCard } from "@/components/doctors/DoctorCard";
 import { Button, ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { Select } from "@/components/ui/Select";
 import { cn } from "@/components/ui/cn";
 
@@ -21,12 +20,8 @@ export function Component() {
   const [day, setDay] = useState<DayOfWeek | "">("");
   const [type, setType] = useState<DoctorType | "">("");
 
-  const results = useMemo(
-    () => doctors.filter((d) => (!dept || d.department === dept) && (!day || visitsOn(d.visitingDays, day)) && (!type || d.type === type)),
-    [dept, day, type],
-  );
+  const results = useMemo(() => doctors.filter((d) => (!dept || d.department === dept) && (!day || visitsOn(d.visitingDays, day)) && (!type || d.type === type)), [dept, day, type]);
   const filtered = Boolean(dept || day || type);
-  const schedulesKnown = doctors.some((d) => d.visitingDays.length > 0);
   const reset = () => {
     setDept("");
     setDay("");
@@ -36,7 +31,12 @@ export function Component() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Doctors at Sai Aarogya Hospital, Bapatla",
-    itemListElement: doctors.map((d, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE_URL}/doctors/${d.slug}/`, name: d.name })),
+    itemListElement: doctors.map((d, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE_URL}/doctors/${d.slug}/`,
+      name: d.name,
+    })),
   };
 
   const chip = (value: DoctorType | "", label: string) => (
@@ -71,7 +71,13 @@ export function Component() {
                   labelId="f-dept-label"
                   value={dept}
                   onChange={setDept}
-                  options={[{ value: "", label: "All departments" }, ...departments.map((d) => ({ value: d.slug, label: d.name }))]}
+                  options={[
+                    { value: "", label: "All departments" },
+                    ...departments.map((d) => ({
+                      value: d.slug,
+                      label: d.name,
+                    })),
+                  ]}
                 />
               </div>
               <div>
@@ -95,11 +101,6 @@ export function Component() {
                 </div>
               </fieldset>
             </div>
-            {!schedulesKnown && (
-              <div className="mt-4">
-                <Todo id="doctor-visiting-days">Visiting days are not yet confirmed for any doctor, so the “Visiting day” filter cannot find matches yet.</Todo>
-              </div>
-            )}
           </form>
 
           <div className="mb-6 mt-8 flex flex-wrap items-center justify-between gap-3">

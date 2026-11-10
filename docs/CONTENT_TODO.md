@@ -1,10 +1,27 @@
 # Content TODO — information needed from the Hospital / Trust
 
-Everything on the new site that was **not** on the current website is shown as a visible **TODO** placeholder (dashed maroon box). Nothing has been made up. This file lists every placeholder, where it appears and how to fill it in.
+**Update (10 Nov 2026): the site no longer shows any TODO boxes.** The client asked for every placeholder to be filled, either with information from the current website or with a **temporary value**. The temporary values are listed in the table below. Please confirm or correct each one in the CMS (`/admin/`) or in `src/content/` before launch.
 
-- **How to fill a placeholder:** edit the named field in the CMS (`/admin/`), or the JSON file in `src/content/`. When the value is filled in, the TODO box disappears automatically.
-- **Code ids** (in backticks) match `data-todo="…"` in the HTML. Run `npm run todo:scan` to list every placeholder still in use.
-- Source of existing content: live review of https://www.saiaarogya.hospital/ on 10 Nov 2026.
+The sections after the table are the original list of open questions and are kept for reference. Where a field is still empty, the site now shows neutral text instead of a box (for example "Please call to confirm", or a hidden row).
+
+## Temporary values now shown on the site (confirm before launch)
+
+| Where | Field | Temporary value |
+|---|---|---|
+| Top bar, contact | `emergencyPhone` | **108** (national ambulance number) |
+| Top bar, contact, "Open now" badge | `opdHours`, `opdSummary` | **Mon–Sat, 9 AM – 4 PM** |
+| OPD timetable | `opd-timings.json` | General Medicine Mon–Sat 9–4; specialists 10 AM – 1 PM on each doctor's visiting days |
+| Doctors | `visitingDays`, `timing` | Residents: **Daily, 9 AM – 4 PM**. Consultants rotate **Mon & Thu / Tue & Fri / Wed & Sat, 10 AM – 1 PM** (placeholder rota) |
+| Doctors | `languages` | English, Telugu |
+| Impact numbers | `impact-stats.json` | Patients served **5,000+**, Beds **30–50** (from the current site), as of **1 Nov 2026** |
+| Departments | General Surgery, Cardiology, Dermatology, Urology | Standard one-line summaries and service lists. All 10 departments have a 2-paragraph description built from the summary |
+| FAQs | 6 answers | Appointment, emergency (108), free medicines, attendant, tax exemption, receipts |
+| Donate, Transparency | `taxInfo`, `fundUse`, `impactPerContribution` | General wording that points to info@saisujalasravanthi.in. No ₹ figures |
+| Donate | `indianDonorUrl` (still empty) | The button reads **"Contact us to donate"** and links to the Contact page |
+| Facilities | page copy | OPD, in-patient wards (30–50 beds), pharmacy, laboratory, minor procedures, waiting area |
+| How to reach | page copy | Generic landmark / bus / road text (Khajipalem, Aravinda Ashramam, auto from the bus stop) |
+| Patient stories, camp updates | — | "Will be shared here soon." **No stories were invented**, because each one needs written patient consent |
+| Doctor photos | — | Initials tile (no TODO label) |
 
 ---
 

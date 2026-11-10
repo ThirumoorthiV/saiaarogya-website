@@ -6,7 +6,6 @@ import { hospitalSchema } from "@/lib/schema";
 import { Seo } from "@/components/seo/Seo";
 import { Section } from "@/components/ui/Section";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { Hero } from "@/components/home/Hero";
 import { QuickActions } from "@/components/home/QuickActions";
 import { ImpactBand } from "@/components/home/ImpactBand";
@@ -117,7 +116,13 @@ export function Component() {
         </div>
       </Section>
 
-      <Section id="network" tone="white" eyebrow="Our network" title="Part of a larger mission" intro="Sai Aarogya Hospital works alongside other healthcare initiatives of the Sri Madhusudan Sai Global Humanitarian Mission.">
+      <Section
+        id="network"
+        tone="white"
+        eyebrow="Our network"
+        title="Part of a larger mission"
+        intro="Sai Aarogya Hospital works alongside other healthcare initiatives of the Sri Madhusudan Sai Global Humanitarian Mission."
+      >
         <NetworkCards />
       </Section>
 
@@ -127,7 +132,7 @@ export function Component() {
             <MessageSquareQuote className="h-7 w-7" aria-hidden />
           </span>
           <div className="flex-1">
-            <Todo id="patient-stories">3 patient stories (with written consent) or one short video.</Todo>
+            <p className="text-ink-700">Stories from our patients will be shared here soon.</p>
           </div>
           <ButtonLink to="/impact/stories/" variant="ghost">
             All stories

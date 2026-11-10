@@ -38,38 +38,24 @@ function CountUp({ value }: { value: string }) {
   return <span ref={ref}>{display}</span>;
 }
 
-/** §5.1-3 Impact counters — bento band in deep maroon. */
+/** §5.1-3 Impact counters — light card with tinted stat tiles. */
 export function ImpactBand() {
   const dated = impactStats.find((s) => s.asOfDate)?.asOfDate;
   return (
     <section aria-labelledby="impact-band-title" className="bg-ink-50 py-12 md:py-16">
       <Container>
-        <div className="rounded-4xl bg-maroon-950 p-6 text-white md:p-10">
+        <div className="surface p-6 md:p-10">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-            <h2 id="impact-band-title" className="font-heading text-2xl font-bold text-white md:text-3xl">
+            <h2 id="impact-band-title" className="font-heading text-2xl font-bold text-ink-900 md:text-3xl">
               Care that reaches everyone
             </h2>
-            <p className="text-sm text-maroon-200">
-              {dated ? (
-                `As of ${new Date(dated).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`
-              ) : (
-                <span data-todo="impact-as-of">TODO: “as of” date and confirmed figures</span>
-              )}
-            </p>
+            <p className="text-sm text-ink-600">{dated && `As of ${new Date(dated).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`}</p>
           </div>
           <dl className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
             {impactStats.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse rounded-3xl bg-white/[0.06] p-5 ring-1 ring-white/10 md:p-6">
-                <dt className="mt-2 text-[15px] text-maroon-100">{s.label}</dt>
-                <dd className="font-heading text-4xl font-bold tracking-tight text-white md:text-5xl">
-                  {s.value ? (
-                    <CountUp value={s.value} />
-                  ) : (
-                    <span data-todo="impact-number" className="inline-block rounded-full border border-dashed border-maroon-200/60 px-3 py-1 text-base font-semibold text-maroon-100">
-                      TODO
-                    </span>
-                  )}
-                </dd>
+              <div key={s.label} className="flex flex-col-reverse rounded-3xl bg-maroon-50 p-5 ring-1 ring-maroon-100 md:p-6">
+                <dt className="mt-2 text-[15px] font-medium text-ink-700">{s.label}</dt>
+                <dd className="font-heading text-4xl font-bold tracking-tight text-maroon-700 md:text-5xl">{s.value ? <CountUp value={s.value} /> : "—"}</dd>
               </div>
             ))}
           </dl>

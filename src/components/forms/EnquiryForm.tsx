@@ -8,7 +8,6 @@ import { SITE_URL } from "@/lib/staticPaths";
 import { formsConfigured, submitToWeb3Forms, WEB3FORMS_ENDPOINT, WEB3FORMS_KEY } from "@/lib/web3forms";
 import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { Select } from "@/components/ui/Select";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { FormError, FormSuccess } from "./FormStatus";
@@ -34,7 +33,9 @@ const schema = z.object({
     .transform(normalizePhone)
     .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
   email: z.union([z.literal(""), z.string().trim().email("Please enter a valid email address, or leave it empty.")]),
-  reason: z.enum(REASONS.map((r) => r.value) as [Reason, ...Reason[]], { message: "Please choose a reason." }),
+  reason: z.enum(REASONS.map((r) => r.value) as [Reason, ...Reason[]], {
+    message: "Please choose a reason.",
+  }),
   message: z.string().trim().min(10, "Please write a short message (at least 10 characters).").max(2000),
   botcheck: z.boolean().optional(),
 });
@@ -49,7 +50,11 @@ type Out = z.output<typeof schema>;
 export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { defaultReason?: Reason; pagePath?: string }) {
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
   const statusRef = useRef<HTMLDivElement>(null);
-  const sentViaRedirect = useSyncExternalStore(noopSubscribe, () => new URLSearchParams(window.location.search).get("sent") === "1", () => false);
+  const sentViaRedirect = useSyncExternalStore(
+    noopSubscribe,
+    () => new URLSearchParams(window.location.search).get("sent") === "1",
+    () => false,
+  );
   const [redirectDismissed, setRedirectDismissed] = useState(false);
   const shown = status === "idle" && sentViaRedirect && !redirectDismissed ? "sent" : status;
 
@@ -61,7 +66,14 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
     formState: { errors, isSubmitting, submitCount },
   } = useForm<In, unknown, Out>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", phone: "", email: "", reason: (defaultReason ?? "") as Reason, message: "", botcheck: false },
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      reason: (defaultReason ?? "") as Reason,
+      message: "",
+      botcheck: false,
+    },
   });
 
   useEffect(() => {
@@ -100,11 +112,7 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
       <input type="hidden" name="subject" value="Website enquiry" />
       <input type="hidden" name="redirect" value={`${SITE_URL}${pagePath}?sent=1`} />
 
-      {!formsConfigured && (
-        <Todo id="form-access-key">
-          Form not connected yet — set <code>VITE_WEB3FORMS_ACCESS_KEY</code>. Messages cannot be sent until then.
-        </Todo>
-      )}
+      {!formsConfigured && <p className="rounded-2xl bg-maroon-50 px-4 py-3 text-sm text-maroon-900">Online messages are being set up. Please call or email us in the meantime.</p>}
       {status === "error" && <FormError ref={statusRef} />}
       {hasErrors && submitCount > 0 && (
         <p role="alert" className="font-medium text-alert-700">
@@ -113,7 +121,15 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
       )}
 
       <Field id="enq-name" label="Your name" required error={errors.name?.message}>
-        <input id="enq-name" autoComplete="name" className={inputClass(!!errors.name)} aria-required="true" aria-invalid={!!errors.name} aria-describedby={describedBy("enq-name", false, !!errors.name)} {...register("name")} />
+        <input
+          id="enq-name"
+          autoComplete="name"
+          className={inputClass(!!errors.name)}
+          aria-required="true"
+          aria-invalid={!!errors.name}
+          aria-describedby={describedBy("enq-name", false, !!errors.name)}
+          {...register("name")}
+        />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
         <Field id="enq-phone" label="Phone number" required hint="10-digit Indian mobile number" error={errors.phone?.message}>
@@ -131,7 +147,15 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
           />
         </Field>
         <Field id="enq-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
-          <input id="enq-email" type="email" autoComplete="email" className={inputClass(!!errors.email)} aria-invalid={!!errors.email} aria-describedby={describedBy("enq-email", true, !!errors.email)} {...register("email")} />
+          <input
+            id="enq-email"
+            type="email"
+            autoComplete="email"
+            className={inputClass(!!errors.email)}
+            aria-invalid={!!errors.email}
+            aria-describedby={describedBy("enq-email", true, !!errors.email)}
+            {...register("email")}
+          />
         </Field>
       </div>
       <Field id="enq-reason" label="Reason for contacting us" required error={errors.reason?.message}>
@@ -156,7 +180,15 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
         />
       </Field>
       <Field id="enq-message" label="Message" required error={errors.message?.message}>
-        <textarea id="enq-message" rows={5} className={inputClass(!!errors.message)} aria-required="true" aria-invalid={!!errors.message} aria-describedby={describedBy("enq-message", false, !!errors.message)} {...register("message")} />
+        <textarea
+          id="enq-message"
+          rows={5}
+          className={inputClass(!!errors.message)}
+          aria-required="true"
+          aria-invalid={!!errors.message}
+          aria-describedby={describedBy("enq-message", false, !!errors.message)}
+          {...register("message")}
+        />
       </Field>
       {/* Honeypot (spam protection) — hidden from people and screen readers */}
       <input type="checkbox" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("botcheck")} />

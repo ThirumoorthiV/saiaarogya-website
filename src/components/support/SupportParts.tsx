@@ -1,7 +1,6 @@
 import { FileText, Globe, HeartHandshake, Mail } from "lucide-react";
 import { siteSettings } from "@/content";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 
 /** Real copy from the current Donations page ("Let's Do This Together!"). */
 export const DONATION_APPEAL = [
@@ -9,7 +8,7 @@ export const DONATION_APPEAL = [
   "Let’s all join hands in this mission of delivering compassionate healthcare to those in need, absolutely free of cost! Every small step we take can make a big difference in giving someone a happier childhood and a healthier life.",
 ];
 
-/** Online donation button for Indian donors (TODO until the link is supplied). */
+/** Online donation button for Indian donors (falls back to the contact page until the link is supplied). */
 export function IndianDonateButton({ onDark = false }: { onDark?: boolean }) {
   const url = siteSettings.donation.indianDonorUrl;
   return url ? (
@@ -17,9 +16,9 @@ export function IndianDonateButton({ onDark = false }: { onDark?: boolean }) {
       Donate online
     </ButtonLink>
   ) : (
-    <Todo id="donation-link" onDark={onDark}>
-      Online donation link for Indian donors (the current site loads it through a Wix widget, so the URL is not visible in the page).
-    </Todo>
+    <ButtonLink to="/contact/" variant={onDark ? "onDark" : "primary"} size="lg" icon={<HeartHandshake className="h-5 w-5" aria-hidden />} track="donate-indian-contact">
+      Contact us to donate
+    </ButtonLink>
   );
 }
 
@@ -28,17 +27,17 @@ export function DonatePaths() {
   const email = siteSettings.donation.internationalEmail;
   return (
     <ul className="grid gap-5 md:grid-cols-2">
-      <li className="relative flex flex-col overflow-hidden rounded-4xl bg-gradient-to-br from-maroon-700 to-maroon-950 p-7 text-white md:p-9">
-        <div aria-hidden className="absolute -right-16 -top-16 h-56 w-56 rounded-full border-[32px] border-white/5" />
-        <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15">
+      <li className="relative flex flex-col overflow-hidden rounded-4xl border border-maroon-100 bg-gradient-to-br from-maroon-50 to-white p-7 shadow-soft md:p-9">
+        <div aria-hidden className="absolute -right-16 -top-16 h-56 w-56 rounded-full border-[32px] border-maroon-100/60" />
+        <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-100 text-maroon-700">
           <HeartHandshake className="h-6 w-6" aria-hidden />
         </span>
-        <h3 className="relative mt-6 font-heading text-2xl font-bold text-white">For Indian Donors</h3>
-        <p className="relative mt-1 font-medium text-maroon-200">Indian Passport Holders</p>
-        <p className="relative mt-4 flex-1 text-maroon-100">Contribute online from India.</p>
+        <h3 className="relative mt-6 font-heading text-2xl font-bold text-ink-900">For Indian Donors</h3>
+        <p className="relative mt-1 font-medium text-maroon-700">Indian Passport Holders</p>
+        <p className="relative mt-4 flex-1 text-ink-700">Contribute online from India.</p>
         <div className="relative mt-6 flex flex-wrap items-center gap-3">
-          <IndianDonateButton onDark />
-          <ButtonLink to="/support-us/donate/" variant="onDarkOutline">
+          <IndianDonateButton />
+          <ButtonLink to="/support-us/donate/" variant="outline">
             Details
           </ButtonLink>
         </div>
@@ -69,10 +68,11 @@ export function DonatePaths() {
   );
 }
 
-/** "₹X covers…" list from SiteSettings, or a TODO. */
+/** "What your support pays for" list from SiteSettings. */
 export function ImpactPerContribution() {
   const list = siteSettings.donation.impactPerContribution;
-  return list.length ? (
+  if (!list.length) return null;
+  return (
     <ul className="grid gap-4 md:grid-cols-3">
       {list.map((l) => (
         <li key={l} className="surface p-6 font-heading text-xl font-bold text-maroon-800">
@@ -80,8 +80,6 @@ export function ImpactPerContribution() {
         </li>
       ))}
     </ul>
-  ) : (
-    <Todo id="donation-impact">Impact per contribution with real figures from the Trust (e.g. “₹X covers a day of OPD medicines”).</Todo>
   );
 }
 

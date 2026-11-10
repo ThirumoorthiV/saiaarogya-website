@@ -1,23 +1,29 @@
 import { ExternalLink, Quote } from "lucide-react";
 import { about, siteSettings, type Portrait } from "@/content";
 import type { GovernanceGroup, Person } from "@/types";
-import { Todo } from "@/components/ui/Todo";
+import { cn } from "@/components/ui/cn";
 
-/** Portrait card for the Inspiration and the Founder (§5.2). */
-export function PortraitCard({ eyebrow, person }: { eyebrow: string; person: Portrait }) {
+/**
+ * Inspiration / Founder feature row (§5.2): photo on one side, text on the other.
+ * `reverse` puts the photo on the right on desktop, so consecutive rows alternate.
+ */
+export function PortraitFeature({ eyebrow, person, reverse = false }: { eyebrow: string; person: Portrait; reverse?: boolean }) {
   return (
-    <article className="surface flex h-full flex-col overflow-hidden">
-      <div className="relative flex items-center gap-5 bg-gradient-to-br from-maroon-800 to-maroon-950 p-6 text-white md:p-7">
-        <div aria-hidden className="absolute -right-10 -top-10 h-40 w-40 rounded-full border-[24px] border-white/5" />
-        <img src={person.photo} alt={`Portrait of ${person.name}`} width={104} height={104} loading="lazy" className="relative h-24 w-24 shrink-0 rounded-3xl object-cover ring-4 ring-white/15" />
-        <div className="relative">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-maroon-200">{eyebrow}</p>
-          {/* Name on its own line, so "The Founder" heading never wraps awkwardly (gap #12) */}
-          <h3 className="mt-1.5 font-heading text-2xl font-bold text-white">{person.name}</h3>
-        </div>
+    <article className="surface grid items-stretch overflow-hidden md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div className={cn("relative bg-maroon-50", reverse && "md:order-2")}>
+        <img
+          src={person.photo}
+          alt={`Portrait of ${person.name}`}
+          width={600}
+          height={720}
+          loading="lazy"
+          className="aspect-[4/3] h-full w-full object-cover object-top md:absolute md:inset-0 md:aspect-auto"
+        />
       </div>
-      <div className="flex flex-1 flex-col p-6 md:p-7">
-        <blockquote className="flex gap-3 rounded-2xl bg-maroon-50 p-4 font-heading text-lg font-semibold text-maroon-900">
+      <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
+        <p className="eyebrow self-start">{eyebrow}</p>
+        <h3 className="mt-4 font-heading text-2xl font-bold text-ink-900 md:text-3xl">{person.name}</h3>
+        <blockquote className="mt-5 flex gap-3 border-l-4 border-maroon-300 bg-maroon-50 py-3 pl-4 pr-4 font-heading text-lg font-semibold text-maroon-900 rounded-r-2xl">
           <Quote className="h-5 w-5 shrink-0 text-maroon-400" aria-hidden />
           <p>{person.quote}</p>
         </blockquote>
@@ -56,18 +62,14 @@ export function MissionTrust() {
             <p key={i}>{p}</p>
           ))}
         </div>
-        <div className="mt-5">
-          {url ? (
+        {url && (
+          <div className="mt-5">
             <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 font-semibold">
               Visit the Trust website <ExternalLink className="h-4 w-4" aria-hidden />
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
-          ) : (
-            <Todo id="trust-url" inline>
-              Trust website link
-            </Todo>
-          )}
-        </div>
+          </div>
+        )}
       </article>
     </div>
   );
@@ -88,16 +90,7 @@ export function Timeline() {
             <span className={`h-2.5 w-2.5 rounded-full ${i === last ? "bg-white" : "bg-maroon-700"}`} />
           </span>
           <div className="surface h-full p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-maroon-700">
-              {e.date}
-              {i === 0 && (
-                <span className="ml-2 normal-case tracking-normal">
-                  <Todo id="timeline-start-date" inline>
-                    year
-                  </Todo>
-                </span>
-              )}
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-maroon-700">{e.date}</p>
             <h3 className="mt-2 font-heading text-lg font-bold text-ink-900">{e.title}</h3>
             <p className="mt-1 text-[15px] text-ink-600">{e.text}</p>
           </div>
@@ -121,15 +114,7 @@ function PersonCard({ person }: { person: Person }) {
           {person.role && <p className="text-sm font-medium text-maroon-700">{person.role}</p>}
         </div>
       </div>
-      {person.bio ? (
-        <p className="mt-4 text-[15px] text-ink-700">{person.bio}</p>
-      ) : (
-        <div className="mt-4">
-          <Todo id="governance-bio" inline>
-            short bio (optional)
-          </Todo>
-        </div>
-      )}
+      {person.bio && <p className="mt-4 text-[15px] text-ink-700">{person.bio}</p>}
     </li>
   );
 }

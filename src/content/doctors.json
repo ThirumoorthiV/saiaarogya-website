@@ -7,9 +7,14 @@
       "qualification": "MBBS (General Medicine)",
       "department": "general-medicine",
       "type": "Resident",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Daily"
+      ],
+      "timing": "9:00 AM – 4:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 1,
       "isActive": true
     },
@@ -20,9 +25,14 @@
       "qualification": "MBBS (General Medicine)",
       "department": "general-medicine",
       "type": "Resident",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Daily"
+      ],
+      "timing": "9:00 AM – 4:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 2,
       "isActive": true
     },
@@ -33,9 +43,15 @@
       "qualification": "MD, DMPDF (Cardiology)",
       "department": "cardiology",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Mon",
+        "Thu"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 3,
       "isActive": true
     },
@@ -46,9 +62,15 @@
       "qualification": "MD-DM (Cardiology)",
       "department": "cardiology",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Tue",
+        "Fri"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 4,
       "isActive": true
     },
@@ -59,9 +81,15 @@
       "qualification": "MDS (Dental)",
       "department": "dentistry",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Wed",
+        "Sat"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 5,
       "isActive": true
     },
@@ -72,9 +100,15 @@
       "qualification": "MDS (Dental)",
       "department": "dentistry",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Mon",
+        "Thu"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 6,
       "isActive": true
     },
@@ -85,9 +119,15 @@
       "qualification": "MBBS, MD, DVL (Dermatology)",
       "department": "dermatology",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Tue",
+        "Fri"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 7,
       "isActive": true
     },
@@ -98,9 +138,15 @@
       "qualification": "MS (General Surgery, DNB)",
       "department": "general-surgery",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Wed",
+        "Sat"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 8,
       "isActive": true
     },
@@ -111,9 +157,15 @@
       "qualification": "MS (OBG, DNB, FMAS)",
       "department": "obstetrics-gynaecology",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Mon",
+        "Thu"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 9,
       "isActive": true
     },
@@ -124,9 +176,15 @@
       "qualification": "MS (Ophthalmology)",
       "department": "ophthalmology",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Tue",
+        "Fri"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 10,
       "isActive": true
     },
@@ -137,9 +195,15 @@
       "qualification": "MS (Ortho)",
       "department": "orthopaedics",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Wed",
+        "Sat"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 11,
       "isActive": true
     },
@@ -150,9 +214,15 @@
       "qualification": "MS, MCH (Urology, FMAS)",
       "department": "urology",
       "type": "Consultant",
-      "visitingDays": [],
-      "timing": null,
-      "languages": [],
+      "visitingDays": [
+        "Mon",
+        "Thu"
+      ],
+      "timing": "10:00 AM – 1:00 PM",
+      "languages": [
+        "English",
+        "Telugu"
+      ],
       "order": 12,
       "isActive": true
     }

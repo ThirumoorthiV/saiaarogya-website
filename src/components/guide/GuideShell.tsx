@@ -46,12 +46,12 @@ function GuideTabs() {
 /** "Still have a question? Call us" band at the end of guide pages. */
 export function CallStrip() {
   return (
-    <div className="flex flex-col items-start gap-5 rounded-4xl bg-maroon-700 p-7 text-white md:flex-row md:items-center md:justify-between md:p-10">
+    <div className="flex flex-col items-start gap-5 rounded-4xl border border-maroon-100 bg-gradient-to-br from-maroon-50 via-white to-maroon-50 shadow-soft p-7 md:flex-row md:items-center md:justify-between md:p-10">
       <div>
-        <h2 className="font-heading text-2xl font-bold text-white">Still have a question?</h2>
-        <p className="mt-1 text-maroon-100">Call us — our team is happy to help.</p>
+        <h2 className="font-heading text-2xl font-bold text-ink-900">Still have a question?</h2>
+        <p className="mt-1 text-ink-600">Call us — our team is happy to help.</p>
       </div>
-      <ButtonLink to={tel} variant="onDark" size="lg" icon={<Phone className="h-5 w-5" aria-hidden />} track="call-guide-strip">
+      <ButtonLink to={tel} size="lg" icon={<Phone className="h-5 w-5" aria-hidden />} track="call-guide-strip">
         {`Call ${siteSettings.phoneDisplay}`}
       </ButtonLink>
     </div>

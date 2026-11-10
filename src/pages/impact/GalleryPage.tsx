@@ -2,7 +2,6 @@ import { getPageMeta } from "@/lib/pageMeta";
 import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
-import { Todo } from "@/components/ui/Todo";
 import { Gallery } from "@/components/impact/Gallery";
 
 /** Gallery (§5.6): filterable Hospital · Camps · Events, with lightbox. */
@@ -16,9 +15,6 @@ export function Component() {
       <div className="py-14 md:py-20">
         <Container>
           <Gallery />
-          <div className="mt-10">
-            <Todo id="gallery-photos">More photos: exterior, entrance, OPD, staff, medical camps and events.</Todo>
-          </div>
         </Container>
       </div>
     </>

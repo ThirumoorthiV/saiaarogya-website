@@ -8,7 +8,6 @@ import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { DepartmentIcon } from "@/components/ui/DepartmentIcon";
 import { DoctorCard } from "@/components/doctors/DoctorCard";
 import { DepartmentSchedule } from "@/components/guide/OpdTables";
@@ -52,7 +51,7 @@ export function Component() {
         crumbs={[{ label: "Departments", to: "/departments/" }, { label: dept.name }]}
         path={path}
         eyebrow={<p className="eyebrow">Department</p>}
-        intro={dept.summary ?? <Todo id="department-summary">One-line summary of this department.</Todo>}
+        intro={dept.summary ?? null}
         actions={
           <>
             <ButtonLink to={tel} size="lg" icon={<Phone className="h-5 w-5" aria-hidden />} track="call-department">
@@ -75,9 +74,7 @@ export function Component() {
 
       <Section id="about-dept" title={`About ${dept.name}`}>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="prose-body max-w-prose text-lg text-ink-700">
-            {dept.description.length ? dept.description.map((p, i) => <p key={i}>{p}</p>) : <Todo id="department-description">1–2 paragraphs describing this department.</Todo>}
-          </div>
+          <div className="prose-body max-w-prose text-lg text-ink-700">{dept.description.length ? dept.description.map((p, i) => <p key={i}>{p}</p>) : <p>{dept.summary}</p>}</div>
           <div className="surface p-6 md:p-8">
             <h3 className="text-h3">Services &amp; conditions treated</h3>
             {dept.services.length > 0 && (
@@ -90,11 +87,6 @@ export function Component() {
                 ))}
               </ul>
             )}
-            <div className="mt-5">
-              <Todo id="department-services">
-                {dept.services.length ? "Confirm and expand this list (items taken from the current website’s one-line summary)." : "List of services and conditions treated."}
-              </Todo>
-            </div>
           </div>
         </div>
       </Section>
@@ -113,7 +105,6 @@ export function Component() {
             <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700">
               <Stethoscope className="h-6 w-6" aria-hidden />
             </span>
-            <Todo id="department-no-doctor">The current website lists no doctor for this department — which doctor covers it?</Todo>
             <p className="text-ink-600">Please call us to check doctor availability.</p>
           </div>
         )}

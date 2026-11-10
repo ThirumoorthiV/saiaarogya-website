@@ -24,19 +24,19 @@ export function Footer() {
   const a = "text-[15px] text-white/80 no-underline transition-colors hover:text-white";
 
   return (
-    <footer className="bg-maroon-950 text-white">
+    <footer className="on-dark bg-maroon-900 text-white">
       <Container className="pt-14 md:pt-20">
         {/* CTA card */}
-        <div className="flex flex-col gap-6 rounded-4xl bg-gradient-to-br from-maroon-800 to-maroon-900 p-7 ring-1 ring-white/10 md:flex-row md:items-center md:justify-between md:p-10">
+        <div data-panel className="flex flex-col gap-6 rounded-4xl bg-white p-7 text-ink-900 shadow-lift md:flex-row md:items-center md:justify-between md:p-10">
           <div className="max-w-xl">
-            <p className="font-heading text-2xl font-bold tracking-tight md:text-3xl">Need help planning your visit?</p>
-            <p className="mt-2 text-maroon-100">Call the hospital desk. Every consultation and treatment is free of charge.</p>
+            <p className="font-heading text-2xl font-bold tracking-tight text-ink-900 md:text-3xl">Need help planning your visit?</p>
+            <p className="mt-2 text-ink-600">Call the hospital desk. Every consultation and treatment is free of charge.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <ButtonLink to={tel} variant="onDark" icon={<Phone className="h-[18px] w-[18px]" aria-hidden />} track="call-footer-cta">
+            <ButtonLink to={tel} icon={<Phone className="h-[18px] w-[18px]" aria-hidden />} track="call-footer-cta">
               {`Call ${s.phoneDisplay}`}
             </ButtonLink>
-            <ButtonLink to="/patient-guide/" variant="onDarkOutline">
+            <ButtonLink to="/patient-guide/" variant="outline">
               Patient Guide
             </ButtonLink>
           </div>
@@ -119,9 +119,7 @@ export function Footer() {
 
       <div className="border-t border-white/10 pb-[104px] md:pb-0">
         <Container className="flex flex-col gap-3 py-6 text-[13px] text-white/70 md:flex-row md:items-center md:justify-between">
-          <p>
-            © {year} Sai Aarogya Hospital. A unit of Sri Sathya Sai Sujala Sravanthi Trust, under the Sri Madhusudan Sai Global Humanitarian Mission.
-          </p>
+          <p>© {year} Sai Aarogya Hospital. A unit of Sri Sathya Sai Sujala Sravanthi Trust, under the Sri Madhusudan Sai Global Humanitarian Mission.</p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             {policies.map((p) => (
               <li key={p.slug}>

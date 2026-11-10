@@ -7,8 +7,7 @@ import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
-import { MissionTrust, PortraitCard, Timeline } from "@/components/about/AboutParts";
+import { MissionTrust, PortraitFeature, Timeline } from "@/components/about/AboutParts";
 import { NetworkCards } from "@/components/sections/NetworkCards";
 
 /** About — Our Story (§5.2). */
@@ -16,7 +15,13 @@ export function Component() {
   const path = "/about/";
   const meta = getPageMeta(path);
   const ms = about.multiSpeciality;
-  const schema = { "@context": "https://schema.org", "@type": "AboutPage", url: `${SITE_URL}${path}`, name: meta.title, about: { "@id": HOSPITAL_ID } };
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    url: `${SITE_URL}${path}`,
+    name: meta.title,
+    about: { "@id": HOSPITAL_ID },
+  };
 
   return (
     <>
@@ -27,7 +32,12 @@ export function Component() {
         crumbs={meta.crumbs}
         path={path}
         intro={<p>{about.intro[0]}</p>}
-        image={{ src: "/images/hospital-ward-sm.webp", alt: "Inpatient ward at Sai Aarogya Hospital, Bapatla", width: 800, height: 600 }}
+        image={{
+          src: "/images/hospital-ward-sm.webp",
+          alt: "Inpatient ward at Sai Aarogya Hospital, Bapatla",
+          width: 800,
+          height: 600,
+        }}
       />
 
       <Section id="free-for-all" tone="white" className="!py-12 md:!py-16">
@@ -38,9 +48,9 @@ export function Component() {
       </Section>
 
       <Section id="inspiration" eyebrow="Inspiration & founder" title="Guided by selfless service">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <PortraitCard eyebrow="The Inspiration" person={about.inspiration} />
-          <PortraitCard eyebrow="The Founder" person={about.founder} />
+        <div className="space-y-6 md:space-y-8">
+          <PortraitFeature eyebrow="The Inspiration" person={about.inspiration} />
+          <PortraitFeature eyebrow="The Founder" person={about.founder} reverse />
         </div>
       </Section>
 
@@ -86,11 +96,6 @@ export function Component() {
             Meet the trustees
           </ButtonLink>
         </div>
-        {!ms.published && (
-          <div className="mt-6">
-            <Todo id="multi-speciality">“Building a World-Class Multi-Speciality Centre” content exists on the current site but is hidden — publish or remove?</Todo>
-          </div>
-        )}
       </Section>
 
       <Section id="network" eyebrow="Our network" title="Part of a larger mission" intro="Sai Aarogya Hospital operates in collaboration with other healthcare initiatives of the Mission.">

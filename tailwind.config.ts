@@ -46,13 +46,20 @@ export default {
       borderRadius: { "4xl": "2rem" },
       maxWidth: { content: "1240px", prose: "68ch" },
       boxShadow: {
-        soft: "0 1px 2px rgba(36,28,26,.04), 0 8px 24px -8px rgba(36,28,26,.08)",
-        lift: "0 2px 4px rgba(36,28,26,.04), 0 20px 40px -12px rgba(79,7,7,.18)",
+        // Layered card shadows: a tight contact shadow plus a soft, slightly warm ambient shadow
+        soft: "0 1px 2px rgba(36,28,26,.05), 0 4px 10px -2px rgba(36,28,26,.05), 0 16px 36px -14px rgba(79,7,7,.16)",
+        lift: "0 2px 4px rgba(36,28,26,.05), 0 10px 20px -6px rgba(36,28,26,.07), 0 28px 56px -18px rgba(79,7,7,.28)",
         menu: "0 24px 60px -16px rgba(46,4,4,.28), 0 2px 6px rgba(46,4,4,.06)",
       },
       keyframes: {
-        "fade-up": { "0%": { opacity: "0", transform: "translateY(10px)" }, "100%": { opacity: "1", transform: "none" } },
-        "menu-in": { "0%": { opacity: "0", transform: "translateY(-6px) scale(.98)" }, "100%": { opacity: "1", transform: "none" } },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "none" },
+        },
+        "menu-in": {
+          "0%": { opacity: "0", transform: "translateY(-6px) scale(.98)" },
+          "100%": { opacity: "1", transform: "none" },
+        },
       },
       animation: {
         "fade-up": "fade-up 280ms ease-out both",

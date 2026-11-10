@@ -4,13 +4,13 @@ import { Info } from "lucide-react";
 import { departments, doctors, getDepartment, opdTimings, siteSettings } from "@/content";
 import { formatTime } from "@/lib/opdStatus";
 import { DAYS, type DayOfWeek } from "@/types";
-import { Todo } from "@/components/ui/Todo";
 import { OpenNowBadge } from "@/components/ui/OpenNowBadge";
 import { VisitingBadge } from "@/components/doctors/DoctorCard";
 
 function Table({ caption, children }: { caption: string; children: ReactNode }) {
   return (
-    <div className="surface overflow-x-auto">
+    // Focusable so keyboard users can scroll the table sideways on small screens
+    <div className="surface overflow-x-auto" role="region" aria-label={caption} tabIndex={0}>
       <table className="w-full min-w-[520px] border-collapse text-left text-[15px]">
         <caption className="sr-only">{caption}</caption>
         {children}
@@ -67,7 +67,7 @@ export function GeneralHours() {
           </tbody>
         </Table>
       ) : (
-        <Todo id="opd-hours">General OPD days and opening / closing times (also drives the “Open now” badge).</Todo>
+        <p className="text-ink-700">Please call the hospital desk for OPD timings.</p>
       )}
       {s.holidayNotice && (
         <p role="note" className="mt-4 flex items-start gap-2.5 rounded-2xl bg-maroon-50 p-4 text-ink-900">
@@ -124,7 +124,7 @@ export function DepartmentSchedule({ departmentSlug }: { departmentSlug?: string
           </tbody>
         </Table>
       ) : (
-        <Todo id="opd-timetable">OPD timetable per department and day (department · day · start · end).</Todo>
+        <p className="text-ink-700">Please call the hospital desk for department timings.</p>
       )}
     </section>
   );

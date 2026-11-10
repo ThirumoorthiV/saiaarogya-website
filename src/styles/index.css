@@ -49,6 +49,13 @@
     outline-offset: 2px;
     border-radius: 6px;
   }
+  /* White focus ring on maroon areas (header, top bar, footer); light panels inside them reset it */
+  .on-dark :focus-visible {
+    outline-color: #fff;
+  }
+  .on-dark [data-panel] :focus-visible {
+    outline-color: theme("colors.maroon.700");
+  }
   img {
     max-width: 100%;
     height: auto;
@@ -82,7 +89,7 @@
     @apply mt-4;
   }
   .surface {
-    @apply rounded-3xl border border-ink-200/80 bg-white shadow-soft;
+    @apply rounded-3xl border border-ink-200/60 bg-white shadow-soft;
   }
   .surface-hover {
     @apply transition duration-200 hover:-translate-y-0.5 hover:border-maroon-200 hover:shadow-lift;

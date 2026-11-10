@@ -1,17 +1,15 @@
 import { MapPin, Navigation, Phone } from "lucide-react";
 import { siteSettings, tel } from "@/content";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { ContactDetails } from "./ContactDetails";
 import { MapEmbed } from "./MapEmbed";
 
 /** §5.1-9 Visit us — the same SiteSettings data as Contact and How to Reach (single source). */
-export function VisitUs({ showDirectionsTodo = true }: { showDirectionsTodo?: boolean }) {
+export function VisitUs() {
   return (
     <div className="surface grid overflow-hidden lg:grid-cols-[1fr_1.25fr]">
       <div className="flex flex-col gap-7 p-6 md:p-10">
         <ContactDetails showEmergency={false} />
-        {showDirectionsTodo && <Todo id="directions">Landmarks, nearest bus stop and the road route from Bapatla town (bus / auto directions).</Todo>}
         <div className="mt-auto flex flex-col gap-3 sm:flex-row">
           <ButtonLink to={siteSettings.mapUrl} newTab icon={<Navigation className="h-[18px] w-[18px]" aria-hidden />} track="directions-visit">
             Get directions

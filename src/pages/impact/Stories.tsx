@@ -3,7 +3,6 @@ import { getPageMeta } from "@/lib/pageMeta";
 import { Seo } from "@/components/seo/Seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
-import { Todo } from "@/components/ui/Todo";
 import { StoryCard } from "@/components/impact/StoryCard";
 
 /** Listing used for /impact/stories/ (patient stories) and /impact/camps/ (camps & updates). */
@@ -25,11 +24,9 @@ export function StoryListing({ path, kind }: { path: string; kind: "patient" | "
               ))}
             </ul>
           ) : kind === "patient" ? (
-            <Todo id="patient-stories">
-              3–5 patient stories with written consent. Add them in the CMS under “Stories &amp; camp updates” with category “Patient” and tick “Written consent received” — stories without consent are never shown.
-            </Todo>
+            <p className="text-ink-700">Stories from our patients will be shared here soon.</p>
           ) : (
-            <Todo id="camp-updates">Medical camp and hospital update posts (category “Camp” or “Update”) with dates and photos.</Todo>
+            <p className="surface p-6 text-ink-700">Medical camp reports and hospital updates will be posted here soon.</p>
           )}
         </Container>
       </div>

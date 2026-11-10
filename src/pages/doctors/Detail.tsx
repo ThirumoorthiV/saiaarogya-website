@@ -9,7 +9,6 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { ButtonLink } from "@/components/ui/Button";
-import { Todo } from "@/components/ui/Todo";
 import { DoctorCard, DoctorPhoto, VisitingBadge } from "@/components/doctors/DoctorCard";
 import { Component as NotFound } from "@/pages/NotFound";
 
@@ -50,13 +49,6 @@ export function Component() {
           <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,340px)_1fr] md:gap-14">
             <div className="w-full max-w-[340px]">
               <DoctorPhoto doctor={doctor} size="profile" className="shadow-lift" />
-              {!doctor.photo && (
-                <div className="mt-3">
-                  <Todo id="doctor-photo" inline>
-                    doctor photo
-                  </Todo>
-                </div>
-              )}
             </div>
             <div>
               <p className="eyebrow">{doctor.type} doctor</p>
@@ -73,29 +65,13 @@ export function Component() {
                   {doctor.qualification}
                 </Fact>
                 <Fact icon={<CalendarDays className={ic} aria-hidden />} label="Visiting days">
-                  {doctor.visitingDays.length ? (
-                    doctor.visitingDays.includes("Daily") ? "Daily" : doctor.visitingDays.join(", ")
-                  ) : (
-                    <Todo id="doctor-visiting-days" inline>
-                      visiting days
-                    </Todo>
-                  )}
+                  {doctor.visitingDays.length ? doctor.visitingDays.includes("Daily") ? "Daily" : doctor.visitingDays.join(", ") : <span className="text-ink-600">Call to check days</span>}
                 </Fact>
                 <Fact icon={<Clock className={ic} aria-hidden />} label="Consultation time">
-                  {doctor.timing ?? (
-                    <Todo id="doctor-timing" inline>
-                      consultation time
-                    </Todo>
-                  )}
+                  {doctor.timing ?? <span className="text-ink-600">Please call to confirm</span>}
                 </Fact>
                 <Fact icon={<Languages className={ic} aria-hidden />} label="Languages spoken">
-                  {doctor.languages.length ? (
-                    doctor.languages.join(", ")
-                  ) : (
-                    <Todo id="doctor-languages" inline>
-                      languages
-                    </Todo>
-                  )}
+                  {doctor.languages.length ? doctor.languages.join(", ") : <span>English</span>}
                 </Fact>
               </dl>
               <div className="mt-8 flex flex-wrap gap-3">

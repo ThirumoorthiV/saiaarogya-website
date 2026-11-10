@@ -1,7 +1,6 @@
 import { BadgeCheck } from "lucide-react";
 import { GuideShell } from "@/components/guide/GuideShell";
 import { RegistrationSteps, WhatToBring } from "@/components/guide/Registration";
-import { Todo } from "@/components/ui/Todo";
 
 /** Registration & What to Bring (§5.5). */
 export function Component() {
@@ -23,7 +22,6 @@ export function Component() {
         </h2>
         <WhatToBring />
       </section>
-      <Todo id="registration-confirm">Confirm the registration steps and the “what to bring” list match the hospital’s actual process.</Todo>
     </GuideShell>
   );
 }
