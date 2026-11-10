@@ -1,26 +1,36 @@
-import { ExternalLink, Quote } from "lucide-react";
+import { useId, useState } from "react";
+import { ChevronDown, ExternalLink, Quote } from "lucide-react";
 import { about, siteSettings, type Portrait } from "@/content";
 import type { GovernanceGroup, Person } from "@/types";
 import { cn } from "@/components/ui/cn";
 
 /**
- * Inspiration / Founder feature row (§5.2): photo on one side, text on the other.
+ * Inspiration / Founder feature (§5.2): framed square photo beside the text.
  * `reverse` puts the photo on the right on desktop, so consecutive rows alternate.
  */
 export function PortraitFeature({ eyebrow, person, reverse = false }: { eyebrow: string; person: Portrait; reverse?: boolean }) {
   return (
-    <article className="surface grid items-center overflow-hidden md:grid-cols-2">
-      <div className={cn("flex h-full items-center justify-center bg-gradient-to-br from-maroon-100 to-maroon-50 p-5 sm:p-8", reverse && "md:order-2")}>
-        <img src={person.photo} alt={`Portrait of ${person.name}`} width={640} height={480} loading="lazy" className="h-auto w-full max-w-xl rounded-3xl shadow-lift ring-4 ring-white" />
-      </div>
-      <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
-        <p className="eyebrow self-start">{eyebrow}</p>
-        <h3 className="mt-4 font-heading text-2xl font-bold text-ink-900 md:text-3xl">{person.name}</h3>
-        <blockquote className="mt-5 flex gap-3 border-l-4 border-maroon-300 bg-maroon-50 py-3 pl-4 pr-4 font-heading text-lg font-semibold text-maroon-900 rounded-r-2xl">
-          <Quote className="h-5 w-5 shrink-0 text-maroon-400" aria-hidden />
-          <p>{person.quote}</p>
+    <article className="grid items-center gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+      <figure className={cn("relative mx-auto w-full max-w-[420px]", reverse && "md:order-2")}>
+        <div aria-hidden className={cn("absolute inset-0 hidden rounded-[2rem] bg-maroon-100 md:block md:translate-y-4", reverse ? "md:-translate-x-4" : "md:translate-x-4")} />
+        <img
+          src={person.photo}
+          alt={`Portrait of ${person.name}`}
+          width={480}
+          height={480}
+          loading="lazy"
+          className="relative aspect-square w-full rounded-[2rem] object-cover object-center shadow-lift ring-1 ring-ink-200/60"
+        />
+      </figure>
+      <div>
+        <p className="eyebrow">{eyebrow}</p>
+        <h3 className="mt-4 font-heading text-3xl font-bold tracking-tight text-ink-900 md:text-4xl">{person.name}</h3>
+        <blockquote className="relative mt-6 pl-6">
+          <span aria-hidden className="absolute bottom-1 left-0 top-1 w-1 rounded-full bg-maroon-700" />
+          <Quote className="mb-2 h-6 w-6 text-maroon-300" aria-hidden />
+          <p className="font-heading text-xl font-semibold leading-snug text-maroon-800 md:text-2xl">{person.quote}</p>
         </blockquote>
-        <div className="prose-body mt-5 text-ink-700">
+        <div className="prose-body mt-6 max-w-prose text-ink-700">
           {person.body.map((p, i) => (
             <p key={i}>{p}</p>
           ))}
@@ -94,35 +104,57 @@ export function Timeline() {
 }
 
 function PersonCard({ person }: { person: Person }) {
+  const [open, setOpen] = useState(false);
+  const bioId = useId();
   const initials = person.name
     .replace(/^(Dr|Sri|Smt)\.?\s+/i, "")
     .split(/\s+/)
     .map((w) => w[0])
     .slice(0, 2)
     .join("");
+  const long = (person.bio?.length ?? 0) > 150;
   return (
-    <li className="surface surface-hover group flex h-full flex-col overflow-hidden p-2">
-      <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-maroon-100 to-maroon-50">
+    <li className="surface flex h-full flex-col p-5 md:p-6">
+      <div className="flex items-center gap-4">
         {person.photo ? (
           <img
             src={person.photo}
             alt={`Portrait of ${person.name}`}
-            width={320}
-            height={320}
+            width={112}
+            height={112}
             loading="lazy"
-            className="aspect-square w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-24 w-24 shrink-0 rounded-2xl object-cover object-top ring-1 ring-ink-200 md:h-28 md:w-28"
           />
         ) : (
-          <span className="flex aspect-square w-full items-center justify-center font-heading text-4xl font-bold text-maroon-700" aria-hidden>
+          <span aria-hidden className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-maroon-100 font-heading text-2xl font-bold text-maroon-700 md:h-28 md:w-28">
             {initials}
           </span>
         )}
+        <div className="min-w-0">
+          <h3 className="font-heading text-lg font-bold leading-snug text-ink-900">{person.name}</h3>
+          {person.role && <p className="mt-1.5 inline-block rounded-full bg-maroon-50 px-2.5 py-0.5 text-[13px] font-semibold text-maroon-800">{person.role}</p>}
+        </div>
       </div>
-      <div className="flex flex-1 flex-col px-3 pb-3 pt-4 text-center">
-        <h3 className="font-heading text-lg font-bold text-ink-900">{person.name}</h3>
-        {person.role && <p className="mt-0.5 text-sm font-semibold text-maroon-700">{person.role}</p>}
-        {person.bio && <p className="mt-3 text-[15px] text-ink-700">{person.bio}</p>}
-      </div>
+      {person.bio && (
+        <div className="mt-4 border-t border-ink-200/70 pt-4">
+          <p id={bioId} className={cn("text-[15px] leading-relaxed text-ink-700", long && !open && "line-clamp-3")}>
+            {person.bio}
+          </p>
+          {long && (
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls={bioId}
+              onClick={() => setOpen((o) => !o)}
+              className="mt-1 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-maroon-700 hover:text-maroon-900"
+            >
+              {open ? "Show less" : "Read more"}
+              <ChevronDown className={cn("h-4 w-4 transition-transform", open && "rotate-180")} aria-hidden />
+              <span className="sr-only"> about {person.name}</span>
+            </button>
+          )}
+        </div>
+      )}
     </li>
   );
 }
@@ -148,7 +180,7 @@ export function GovernanceGroups({ groups }: { groups: GovernanceGroup[] }) {
               {m.parts.map((g, i) => (
                 <div key={i}>
                   {g.subtitle && <p className="eyebrow mb-4">{g.subtitle}</p>}
-                  <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+                  <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
                     {g.people.map((p) => (
                       <PersonCard key={p.slug} person={p} />
                     ))}

@@ -48,7 +48,7 @@ export function Component() {
       </Section>
 
       <Section id="inspiration" eyebrow="Inspiration & founder" title="Guided by selfless service">
-        <div className="space-y-6 md:space-y-8">
+        <div className="space-y-16 md:space-y-24">
           <PortraitFeature eyebrow="The Inspiration" person={about.inspiration} />
           <PortraitFeature eyebrow="The Founder" person={about.founder} reverse />
         </div>

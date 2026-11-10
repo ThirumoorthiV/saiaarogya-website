@@ -20,25 +20,25 @@ export function Breadcrumbs({ items, currentPath }: { items: Crumb[]; currentPat
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Head>
       <nav aria-label="Breadcrumb">
-        <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-600">
+        <ol className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl bg-white px-4 py-2 text-sm font-medium text-ink-700 shadow-soft ring-1 ring-ink-200/70">
           {all.map((c, i) => {
             const last = i === all.length - 1;
             return (
               <Fragment key={`${c.label}-${i}`}>
                 <li>
                   {last || !c.to ? (
-                    <span aria-current={last ? "page" : undefined} className="font-medium text-ink-900">
+                    <span aria-current={last ? "page" : undefined} className="font-semibold text-maroon-800">
                       {c.label}
                     </span>
                   ) : (
-                    <Link to={c.to} className="inline-flex items-center gap-1 rounded-full text-ink-600 no-underline hover:text-maroon-700">
-                      {i === 0 && <Home className="h-3.5 w-3.5" aria-hidden />}
+                    <Link to={c.to} className="inline-flex items-center gap-1.5 rounded-full text-ink-700 no-underline hover:text-maroon-700 hover:underline">
+                      {i === 0 && <Home className="h-4 w-4 text-maroon-700" aria-hidden />}
                       {c.label}
                     </Link>
                   )}
                 </li>
                 {!last && (
-                  <li aria-hidden className="text-ink-300">
+                  <li aria-hidden className="text-ink-500">
                     <ChevronRight className="h-3.5 w-3.5" />
                   </li>
                 )}
