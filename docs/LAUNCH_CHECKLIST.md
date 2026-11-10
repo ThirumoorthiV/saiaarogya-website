@@ -20,8 +20,7 @@ This covers the steps to take the new site live on Netlify at `www.saiaarogya.ho
   - [ ] `FRAPPE_WEBHOOK_URL`: the Frappe endpoint that records donations. If Frappe needs one, also set `FRAPPE_WEBHOOK_AUTH` (sent as the `Authorization` header).
   - [ ] Recurring donations need **Subscriptions** enabled on the Razorpay account (ask Razorpay support).
   - [ ] In Razorpay, turn **international payments off** (Indian passport holders only).
-  - [ ] Test-mode run: donate ₹1 with a Razorpay test card or UPI, then check that the donation appears in Frappe **once**, with `payment_status = Paid` and the `razorpay_payment_id`.
-  - [ ] In Frappe, treat `razorpay_payment_id` as unique, so a webhook retry never creates a duplicate.
+  - [ ] Test-mode run: donate ₹1 with a Razorpay test card or UPI, then check that the donation appears in Frappe **once**, with the 12 form fields and the amount.
   - [ ] Switch to live keys and make one small real donation to confirm it reaches Frappe.
 - [ ] Trigger a deploy and check the deploy log ends with `[vite-react-ssg] Build finished.`
 - [ ] **CMS logins**: Site configuration → Identity → **Enable Identity**. Set Registration to **Invite only**, then Services → **Enable Git Gateway**. Invite each staff editor by email.

@@ -3,9 +3,9 @@
  * Events: order.paid (one-time) and subscription.charged (each recurring instalment).
  *
  * Verifies X-Razorpay-Signature, then forwards the donor's form details (from the Razorpay
- * notes) plus the payment details to the Frappe webhook, using the Frappe field names.
+ * notes) plus the donation amount to the Frappe webhook: the 12 Frappe keys + amount.
  * Frappe is called once per successful payment. If Frappe fails we return 502 so
- * Razorpay retries the webhook later (Frappe should treat razorpay_payment_id as unique).
+ * Razorpay retries the webhook later (Razorpay retries only when we do not return 2xx).
  */
 import { toFrappePayload, type RazorpayPayment } from "../../src/lib/donation";
 import { env, json, verifySignature } from "../lib/razorpay";
@@ -31,12 +31,9 @@ export default async (req: Request) => {
   const evt = JSON.parse(raw) as Event;
   const payment = evt.payload.payment?.entity;
   let notes: Record<string, string> | undefined;
-  let subscriptionId: string | undefined;
   if (evt.event === "order.paid") notes = evt.payload.order?.entity.notes;
-  else if (evt.event === "subscription.charged") {
-    notes = evt.payload.subscription?.entity.notes;
-    subscriptionId = evt.payload.subscription?.entity.id;
-  } else return json(200, { ignored: evt.event });
+  else if (evt.event === "subscription.charged") notes = evt.payload.subscription?.entity.notes;
+  else return json(200, { ignored: evt.event });
 
   if (!payment || !notes?.pan_card) return json(200, { ignored: "not a website donation" });
 
@@ -48,7 +45,7 @@ export default async (req: Request) => {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (env("FRAPPE_WEBHOOK_AUTH")) headers.Authorization = env("FRAPPE_WEBHOOK_AUTH");
 
-  const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(toFrappePayload(notes, payment, { subscriptionId })) }).catch((e: unknown) => {
+  const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(toFrappePayload(notes, payment)) }).catch((e: unknown) => {
     console.error("razorpay-webhook: Frappe request failed", e);
     return null;
   });

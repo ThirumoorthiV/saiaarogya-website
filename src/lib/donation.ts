@@ -110,10 +110,11 @@ export function toRazorpayNotes(d: Donation): Record<string, string> {
 }
 
 /**
- * Keys sent to the Frappe webhook. The first 12 are the Frappe donation field names
- * (pan_card … donation_type). The rest are additional and must exist in Frappe (or be ignored by it).
+ * The 12 form keys Frappe accepts (Frappe donation field names), sent with the donation amount.
  */
 export const FRAPPE_FORM_KEYS = ["pan_card", "salutation", "email", "first_name", "last_name", "address", "city", "state", "pincode", "country", "donation_purpose", "donation_type"] as const;
+/** Frappe field that receives the donation amount in rupees. */
+export const FRAPPE_AMOUNT_KEY = "amount";
 
 export interface RazorpayPayment {
   id: string;
@@ -124,25 +125,11 @@ export interface RazorpayPayment {
   created_at?: number; // unix seconds
 }
 
-/** Build the Frappe payload from the Razorpay notes plus the captured payment. */
-export function toFrappePayload(notes: Record<string, string | undefined>, payment: RazorpayPayment, extra: { subscriptionId?: string } = {}) {
+/**
+ * Payload POSTed to the Frappe webhook after Razorpay confirms the payment:
+ * exactly the 12 form keys plus the amount (rupees). Nothing else is sent.
+ */
+export function toFrappePayload(notes: Record<string, string | undefined>, payment: Pick<RazorpayPayment, "amount">): Record<string, string | number> {
   const form = Object.fromEntries(FRAPPE_FORM_KEYS.map((k) => [k, notes[k] ?? ""]));
-  const [frequency = "", occurrences = ""] = (notes.recurrence ?? "").split("|");
-  return {
-    ...form,
-    // Additional fields (confirm these exist in Frappe)
-    mobile: notes.mobile ?? "",
-    dob: notes.dob ?? "",
-    frequency,
-    no_of_occurrence: occurrences,
-    amount: payment.amount / 100,
-    currency: payment.currency,
-    payment_status: "Paid",
-    payment_method: payment.method ?? "",
-    razorpay_payment_id: payment.id,
-    razorpay_order_id: payment.order_id ?? "",
-    razorpay_subscription_id: extra.subscriptionId ?? "",
-    paid_at: payment.created_at ? new Date(payment.created_at * 1000).toISOString() : new Date().toISOString(),
-    source: "saiaarogya.hospital",
-  };
+  return { ...form, [FRAPPE_AMOUNT_KEY]: payment.amount / 100 };
 }
