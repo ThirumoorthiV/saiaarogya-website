@@ -17,11 +17,11 @@ interface PageHeroProps {
   children?: ReactNode;
 }
 
-/** Inner-page hero: near-white banner with a subtle maroon accent, breadcrumbs, the page's single H1, intro. */
+/** Inner-page hero: light maroon banner (maroon-100, the menu hover colour) with soft rings, breadcrumbs, the page's single H1, intro. */
 export function PageHero({ title, intro, eyebrow, crumbs, path, actions, image, aside, children }: PageHeroProps) {
   const split = Boolean(image || aside);
   return (
-    <div className="relative overflow-hidden border-b border-ink-200/70 bg-gradient-to-br from-white via-white to-maroon-50">
+    <div className="hero-tint relative overflow-hidden border-b border-maroon-200 bg-maroon-100">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_90%_at_100%_0%,#EDCACA_0%,transparent_65%),radial-gradient(50%_70%_at_0%_100%,#FBF4F4_0%,transparent_70%)]"

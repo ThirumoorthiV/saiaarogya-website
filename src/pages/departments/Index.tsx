@@ -46,7 +46,11 @@ export function Component() {
               className="block min-h-14 w-full rounded-full border border-ink-200 bg-white py-3 pl-14 pr-14 text-base shadow-soft transition hover:border-maroon-300 focus:border-maroon-700 focus:outline-none focus:ring-4 focus:ring-maroon-100"
             />
             {query && (
-              <button type="button" onClick={() => setQuery("")} className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-ink-600 hover:bg-maroon-100 hover:text-maroon-900">
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-ink-600 hover:bg-maroon-100 hover:text-maroon-900"
+              >
                 <X className="h-5 w-5" aria-hidden />
                 <span className="sr-only">Clear search</span>
               </button>
@@ -63,7 +67,7 @@ export function Component() {
               : `${results.length} of ${departments.length} departments match “${query}”.`}
           </p>
           {results.length ? (
-            <ul id="dept-results" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+            <ul id="dept-results" className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
               {results.map((d) => (
                 <li key={d.slug}>
                   <DepartmentCard department={d} showCount />

@@ -16,8 +16,8 @@ export function IndianDonateButton({ onDark = false }: { onDark?: boolean }) {
       Donate online
     </ButtonLink>
   ) : (
-    <ButtonLink to="/contact/" variant={onDark ? "onDark" : "primary"} size="lg" icon={<HeartHandshake className="h-5 w-5" aria-hidden />} track="donate-indian-contact">
-      Contact us to donate
+    <ButtonLink to="/support-us/donate/#donate-form" variant={onDark ? "onDark" : "primary"} size="lg" icon={<HeartHandshake className="h-5 w-5" aria-hidden />} track="donate-indian-contact">
+      Donate now
     </ButtonLink>
   );
 }

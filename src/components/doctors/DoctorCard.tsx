@@ -16,7 +16,7 @@ const initials = (name: string) =>
     .join("");
 
 /** Doctor photo, or an initials tile until the photo is supplied (TODO doctor-photo). */
-export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doctor; className?: string; size?: "card" | "profile" }) {
+export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doctor; className?: string; size?: "card" | "profile" | "thumb" }) {
   if (doctor.photo) {
     return (
       <img
@@ -25,7 +25,7 @@ export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doct
         width={480}
         height={480}
         loading="lazy"
-        className={cn("w-full object-cover", size === "card" ? "aspect-[5/4] rounded-2xl" : "aspect-square rounded-4xl", className)}
+        className={cn("object-cover", size !== "thumb" && "w-full", size === "card" ? "aspect-[5/4] rounded-2xl" : "aspect-square rounded-4xl", className)}
       />
     );
   }
@@ -34,8 +34,9 @@ export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doct
       role="img"
       aria-label={`${doctor.name} — photo coming soon`}
       className={cn(
-        "relative flex w-full items-center justify-center overflow-hidden bg-gradient-to-br from-maroon-50 via-maroon-100 to-maroon-50",
-        size === "card" ? "aspect-[5/4] rounded-2xl" : "aspect-square rounded-4xl",
+        "relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-maroon-50 via-maroon-100 to-maroon-50",
+        size !== "thumb" && "w-full",
+        size === "card" ? "aspect-[5/4] rounded-2xl" : size === "thumb" ? "aspect-square rounded-2xl" : "aspect-square rounded-4xl",
         className,
       )}
     >
@@ -44,7 +45,7 @@ export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doct
         aria-hidden
         className={cn(
           "relative flex items-center justify-center rounded-full bg-white font-heading font-bold text-maroon-700 shadow-soft",
-          size === "card" ? "h-20 w-20 text-2xl" : "h-36 w-36 text-5xl",
+          size === "card" ? "h-20 w-20 text-2xl" : size === "thumb" ? "h-14 w-14 text-lg" : "h-36 w-36 text-5xl",
         )}
       >
         {initials(doctor.name)}
@@ -73,13 +74,20 @@ export function VisitingBadge({ doctor }: { doctor: Doctor }) {
 }
 
 /** Doctor card (§5.4): photo, name, qualification, speciality, visiting-day badge. Whole card is clickable. */
-export function DoctorCard({ doctor, headingLevel = "h3" }: { doctor: Doctor; headingLevel?: "h2" | "h3" }) {
+export function DoctorCard({ doctor, headingLevel = "h3", rowOnMobile = true }: { doctor: Doctor; headingLevel?: "h2" | "h3"; rowOnMobile?: boolean }) {
   const dept = getDepartment(doctor.department);
   const H = headingLevel;
   return (
-    <article className="group surface surface-hover relative flex h-full flex-col p-3">
-      <DoctorPhoto doctor={doctor} />
-      <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
+    <article className={cn("group surface surface-hover relative flex h-full p-3", rowOnMobile ? "flex-row items-start gap-4 sm:flex-col sm:gap-0" : "flex-col")}>
+      {rowOnMobile ? (
+        <>
+          <DoctorPhoto doctor={doctor} size="thumb" className="w-24 shrink-0 sm:hidden" />
+          <DoctorPhoto doctor={doctor} className="hidden sm:flex" />
+        </>
+      ) : (
+        <DoctorPhoto doctor={doctor} />
+      )}
+      <div className={cn("flex min-w-0 flex-1 flex-col pb-2", rowOnMobile ? "pt-1 sm:px-2 sm:pt-4" : "px-2 pt-4")}>
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-maroon-700">{doctor.type}</p>
         <H className="mt-1.5 font-heading text-lg font-bold leading-snug text-ink-900">
           <Link to={`/doctors/${doctor.slug}/`} className="text-ink-900 no-underline after:absolute after:inset-0 after:rounded-3xl group-hover:text-maroon-800">
@@ -95,7 +103,7 @@ export function DoctorCard({ doctor, headingLevel = "h3" }: { doctor: Doctor; he
             {dept.name}
           </p>
         )}
-        <div className="relative z-10 mt-auto pt-4">
+        <div className="relative z-10 mt-auto pt-3 sm:pt-4">
           <VisitingBadge doctor={doctor} />
         </div>
       </div>

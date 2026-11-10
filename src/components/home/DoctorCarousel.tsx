@@ -38,7 +38,7 @@ export function DoctorCarousel() {
       >
         {doctors.map((d) => (
           <li key={d.slug} className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-[calc(25%-15px)]">
-            <DoctorCard doctor={d} />
+            <DoctorCard rowOnMobile={false} doctor={d} />
           </li>
         ))}
       </ul>

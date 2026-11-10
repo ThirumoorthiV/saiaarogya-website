@@ -42,8 +42,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          <div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-14 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="col-span-2 lg:col-span-1">
             <Logo onDark />
             <p className="mt-5 max-w-sm text-[15px] text-white/80">
               Your one-stop destination for quality healthcare solutions, offered by medical specialists driven by compassion and expertise, free of charge.

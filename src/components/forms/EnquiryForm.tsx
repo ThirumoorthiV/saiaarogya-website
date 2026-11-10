@@ -195,7 +195,7 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
       <p id="enq-note" className="rounded-2xl bg-ink-100 px-4 py-3 text-sm text-ink-700">
         Please do not include medical details or reports in this form. For medical questions, call us or visit the OPD.
       </p>
-      <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full sm:w-auto">
+      <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full">
         {isSubmitting ? "Sending…" : "Send message"}
       </Button>
     </form>

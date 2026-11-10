@@ -59,7 +59,7 @@ export function Header() {
                     className={({ isActive }) =>
                       cn(
                         "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-3.5 text-[15px] font-medium no-underline transition-colors",
-                        isActive ? "bg-white/15 text-white" : "text-maroon-50 hover:bg-white/10 hover:text-white",
+                        isActive ? "bg-white font-semibold text-maroon-800 shadow-sm" : "text-maroon-50 hover:bg-white/10 hover:text-white",
                       )
                     }
                   >

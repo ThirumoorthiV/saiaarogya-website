@@ -173,7 +173,7 @@ export function VolunteerForm() {
         <textarea id="vol-message" rows={4} className={inputClass(false)} {...register("message")} />
       </Field>
       <input type="checkbox" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("botcheck")} />
-      <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full sm:w-auto">
+      <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full">
         {isSubmitting ? "Sending…" : "Send volunteer request"}
       </Button>
     </form>
