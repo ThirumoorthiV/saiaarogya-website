@@ -1,6 +1,6 @@
 import { CheckCircle2, MessageSquareQuote } from "lucide-react";
 import { Head } from "vite-react-ssg";
-import { about, departments } from "@/content";
+import { about, departments, stories } from "@/content";
 import { getPageMeta } from "@/lib/pageMeta";
 import { hospitalSchema } from "@/lib/schema";
 import { Seo } from "@/components/seo/Seo";
@@ -14,10 +14,12 @@ import { DepartmentCard } from "@/components/departments/DepartmentCard";
 import { NetworkCards } from "@/components/sections/NetworkCards";
 import { VisitUs } from "@/components/sections/VisitUs";
 import { SupportCta } from "@/components/sections/SupportCta";
+import { StoryCard } from "@/components/impact/StoryCard";
 
 /** Homepage — requirements §5.1 (sections 1–10; utility strip and footer are in the layout). */
 export function Component() {
   const meta = getPageMeta("/");
+  const patientStories = stories.filter((s) => s.category === "Patient").slice(0, 3);
   return (
     <>
       <Seo title={meta.title} fullTitle description={meta.description} path="/" imageAlt="Inpatient ward at Sai Aarogya Hospital, Bapatla" schema={[hospitalSchema()]} />
@@ -126,18 +128,32 @@ export function Component() {
         <NetworkCards />
       </Section>
 
-      <Section id="stories" eyebrow="Patient stories" title="Voices from our patients">
-        <div className="surface flex flex-col gap-5 p-6 md:flex-row md:items-center md:p-8">
-          <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700">
-            <MessageSquareQuote className="h-7 w-7" aria-hidden />
-          </span>
-          <div className="flex-1">
-            <p className="text-ink-700">Stories from our patients will be shared here soon.</p>
-          </div>
+      <Section
+        id="stories"
+        eyebrow="Patient stories"
+        title="Voices from our patients"
+        action={
           <ButtonLink to="/impact/stories/" variant="ghost">
             All stories
           </ButtonLink>
-        </div>
+        }
+      >
+        {patientStories.length ? (
+          <ul className="grid gap-5 md:grid-cols-3">
+            {patientStories.map((s) => (
+              <li key={s.slug}>
+                <StoryCard story={s} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="surface flex flex-col gap-5 p-6 md:flex-row md:items-center md:p-8">
+            <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-maroon-50 text-maroon-700">
+              <MessageSquareQuote className="h-7 w-7" aria-hidden />
+            </span>
+            <p className="flex-1 text-ink-700">Stories from our patients will be shared here soon.</p>
+          </div>
+        )}
       </Section>
 
       <Section id="visit" tone="white" eyebrow="Visit us" title="Find us at Khajipalem, Bapatla">

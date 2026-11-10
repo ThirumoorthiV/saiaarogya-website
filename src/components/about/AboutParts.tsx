@@ -9,16 +9,9 @@ import { cn } from "@/components/ui/cn";
  */
 export function PortraitFeature({ eyebrow, person, reverse = false }: { eyebrow: string; person: Portrait; reverse?: boolean }) {
   return (
-    <article className="surface grid items-stretch overflow-hidden md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-      <div className={cn("relative bg-maroon-50", reverse && "md:order-2")}>
-        <img
-          src={person.photo}
-          alt={`Portrait of ${person.name}`}
-          width={600}
-          height={720}
-          loading="lazy"
-          className="aspect-[4/3] h-full w-full object-cover object-top md:absolute md:inset-0 md:aspect-auto"
-        />
+    <article className="surface grid items-center overflow-hidden md:grid-cols-2">
+      <div className={cn("flex h-full items-center justify-center bg-gradient-to-br from-maroon-100 to-maroon-50 p-5 sm:p-8", reverse && "md:order-2")}>
+        <img src={person.photo} alt={`Portrait of ${person.name}`} width={640} height={480} loading="lazy" className="h-auto w-full max-w-xl rounded-3xl shadow-lift ring-4 ring-white" />
       </div>
       <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
         <p className="eyebrow self-start">{eyebrow}</p>
@@ -101,20 +94,35 @@ export function Timeline() {
 }
 
 function PersonCard({ person }: { person: Person }) {
+  const initials = person.name
+    .replace(/^(Dr|Sri|Smt)\.?\s+/i, "")
+    .split(/\s+/)
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("");
   return (
-    <li className="surface flex h-full flex-col p-5 md:p-6">
-      <div className="flex items-center gap-4">
+    <li className="surface surface-hover group flex h-full flex-col overflow-hidden p-2">
+      <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-maroon-100 to-maroon-50">
         {person.photo ? (
-          <img src={person.photo} alt={`Portrait of ${person.name}`} width={80} height={80} loading="lazy" className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover" />
+          <img
+            src={person.photo}
+            alt={`Portrait of ${person.name}`}
+            width={320}
+            height={320}
+            loading="lazy"
+            className="aspect-square w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          />
         ) : (
-          <span className="h-[72px] w-[72px] shrink-0 rounded-2xl bg-maroon-50" aria-hidden />
+          <span className="flex aspect-square w-full items-center justify-center font-heading text-4xl font-bold text-maroon-700" aria-hidden>
+            {initials}
+          </span>
         )}
-        <div>
-          <h3 className="font-heading text-lg font-bold text-ink-900">{person.name}</h3>
-          {person.role && <p className="text-sm font-medium text-maroon-700">{person.role}</p>}
-        </div>
       </div>
-      {person.bio && <p className="mt-4 text-[15px] text-ink-700">{person.bio}</p>}
+      <div className="flex flex-1 flex-col px-3 pb-3 pt-4 text-center">
+        <h3 className="font-heading text-lg font-bold text-ink-900">{person.name}</h3>
+        {person.role && <p className="mt-0.5 text-sm font-semibold text-maroon-700">{person.role}</p>}
+        {person.bio && <p className="mt-3 text-[15px] text-ink-700">{person.bio}</p>}
+      </div>
     </li>
   );
 }
@@ -140,7 +148,7 @@ export function GovernanceGroups({ groups }: { groups: GovernanceGroup[] }) {
               {m.parts.map((g, i) => (
                 <div key={i}>
                   {g.subtitle && <p className="eyebrow mb-4">{g.subtitle}</p>}
-                  <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+                  <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
                     {g.people.map((p) => (
                       <PersonCard key={p.slug} person={p} />
                     ))}

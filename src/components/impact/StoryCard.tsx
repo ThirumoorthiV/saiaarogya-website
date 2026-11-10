@@ -3,8 +3,7 @@ import { CalendarDays } from "lucide-react";
 import type { Story } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 
-export const formatDate = (iso: string) =>
-  new Date(`${iso}T00:00:00+05:30`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" });
+export const formatDate = (iso: string) => new Date(`${iso}T00:00:00+05:30`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" });
 
 /** Story / camp update card. Whole card is clickable. */
 export function StoryCard({ story }: { story: Story }) {
@@ -18,6 +17,7 @@ export function StoryCard({ story }: { story: Story }) {
       <div className="flex flex-1 flex-col px-3 pb-3 pt-4">
         <div className="flex flex-wrap items-center gap-2 text-sm text-ink-600">
           <Badge tone="maroon">{story.category === "Patient" ? "Patient story" : story.category === "Camp" ? "Medical camp" : "Update"}</Badge>
+          {story.isDemo && <Badge tone="neutral">Demo story</Badge>}
           <span className="inline-flex items-center gap-1">
             <CalendarDays className="h-4 w-4" aria-hidden />
             <time dateTime={story.date}>{formatDate(story.date)}</time>

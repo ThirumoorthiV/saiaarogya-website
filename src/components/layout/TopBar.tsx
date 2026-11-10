@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Clock, Phone, Siren } from "lucide-react";
-import { siteSettings, tel } from "@/content";
+import { emergencyDisplay, emergencyIsMainPhone, siteSettings, tel } from "@/content";
 import { Container } from "@/components/ui/Container";
 import { OpenNowBadge } from "@/components/ui/OpenNowBadge";
 
@@ -13,10 +13,10 @@ export function TopBar() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <span className="inline-flex items-center gap-1.5">
             <Siren className="h-4 w-4 text-maroon-200" aria-hidden />
-            <span className="font-semibold text-white">Emergency</span>
+            <span className="font-semibold text-white">{emergencyIsMainPhone ? "Emergency & enquiries" : "Emergency"}</span>
             {s.emergencyPhone ? (
               <a href={`tel:${s.emergencyPhone}`} className="font-semibold text-white decoration-white/40" data-track="call-emergency">
-                {s.emergencyPhone}
+                {emergencyDisplay}
               </a>
             ) : (
               <a href="tel:108" className="font-semibold text-white decoration-white/40">
@@ -39,10 +39,12 @@ export function TopBar() {
             <OpenNowBadge onDark />
           </span>
         </div>
-        <a href={tel} className="inline-flex min-h-8 items-center gap-1.5 font-semibold text-white no-underline hover:text-maroon-100" data-track="call-topbar">
-          <Phone className="h-4 w-4" aria-hidden />
-          {s.phoneDisplay}
-        </a>
+        {!emergencyIsMainPhone && (
+          <a href={tel} className="inline-flex min-h-8 items-center gap-1.5 font-semibold text-white no-underline hover:text-maroon-100" data-track="call-topbar">
+            <Phone className="h-4 w-4" aria-hidden />
+            {s.phoneDisplay}
+          </a>
+        )}
       </Container>
     </div>
   );

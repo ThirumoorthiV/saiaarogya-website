@@ -1,20 +1,7 @@
 /**
  * Typed access to the JSON content collections (CMS data, requirements §10).
  */
-import type {
-  Department,
-  Doctor,
-  Faq,
-  FaqPage,
-  GalleryItem,
-  GovernanceGroup,
-  ImpactStat,
-  NetworkOrg,
-  OpdTiming,
-  SiteSettings,
-  Story,
-  TimelineEvent,
-} from "@/types";
+import type { Department, Doctor, Faq, FaqPage, GalleryItem, GovernanceGroup, ImpactStat, NetworkOrg, OpdTiming, SiteSettings, Story, TimelineEvent } from "@/types";
 
 import siteSettingsJson from "./site-settings.json";
 import departmentsJson from "./departments.json";
@@ -36,9 +23,7 @@ export const doctors: Doctor[] = (doctorsJson.items as Doctor[]).filter((d) => d
 export const opdTimings = opdTimingsJson.items as OpdTiming[];
 
 /** Patient stories are only ever shown with written consent. */
-export const stories: Story[] = (storiesJson.items as Story[])
-  .filter((s) => s.consentConfirmed || s.category !== "Patient")
-  .sort((a, b) => b.date.localeCompare(a.date));
+export const stories: Story[] = (storiesJson.items as Story[]).filter((s) => s.consentConfirmed || s.category !== "Patient").sort((a, b) => b.date.localeCompare(a.date));
 
 export const gallery = galleryJson.items as GalleryItem[];
 export const impactStats: ImpactStat[] = (impactStatsJson.items as ImpactStat[]).sort(byOrder);
@@ -76,8 +61,10 @@ export const getDoctor = (slug: string) => doctors.find((d) => d.slug === slug);
 export const getStory = (slug: string) => stories.find((s) => s.slug === slug);
 export const getPolicy = (slug: string) => policies.find((p) => p.slug === slug);
 export const doctorsInDepartment = (slug: string) => doctors.filter((d) => d.department === slug);
-export const faqsFor = (page: FaqPage, department?: string) =>
-  faqs.filter((f) => f.page === page && (page !== "Department" || f.department === department));
+export const faqsFor = (page: FaqPage, department?: string) => faqs.filter((f) => f.page === page && (page !== "Department" || f.department === department));
 
 /** Phone link helper — single source of truth (§5.9). */
 export const tel = `tel:${siteSettings.phone}`;
+/** Emergency number for display: reuses the formatted main number when they are the same. */
+export const emergencyDisplay = siteSettings.emergencyPhone === siteSettings.phone ? siteSettings.phoneDisplay : siteSettings.emergencyPhone;
+export const emergencyIsMainPhone = siteSettings.emergencyPhone === siteSettings.phone;

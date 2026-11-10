@@ -197,6 +197,7 @@ collections:
               - { label: "Cover image description (alt text)", name: coverAlt, widget: string }
               - { label: "Paragraphs", name: body, widget: list, field: { label: "Paragraph", name: p, widget: text } }
               - { label: "Written consent received (required for patient stories)", name: consentConfirmed, widget: boolean, default: false }
+              - { label: "Demo / sample story (shows a 'Demo story' label; delete before launch)", name: isDemo, widget: boolean, default: false, required: false }
 
   # ---------------------------------------------------------------- Gallery
   - name: gallery

@@ -9,6 +9,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { formatDate } from "@/components/impact/StoryCard";
+import { Badge } from "@/components/ui/Badge";
 import { Component as NotFound } from "@/pages/NotFound";
 
 /** Single story / camp update (§5.6). Patient stories are only published with consent. */
@@ -29,15 +30,30 @@ export function Component() {
   };
   return (
     <>
-      <Seo title={story.title} description={fitDescription([story.body[0] ?? story.title])} path={path} type="article" image={story.coverImage ?? undefined} imageAlt={story.coverAlt} schema={[article]} />
+      <Seo
+        title={story.title}
+        description={fitDescription([story.body[0] ?? story.title])}
+        path={path}
+        type="article"
+        image={story.coverImage ?? undefined}
+        imageAlt={story.coverAlt}
+        schema={[article]}
+      />
       <PageHero
         title={story.title}
-        crumbs={[{ label: "Our Impact", to: "/impact/" }, isPatient ? { label: "Patient Stories", to: "/impact/stories/" } : { label: "Camps & Updates", to: "/impact/camps/" }, { label: story.title }]}
+        crumbs={[
+          { label: "Our Impact", to: "/impact/" },
+          isPatient ? { label: "Patient Stories", to: "/impact/stories/" } : { label: "Camps & Updates", to: "/impact/camps/" },
+          { label: story.title },
+        ]}
         path={path}
         intro={
-          <p className="inline-flex items-center gap-2 text-base">
-            <CalendarDays className="h-5 w-5" aria-hidden />
-            <time dateTime={story.date}>{formatDate(story.date)}</time>
+          <p className="flex flex-wrap items-center gap-3 text-base">
+            <span className="inline-flex items-center gap-2">
+              <CalendarDays className="h-5 w-5" aria-hidden />
+              <time dateTime={story.date}>{formatDate(story.date)}</time>
+            </span>
+            {story.isDemo && <Badge className="bg-white">Demo story</Badge>}
           </p>
         }
       />

@@ -1,3 +1,49 @@
 {
-  "items": []
+  "items": [
+    {
+      "title": "Back on his feet after a knee injury",
+      "slug": "demo-knee-recovery",
+      "coverImage": "/images/opd-waiting-area.webp",
+      "coverAlt": "Patients waiting in the OPD corridor",
+      "category": "Patient",
+      "date": "2026-10-18",
+      "consentConfirmed": true,
+      "isDemo": true,
+      "body": [
+        "A 62-year-old farmer from a village near Khajipalem had been living with knee pain for months after a fall, and could no longer walk to his fields without help.",
+        "At the orthopaedics OPD he was examined, given an X-ray and started on treatment and physiotherapy exercises, with medicines provided free of charge. After six weeks of follow-up visits he is walking on his own again.",
+        "“I did not have to worry about money even once. The doctors explained everything to me in Telugu and treated me like family,” he says."
+      ]
+    },
+    {
+      "title": "A safe pregnancy with regular check-ups",
+      "slug": "demo-safe-pregnancy",
+      "coverImage": "/images/patient-care.webp",
+      "coverAlt": "Staff attending to patients in the corridor",
+      "category": "Patient",
+      "date": "2026-09-02",
+      "consentConfirmed": true,
+      "isDemo": true,
+      "body": [
+        "A young mother from Bapatla District came to the obstetrics & gynaecology OPD in her first trimester. Travelling to a private clinic in town every month was beyond her family’s budget.",
+        "At Sai Aarogya Hospital she had every antenatal check-up, blood test and scan advice free of cost, and the team helped her plan a safe delivery.",
+        "She now brings her healthy baby for growth monitoring at the paediatrics OPD."
+      ]
+    },
+    {
+      "title": "Clear vision again after cataract care",
+      "slug": "demo-cataract-care",
+      "coverImage": "/images/consultation.webp",
+      "coverAlt": "A doctor consulting an elderly patient",
+      "category": "Patient",
+      "date": "2026-08-11",
+      "consentConfirmed": true,
+      "isDemo": true,
+      "body": [
+        "A retired schoolteacher noticed her eyesight getting cloudy and stopped reading the newspaper, something she had done every morning for forty years.",
+        "The ophthalmology team diagnosed a cataract, guided her through treatment and checked on her recovery at follow-up visits — all without any charge.",
+        "“Now I read to my grandchildren every evening,” she says with a smile."
+      ]
+    }
+  ]
 }

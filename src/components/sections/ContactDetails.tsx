@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Clock, Mail, MapPin, MessageCircle, Phone, Siren } from "lucide-react";
-import { siteSettings, tel } from "@/content";
+import { siteSettings, tel, emergencyDisplay } from "@/content";
 import { OpenNowBadge } from "@/components/ui/OpenNowBadge";
 
 function Row({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
@@ -43,7 +43,7 @@ export function ContactDetails({ showEmergency = true }: { showEmergency?: boole
         <Row icon={<Siren className={ic} aria-hidden />} label="Emergency">
           {s.emergencyPhone ? (
             <a href={`tel:${s.emergencyPhone}`} className="text-lg font-semibold" data-track="call-emergency">
-              {s.emergencyPhone}
+              {emergencyDisplay}
             </a>
           ) : (
             <a href="tel:108">108 (ambulance)</a>

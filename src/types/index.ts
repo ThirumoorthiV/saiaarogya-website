@@ -80,6 +80,8 @@ export interface Story {
   /** ISO date */
   date: string;
   consentConfirmed: boolean;
+  /** Sample content for demos — shown with a "Demo story" label */
+  isDemo?: boolean;
 }
 
 export type GalleryCategory = "Hospital" | "Camps" | "Events";

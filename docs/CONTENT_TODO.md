@@ -8,7 +8,7 @@ The sections after the table are the original list of open questions and are kep
 
 | Where | Field | Temporary value |
 |---|---|---|
-| Top bar, contact | `emergencyPhone` | **108** (national ambulance number) |
+| Top bar, contact | `emergencyPhone` | Same as the main number, **+91 84999 91259**. The top bar shows it once, labelled "Emergency & enquiries" |
 | Top bar, contact, "Open now" badge | `opdHours`, `opdSummary` | **Mon–Sat, 9 AM – 4 PM** |
 | OPD timetable | `opd-timings.json` | General Medicine Mon–Sat 9–4; specialists 10 AM – 1 PM on each doctor's visiting days |
 | Doctors | `visitingDays`, `timing` | Residents: **Daily, 9 AM – 4 PM**. Consultants rotate **Mon & Thu / Tue & Fri / Wed & Sat, 10 AM – 1 PM** (placeholder rota) |
@@ -20,7 +20,8 @@ The sections after the table are the original list of open questions and are kep
 | Donate | `indianDonorUrl` (still empty) | The button reads **"Contact us to donate"** and links to the Contact page |
 | Facilities | page copy | OPD, in-patient wards (30–50 beds), pharmacy, laboratory, minor procedures, waiting area |
 | How to reach | page copy | Generic landmark / bus / road text (Khajipalem, Aravinda Ashramam, auto from the bus stop) |
-| Patient stories, camp updates | — | "Will be shared here soon." **No stories were invented**, because each one needs written patient consent |
+| Patient stories | `stories.json` | **3 demo stories** (knee recovery, safe pregnancy, cataract care), each labelled **"Demo story"** (`isDemo: true`). **Delete them before launch** and replace them with real stories that have written consent |
+| Camp updates | — | "Will be posted here soon." |
 | Doctor photos | — | Initials tile (no TODO label) |
 
 ---
