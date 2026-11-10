@@ -85,9 +85,12 @@
   .eyebrow {
     @apply inline-flex items-center gap-2 rounded-full bg-maroon-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-maroon-800;
   }
-  /* Pills sit on white inside the light-maroon page hero */
-  .hero-tint .eyebrow {
-    @apply bg-white;
+  /* Inner-page banner (maroon photo overlay): light pills and links */
+  .hero-dark .eyebrow {
+    @apply bg-white/15 text-white ring-1 ring-white/25;
+  }
+  .hero-intro a {
+    @apply text-white decoration-white/60 hover:decoration-white;
   }
   .prose-body p + p {
     @apply mt-4;

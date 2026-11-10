@@ -164,6 +164,13 @@ collections:
             fields:
               - { label: "Online donation link (Indian donors)", name: indianDonorUrl, widget: string, required: false }
               - { label: "Email for international donors", name: internationalEmail, widget: string }
+              - { label: "Donation helpline (phone)", name: contactPhone, widget: string }
+              - label: "Registrations (12A, 80G, FCRA, CSR)"
+                name: registrations
+                widget: list
+                fields:
+                  - { label: "Label", name: label, widget: string }
+                  - { label: "Number", name: value, widget: string }
               - { label: "Impact per contribution (one per line)", name: impactPerContribution, widget: list, required: false }
               - { label: "Tax exemption information", name: taxInfo, widget: text, required: false }
               - { label: "How funds are used", name: fundUse, widget: text, required: false }

@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
-import { cn } from "@/components/ui/cn";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 
 interface PageHeroProps {
@@ -11,36 +10,41 @@ interface PageHeroProps {
   /** Page path (for breadcrumb schema) */
   path: string;
   actions?: ReactNode;
+  /** Background photo for the banner (defaults to the hospital ward) */
   image?: { src: string; alt: string; width: number; height: number };
-  /** Rendered beside the text instead of an image (e.g. an icon tile) */
-  aside?: ReactNode;
   children?: ReactNode;
 }
 
-/** Inner-page hero: light maroon banner (maroon-100, the menu hover colour) with soft rings, breadcrumbs, the page's single H1, intro. */
-export function PageHero({ title, intro, eyebrow, crumbs, path, actions, image, aside, children }: PageHeroProps) {
-  const split = Boolean(image || aside);
+const DEFAULT_BG = { src: "/images/hospital-ward-sm.webp", srcSet: "/images/hospital-ward-sm.webp 800w, /images/hospital-ward.webp 1600w" };
+
+/**
+ * Standard inner-page banner: a hospital photo under a maroon overlay, with the
+ * eyebrow, the page's single H1, intro, breadcrumbs and optional actions, centred.
+ * The photo is decorative (alt=""); the overlay keeps white text at AA contrast.
+ */
+export function PageHero({ title, intro, eyebrow, crumbs, path, actions, image, children }: PageHeroProps) {
   return (
-    <div className="hero-tint relative overflow-hidden border-b border-maroon-200 bg-maroon-100">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_90%_at_100%_0%,#EDCACA_0%,transparent_65%),radial-gradient(50%_70%_at_0%_100%,#FBF4F4_0%,transparent_70%)]"
+    <div className="hero-dark on-dark relative isolate overflow-hidden bg-maroon-900">
+      <img
+        src={image?.src ?? DEFAULT_BG.src}
+        srcSet={image ? undefined : DEFAULT_BG.srcSet}
+        sizes="100vw"
+        alt=""
+        width={1600}
+        height={600}
+        fetchPriority="high"
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
       />
-      <Container className={cn("relative py-10 md:py-16", split && "grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14")}>
-        <div>
-          <Breadcrumbs items={crumbs} currentPath={path} />
-          {eyebrow && <div className="mt-8">{eyebrow}</div>}
-          <h1 className={cn("text-h1 max-w-[20ch]", eyebrow ? "mt-4" : "mt-8")}>{title}</h1>
-          {intro && <div className="mt-5 max-w-prose text-lg text-ink-700 md:text-xl md:leading-relaxed">{intro}</div>}
-          {actions && <div className="mt-8 flex flex-wrap gap-3">{actions}</div>}
-          {children}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-maroon-950/85 via-maroon-900/85 to-maroon-950/90" />
+      <Container className="flex flex-col items-center py-14 text-center md:py-20">
+        {eyebrow && <div>{eyebrow}</div>}
+        <h1 className="text-h1 mt-4 max-w-[22ch] text-white">{title}</h1>
+        {intro && <div className="hero-intro mx-auto mt-4 max-w-2xl text-base text-maroon-50 md:text-lg md:leading-relaxed">{intro}</div>}
+        {actions && <div className="mt-7 flex flex-wrap justify-center gap-3">{actions}</div>}
+        {children}
+        <div className="mt-8">
+          <Breadcrumbs items={crumbs} currentPath={path} onDark />
         </div>
-        {image && (
-          <div className="relative">
-            <img src={image.src} alt={image.alt} width={image.width} height={image.height} fetchPriority="high" className="aspect-[4/3] w-full rounded-4xl object-cover shadow-lift" />
-          </div>
-        )}
-        {aside}
       </Container>
     </div>
   );

@@ -28,7 +28,7 @@ export function Component() {
           </p>
         }
         actions={
-          <ButtonLink to={`mailto:${email}`} size="lg" icon={<Mail className="h-5 w-5" aria-hidden />}>
+          <ButtonLink to={`mailto:${email}`} variant="onDark" size="lg" icon={<Mail className="h-5 w-5" aria-hidden />}>
             Email the Trust
           </ButtonLink>
         }

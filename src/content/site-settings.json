@@ -49,8 +49,27 @@
       "Medicines and diagnostic tests at no cost",
       "Free medical camps in nearby villages"
     ],
-    "taxInfo": "For donation receipts and tax-exemption details, please write to info@saisujalasravanthi.in. The Trust will reply with the receipt and the applicable details.",
-    "fundUse": "Every donation goes towards free patient care at Sai Aarogya Hospital: doctor consultations, medicines, diagnostic tests, in-patient care and medical camps for nearby villages."
+    "taxInfo": "Donations to the Sri Sathya Sai Sujala Sravanthi Trust are eligible for tax exemption under Sec 80G (Unique Registration Number AALTS5059GF20210). The Trust is also registered under Sec 12A (AALTS5059GE20212). Enter your PAN on the donation form to receive an 80G receipt.",
+    "fundUse": "Every donation goes towards free patient care at Sai Aarogya Hospital: doctor consultations, medicines, diagnostic tests, in-patient care and medical camps for nearby villages.",
+    "contactPhone": "+91 9652002767",
+    "registrations": [
+      {
+        "label": "Sec 12A - Unique Registration Number",
+        "value": "AALTS5059GE20212"
+      },
+      {
+        "label": "Sec 80G - Unique Registration Number",
+        "value": "AALTS5059GF20210"
+      },
+      {
+        "label": "FCRA Registration Number",
+        "value": "368140112"
+      },
+      {
+        "label": "CSR Registration Number",
+        "value": "CSR00022220"
+      }
+    ]
   },
   "social": []
 }

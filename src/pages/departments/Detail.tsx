@@ -50,25 +50,22 @@ export function Component() {
         title={dept.name}
         crumbs={[{ label: "Departments", to: "/departments/" }, { label: dept.name }]}
         path={path}
-        eyebrow={<p className="eyebrow">Department</p>}
+        eyebrow={
+          <p className="eyebrow">
+            <DepartmentIcon name={dept.icon} className="h-4 w-4" />
+            Department
+          </p>
+        }
         intro={dept.summary ?? null}
         actions={
           <>
-            <ButtonLink to={tel} size="lg" icon={<Phone className="h-5 w-5" aria-hidden />} track="call-department">
+            <ButtonLink to={tel} variant="onDark" size="lg" icon={<Phone className="h-5 w-5" aria-hidden />} track="call-department">
               Call to enquire
             </ButtonLink>
-            <ButtonLink to="/patient-guide/opd-timings/" variant="outline" size="lg">
+            <ButtonLink to="/patient-guide/opd-timings/" variant="onDarkOutline" size="lg">
               OPD timings
             </ButtonLink>
           </>
-        }
-        aside={
-          <div className="hidden justify-center lg:flex">
-            <div className="relative flex h-64 w-64 items-center justify-center rounded-[3rem] bg-gradient-to-br from-maroon-700 to-maroon-950 text-white shadow-lift">
-              <div aria-hidden className="absolute inset-4 rounded-[2.25rem] border border-white/10" />
-              <DepartmentIcon name={dept.icon} className="h-24 w-24" />
-            </div>
-          </div>
         }
       />
 

@@ -146,6 +146,10 @@ export interface SiteSettings {
   donation: {
     indianDonorUrl: string | null;
     internationalEmail: string;
+    /** Trust donation helpline (from the current /donateus page) */
+    contactPhone: string;
+    /** Tax / FCRA / CSR registrations shown on the Donate page */
+    registrations: { label: string; value: string }[];
     impactPerContribution: string[];
     taxInfo: string | null;
     fundUse: string | null;
