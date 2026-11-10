@@ -28,7 +28,7 @@ function GuideTabs() {
                   aria-current={current ? "page" : undefined}
                   className={cn(
                     "inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full px-4 text-[15px] font-semibold no-underline transition-colors",
-                    current ? "bg-maroon-700 text-white" : "text-ink-700 hover:bg-maroon-100 hover:text-maroon-900",
+                    current ? "bg-maroon-700 text-white [&_svg]:text-yellow-400" : "text-ink-700 hover:bg-maroon-100 hover:text-maroon-900",
                   )}
                 >
                   {Icon && <Icon className="h-4 w-4" aria-hidden />}

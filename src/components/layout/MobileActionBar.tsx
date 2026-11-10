@@ -9,7 +9,7 @@ export function MobileActionBar() {
     <nav aria-label="Quick actions" className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(env(safe-area-inset-bottom),12px)] md:hidden">
       <div className="flex gap-1 rounded-3xl border border-ink-200 bg-white/95 p-1.5 shadow-menu backdrop-blur-xl">
         <a href={tel} className={`${item} bg-maroon-700 text-white`} data-track="call-mobile-bar">
-          <Phone className="h-5 w-5" aria-hidden />
+          <Phone className="h-5 w-5 text-yellow-400" aria-hidden />
           Call
         </a>
         <Link to="/patient-guide/opd-timings/" className={`${item} text-ink-900 hover:bg-maroon-50`}>

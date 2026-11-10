@@ -26,19 +26,7 @@ export function Component() {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={path} schema={[schema]} />
-      <PageHero
-        title={meta.h1 ?? meta.title}
-        eyebrow={<p className="eyebrow">About us</p>}
-        crumbs={meta.crumbs}
-        path={path}
-        intro={<p>{about.intro[0]}</p>}
-        image={{
-          src: "/images/hospital-ward-sm.webp",
-          alt: "Inpatient ward at Sai Aarogya Hospital, Bapatla",
-          width: 800,
-          height: 600,
-        }}
-      />
+      <PageHero title={meta.h1 ?? meta.title} eyebrow={<p className="eyebrow">About us</p>} crumbs={meta.crumbs} path={path} intro={<p>{about.intro[0]}</p>} />
 
       <Section id="free-for-all" tone="white" className="!py-12 md:!py-16">
         <div className="flex gap-4 rounded-3xl bg-success-50 p-6 md:p-8">

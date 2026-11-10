@@ -49,6 +49,13 @@
     outline-offset: 2px;
     border-radius: 6px;
   }
+  /* Icons on maroon backgrounds are yellow; light panels inside maroon areas keep their own colours */
+  .on-dark svg {
+    color: theme("colors.yellow.400");
+  }
+  .on-dark [data-panel] svg {
+    color: inherit;
+  }
   /* White focus ring on maroon areas (header, top bar, footer); light panels inside them reset it */
   .on-dark :focus-visible {
     outline-color: #fff;
@@ -87,7 +94,10 @@
   }
   /* Inner-page banner (maroon photo overlay): light pills and links */
   .hero-dark .eyebrow {
-    @apply bg-white/15 text-white ring-1 ring-white/25;
+    @apply bg-yellow-400 text-maroon-900;
+  }
+  .hero-dark .eyebrow svg {
+    @apply !text-maroon-900;
   }
   .hero-intro a {
     @apply text-white decoration-white/60 hover:decoration-white;

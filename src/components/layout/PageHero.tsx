@@ -10,24 +10,43 @@ interface PageHeroProps {
   /** Page path (for breadcrumb schema) */
   path: string;
   actions?: ReactNode;
-  /** Background photo for the banner (defaults to the hospital ward) */
-  image?: { src: string; alt: string; width: number; height: number };
+  /** Override the banner photo (name in public/images/banner/); chosen from the path by default */
+  banner?: string;
   children?: ReactNode;
 }
 
-const DEFAULT_BG = { src: "/images/hospital-ward-sm.webp", srcSet: "/images/hospital-ward-sm.webp 800w, /images/hospital-ward.webp 1600w" };
+/** Banner photo per page (exact path first, then section prefix). Files: public/images/banner/<name>(-sm).webp */
+const BANNERS: [string, string][] = [
+  ["/about/history/", "patient-care"],
+  ["/about/governance/", "trust-activities"],
+  ["/about/", "hospital-ward"],
+  ["/departments/dentistry/", "dental-consultation"],
+  ["/departments/general-medicine/", "consultation"],
+  ["/departments/", "medical-equipment"],
+  ["/doctors/", "consultation"],
+  ["/patient-guide/facilities/", "hospital-ward"],
+  ["/patient-guide/", "opd-waiting-area"],
+  ["/impact/gallery/", "hospital-ward"],
+  ["/impact/", "patient-care"],
+  ["/support-us/volunteer/", "patient-care"],
+  ["/support-us/", "trust-activities"],
+  ["/contact/", "opd-waiting-area"],
+  ["/policies/", "medical-equipment"],
+];
+const bannerFor = (path: string) => BANNERS.find(([p]) => path === p || path.startsWith(p))?.[1] ?? "hospital-ward";
 
 /**
  * Standard inner-page banner: a hospital photo under a maroon overlay, with the
  * eyebrow, the page's single H1, intro, breadcrumbs and optional actions, centred.
  * The photo is decorative (alt=""); the overlay keeps white text at AA contrast.
  */
-export function PageHero({ title, intro, eyebrow, crumbs, path, actions, image, children }: PageHeroProps) {
+export function PageHero({ title, intro, eyebrow, crumbs, path, actions, banner, children }: PageHeroProps) {
+  const bg = `/images/banner/${banner ?? bannerFor(path)}`;
   return (
     <div className="hero-dark on-dark relative isolate overflow-hidden bg-maroon-900">
       <img
-        src={image?.src ?? DEFAULT_BG.src}
-        srcSet={image ? undefined : DEFAULT_BG.srcSet}
+        src={`${bg}-sm.webp`}
+        srcSet={`${bg}-sm.webp 768w, ${bg}.webp 1600w`}
         sizes="100vw"
         alt=""
         width={1600}

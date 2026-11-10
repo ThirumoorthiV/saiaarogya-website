@@ -105,7 +105,11 @@ export function NavDropdown({ item }: { item: NavItem }) {
         onKeyDown={onTriggerKey}
         className={cn(
           "inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-full px-3.5 text-[15px] font-medium transition-colors",
-          open ? "bg-maroon-100 text-maroon-900" : active ? "bg-white font-semibold text-maroon-800 shadow-sm" : "text-maroon-50 hover:bg-white/10 hover:text-white",
+          open
+            ? "bg-maroon-100 text-maroon-900 [&_svg]:!text-maroon-800"
+            : active
+              ? "bg-yellow-400 font-semibold text-maroon-900 shadow-sm [&_svg]:!text-maroon-900"
+              : "text-maroon-50 hover:bg-white/10 hover:text-white",
         )}
       >
         {item.label}

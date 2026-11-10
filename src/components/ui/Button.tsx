@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { SmartLink } from "./SmartLink";
 import { cn } from "./cn";
 
-export type ButtonVariant = "primary" | "soft" | "outline" | "ghost" | "onDark" | "onDarkOutline";
+export type ButtonVariant = "primary" | "soft" | "outline" | "ghost" | "onDark" | "onDarkOutline" | "accent";
 export type ButtonSize = "md" | "lg";
 
 /** Pill buttons, min 48px tall (§6.4 touch targets). Maroon only — no orange. */
@@ -13,12 +13,14 @@ const sizes: Record<ButtonSize, string> = {
   lg: "min-h-14 px-7 text-base",
 };
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-maroon-700 text-white shadow-[0_8px_20px_-8px_rgba(122,12,12,.6)] hover:bg-maroon-800 active:bg-maroon-900",
+  // Icons on maroon are yellow (brand rule); on white / yellow they stay maroon
+  primary: "bg-maroon-700 text-white shadow-[0_8px_20px_-8px_rgba(122,12,12,.6)] hover:bg-maroon-800 active:bg-maroon-900 [&_svg]:!text-yellow-400",
   soft: "bg-maroon-100 text-maroon-800 hover:bg-maroon-200",
   outline: "border-2 border-maroon-700 bg-white text-maroon-700 hover:bg-maroon-100 hover:text-maroon-800",
   ghost: "min-h-11 px-0 text-maroon-700 hover:text-maroon-900 [&>svg:last-child]:transition-transform hover:[&>svg:last-child]:translate-x-0.5",
-  onDark: "bg-white text-maroon-800 hover:bg-maroon-100",
-  onDarkOutline: "border border-white/40 text-white hover:bg-white/10",
+  onDark: "bg-white text-maroon-800 hover:bg-maroon-100 [&_svg]:!text-maroon-700",
+  accent: "bg-yellow-400 text-maroon-900 shadow-[0_8px_20px_-8px_rgba(250,204,21,.55)] hover:bg-yellow-300 [&_svg]:!text-maroon-800",
+  onDarkOutline: "border border-white/40 text-white hover:bg-white/10 [&_svg]:!text-yellow-400",
 };
 
 export function buttonClass(variant: ButtonVariant = "primary", size: ButtonSize = "md", className?: string) {

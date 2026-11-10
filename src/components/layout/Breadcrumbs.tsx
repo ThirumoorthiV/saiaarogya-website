@@ -24,7 +24,7 @@ export function Breadcrumbs({ items, currentPath, onDark = false }: { items: Cru
         <ol
           className={cn(
             "inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl px-4 py-2 text-sm font-medium",
-            onDark ? "bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-sm" : "bg-white text-ink-700 shadow-soft ring-1 ring-ink-200/70",
+            onDark ? "bg-black/15 text-yellow-200 ring-1 ring-yellow-400/40 backdrop-blur-sm" : "bg-white text-ink-700 shadow-soft ring-1 ring-ink-200/70",
           )}
         >
           {all.map((c, i) => {
@@ -33,21 +33,24 @@ export function Breadcrumbs({ items, currentPath, onDark = false }: { items: Cru
               <Fragment key={`${c.label}-${i}`}>
                 <li>
                   {last || !c.to ? (
-                    <span aria-current={last ? "page" : undefined} className={cn("font-semibold", onDark ? "text-white" : "text-maroon-800")}>
+                    <span aria-current={last ? "page" : undefined} className={cn("font-semibold", onDark ? "text-yellow-400" : "text-maroon-800")}>
                       {c.label}
                     </span>
                   ) : (
                     <Link
                       to={c.to}
-                      className={cn("inline-flex items-center gap-1.5 rounded-full no-underline hover:underline", onDark ? "text-maroon-100 hover:text-white" : "text-ink-700 hover:text-maroon-700")}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 rounded-full no-underline hover:underline",
+                        onDark ? "text-yellow-200 hover:text-yellow-400" : "text-ink-700 hover:text-maroon-700",
+                      )}
                     >
-                      {i === 0 && <Home className={cn("h-4 w-4", onDark ? "text-maroon-100" : "text-maroon-700")} aria-hidden />}
+                      {i === 0 && <Home className={cn("h-4 w-4", onDark ? "text-yellow-400" : "text-maroon-700")} aria-hidden />}
                       {c.label}
                     </Link>
                   )}
                 </li>
                 {!last && (
-                  <li aria-hidden className={onDark ? "text-maroon-200" : "text-ink-500"}>
+                  <li aria-hidden className={onDark ? "text-yellow-400/70" : "text-ink-500"}>
                     <ChevronRight className="h-3.5 w-3.5" />
                   </li>
                 )}

@@ -26,9 +26,7 @@ export function Hero() {
           <h1 className="text-display mt-6 max-w-[16ch]">
             Quality Secondary Care, Accessible to All, <span className="text-maroon-700">Free of Charge</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-ink-600 md:text-xl md:leading-relaxed">
-            Serving Bapatla and rural Andhra Pradesh with specialist care — completely free for everyone.
-          </p>
+          <p className="mt-6 max-w-xl text-lg text-ink-600 md:text-xl md:leading-relaxed">Serving Bapatla and rural Andhra Pradesh with specialist care — completely free for everyone.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <ButtonLink to="/doctors/" size="lg" icon={<Stethoscope className="h-5 w-5" aria-hidden />} track="hero-find-doctor">
               Find a Doctor
@@ -62,7 +60,7 @@ export function Hero() {
           />
           {/* Floating info cards */}
           <div className="absolute -bottom-6 left-4 right-4 flex items-center gap-3 rounded-3xl border border-white/60 bg-white/90 p-4 shadow-lift backdrop-blur-xl sm:left-auto sm:right-6 sm:w-80">
-            <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-maroon-700 text-white">
+            <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-maroon-700 text-yellow-400">
               <Phone className="h-5 w-5" aria-hidden />
             </span>
             <div className="min-w-0">

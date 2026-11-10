@@ -24,6 +24,8 @@ export function TopBar() {
               </a>
             )}
           </span>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <span className="hidden items-center gap-1.5 sm:inline-flex">
             <Clock className="h-4 w-4 text-maroon-200" aria-hidden />
             <span className="font-semibold text-white">OPD</span>
@@ -38,13 +40,13 @@ export function TopBar() {
             )}
             <OpenNowBadge onDark />
           </span>
+          {!emergencyIsMainPhone && (
+            <a href={tel} className="inline-flex min-h-8 items-center gap-1.5 font-semibold text-white no-underline hover:text-maroon-100" data-track="call-topbar">
+              <Phone className="h-4 w-4" aria-hidden />
+              {s.phoneDisplay}
+            </a>
+          )}
         </div>
-        {!emergencyIsMainPhone && (
-          <a href={tel} className="inline-flex min-h-8 items-center gap-1.5 font-semibold text-white no-underline hover:text-maroon-100" data-track="call-topbar">
-            <Phone className="h-4 w-4" aria-hidden />
-            {s.phoneDisplay}
-          </a>
-        )}
       </Container>
     </div>
   );
