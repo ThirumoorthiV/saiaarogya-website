@@ -4,13 +4,15 @@ import { SmartLink } from "./SmartLink";
 import { cn } from "./cn";
 
 export type ButtonVariant = "primary" | "soft" | "outline" | "ghost" | "onDark" | "onDarkOutline" | "accent";
-export type ButtonSize = "md" | "lg";
+export type ButtonSize = "sm" | "md" | "lg";
 
 /** Pill buttons, min 48px tall (§6.4 touch targets). Maroon only — no orange. */
 const base = "inline-flex items-center justify-center gap-2 rounded-full font-semibold no-underline transition duration-200 disabled:cursor-not-allowed disabled:opacity-60";
 const sizes: Record<ButtonSize, string> = {
-  md: "min-h-12 px-5 text-[15px]",
-  lg: "min-h-14 px-7 text-base",
+  // Phones get 44–48px buttons (still ≥44px touch targets); tablets/desktop keep the larger sizes
+  sm: "min-h-11 px-4 text-sm [&>svg]:h-4 [&>svg]:w-4",
+  md: "min-h-11 px-5 text-[15px] sm:min-h-12 [&>svg]:h-[18px] [&>svg]:w-[18px]",
+  lg: "min-h-12 px-6 text-[15px] sm:min-h-14 sm:px-7 sm:text-base [&>svg]:h-[18px] [&>svg]:w-[18px] sm:[&>svg]:h-5 sm:[&>svg]:w-5",
 };
 const variants: Record<ButtonVariant, string> = {
   // Icons on maroon are yellow (brand rule); on white / yellow they stay maroon

@@ -42,20 +42,22 @@ function CountUp({ value }: { value: string }) {
 export function ImpactBand() {
   const dated = impactStats.find((s) => s.asOfDate)?.asOfDate;
   return (
-    <section aria-labelledby="impact-band-title" className="bg-ink-50 py-12 md:py-16">
+    <section aria-labelledby="impact-band-title" className="bg-ink-50 py-10 md:py-16">
       <Container>
-        <div className="surface p-6 md:p-10">
+        <div className="surface p-5 md:p-10">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-            <h2 id="impact-band-title" className="font-heading text-2xl font-bold text-ink-900 md:text-3xl">
+            <h2 id="impact-band-title" className="font-heading text-xl font-bold text-ink-900 sm:text-2xl md:text-3xl">
               Care that reaches everyone
             </h2>
             <p className="text-sm text-ink-600">{dated && `As of ${new Date(dated).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`}</p>
           </div>
-          <dl className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+          <dl className="mt-5 grid grid-cols-2 gap-2.5 sm:gap-3 md:mt-8 md:grid-cols-4 md:gap-4">
             {impactStats.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse rounded-3xl bg-maroon-50 p-5 ring-1 ring-maroon-100 md:p-6">
-                <dt className="mt-2 text-[15px] font-medium text-ink-700">{s.label}</dt>
-                <dd className="font-heading text-4xl font-bold tracking-tight text-maroon-700 md:text-5xl">{s.value ? <CountUp value={s.value} /> : "—"}</dd>
+              <div key={s.label} className="flex flex-col-reverse rounded-2xl bg-maroon-50 p-4 ring-1 ring-maroon-100 sm:rounded-3xl md:p-6">
+                <dt className="mt-1 text-[13px] font-medium leading-snug text-ink-700 sm:mt-2 sm:text-[15px]">{s.label}</dt>
+                <dd className="whitespace-nowrap font-heading text-[1.75rem] font-bold leading-none tracking-tight text-maroon-700 sm:text-4xl md:text-5xl">
+                  {s.value ? <CountUp value={s.value} /> : "—"}
+                </dd>
               </div>
             ))}
           </dl>

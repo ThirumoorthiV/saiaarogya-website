@@ -36,7 +36,7 @@ export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doct
       className={cn(
         "relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-maroon-50 via-maroon-100 to-maroon-50",
         size !== "thumb" && "w-full",
-        size === "card" ? "aspect-[5/4] rounded-2xl" : size === "thumb" ? "aspect-square rounded-2xl" : "aspect-square rounded-4xl",
+        size === "card" ? "aspect-[16/10] rounded-2xl sm:aspect-[5/4]" : size === "thumb" ? "aspect-square rounded-2xl" : "aspect-square rounded-4xl",
         className,
       )}
     >
@@ -45,7 +45,7 @@ export function DoctorPhoto({ doctor, className, size = "card" }: { doctor: Doct
         aria-hidden
         className={cn(
           "relative flex items-center justify-center rounded-full bg-white font-heading font-bold text-maroon-700 shadow-soft",
-          size === "card" ? "h-20 w-20 text-2xl" : size === "thumb" ? "h-14 w-14 text-lg" : "h-36 w-36 text-5xl",
+          size === "card" ? "h-16 w-16 text-xl sm:h-20 sm:w-20 sm:text-2xl" : size === "thumb" ? "h-14 w-14 text-lg" : "h-36 w-36 text-5xl",
         )}
       >
         {initials(doctor.name)}

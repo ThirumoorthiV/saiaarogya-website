@@ -15,7 +15,7 @@ function GuideTabs() {
   const { pathname } = useLocation();
   const tabs = [{ label: "Overview", to: "/patient-guide/", icon: BookOpen }, ...GUIDE_LINKS];
   return (
-    <nav aria-label="Patient Guide sections" className="sticky top-[72px] z-30 border-b border-ink-200/70 bg-white/90 backdrop-blur-xl">
+    <nav aria-label="Patient Guide sections" className="sticky top-16 z-30 sm:top-[72px] border-b border-ink-200/70 bg-white/90 backdrop-blur-xl">
       <Container>
         <ul className="-mx-4 flex gap-1.5 overflow-x-auto px-4 py-3 [scrollbar-width:none] sm:mx-0 sm:px-0">
           {tabs.map((t) => {

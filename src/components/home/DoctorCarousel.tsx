@@ -37,7 +37,7 @@ export function DoctorCarousel() {
         className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-6 pt-1 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 md:gap-5 lg:mx-0 lg:scroll-px-0 lg:px-0"
       >
         {doctors.map((d) => (
-          <li key={d.slug} className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-[calc(25%-15px)]">
+          <li key={d.slug} className="w-[70%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-[calc(25%-15px)]">
             <DoctorCard rowOnMobile={false} doctor={d} />
           </li>
         ))}

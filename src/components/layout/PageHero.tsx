@@ -55,13 +55,13 @@ export function PageHero({ title, intro, eyebrow, crumbs, path, actions, banner,
         className="absolute inset-0 -z-20 h-full w-full object-cover"
       />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-maroon-950/85 via-maroon-900/85 to-maroon-950/90" />
-      <Container className="flex flex-col items-center py-14 text-center md:py-20">
+      <Container className="flex flex-col items-center py-10 text-center md:py-20">
         {eyebrow && <div>{eyebrow}</div>}
-        <h1 className="text-h1 mt-4 max-w-[22ch] text-white">{title}</h1>
-        {intro && <div className="hero-intro mx-auto mt-4 max-w-2xl text-base text-maroon-50 md:text-lg md:leading-relaxed">{intro}</div>}
+        <h1 className="text-h1 mt-3 max-w-[22ch] text-white md:mt-4">{title}</h1>
+        {intro && <div className="hero-intro mx-auto mt-3 max-w-2xl text-[15px] text-maroon-50 md:mt-4 md:text-lg md:leading-relaxed">{intro}</div>}
         {actions && <div className="mt-7 flex flex-wrap justify-center gap-3">{actions}</div>}
         {children}
-        <div className="mt-8">
+        <div className="mt-6 md:mt-8">
           <Breadcrumbs items={crumbs} currentPath={path} onDark />
         </div>
       </Container>

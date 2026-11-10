@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChevronDown, HeartHandshake, Menu, Phone, X } from "lucide-react";
 import { tel } from "@/content";
@@ -39,9 +39,21 @@ export function Header() {
     };
   }, [open]);
 
+  // Mobile menu sections behave as an accordion: opening one closes the others.
+  const closeOtherSections = (e: SyntheticEvent<HTMLDetailsElement>) => {
+    const opened = e.currentTarget;
+    if (!opened.open) return;
+    opened
+      .closest("nav")
+      ?.querySelectorAll<HTMLDetailsElement>("details[open]")
+      .forEach((d) => {
+        if (d !== opened) d.open = false;
+      });
+  };
+
   return (
     <header className={cn("sticky top-0 z-40 border-b border-maroon-800 bg-maroon-700 text-white transition-shadow", scrolled && "shadow-[0_10px_30px_-12px_rgba(46,4,4,.55)]")}>
-      <Container className="on-dark flex min-h-[72px] items-center justify-between gap-4">
+      <Container className="on-dark flex min-h-16 items-center justify-between sm:min-h-[72px] gap-4">
         <Logo onDark />
 
         <nav aria-label="Main" className="hidden xl:block">
@@ -79,7 +91,7 @@ export function Header() {
 
         <button
           type="button"
-          className="inline-flex h-12 w-12 items-center justify-center rounded-full text-white hover:bg-white/10 xl:hidden"
+          className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-full text-white hover:bg-white/10 xl:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpenedOn(open ? null : pathname)}
@@ -96,7 +108,7 @@ export function Header() {
               {MAIN_NAV.map((item) =>
                 item.children ? (
                   <li key={item.label}>
-                    <details className="group" open={isActiveSection(pathname, item.to) && item.to !== "/"}>
+                    <details className="group" open={isActiveSection(pathname, item.to) && item.to !== "/"} onToggle={closeOtherSections}>
                       <summary
                         className={cn(
                           "flex min-h-12 cursor-pointer list-none items-center justify-between rounded-2xl px-4 text-lg font-semibold transition-colors hover:bg-maroon-50 group-open:bg-maroon-50",

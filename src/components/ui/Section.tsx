@@ -29,10 +29,10 @@ export function Section({ id, tone = "plain", eyebrow, title, intro, action, as:
   const headingId = id && title ? `${id}-title` : undefined;
   const dark = tone === "dark";
   return (
-    <section id={id} aria-labelledby={headingId} className={cn("py-16 md:py-24", tones[tone], className)}>
+    <section id={id} aria-labelledby={headingId} className={cn("py-12 md:py-24", tones[tone], className)}>
       <Container>
         {(eyebrow || title || intro || action) && (
-          <div className={cn("mb-10 flex flex-col gap-5 md:mb-14", center ? "items-center text-center" : "md:flex-row md:items-end md:justify-between")}>
+          <div className={cn("mb-7 flex flex-col gap-4 md:mb-14 md:gap-5", center ? "items-center text-center" : "md:flex-row md:items-end md:justify-between")}>
             <div className={cn("max-w-2xl", center && "mx-auto")}>
               {eyebrow && <p className={cn("eyebrow", dark && "bg-white/10 text-maroon-100")}>{eyebrow}</p>}
               {title && (
@@ -40,7 +40,7 @@ export function Section({ id, tone = "plain", eyebrow, title, intro, action, as:
                   {title}
                 </H>
               )}
-              {intro && <div className={cn("mt-4 text-lg", dark ? "text-maroon-100" : "text-ink-600")}>{intro}</div>}
+              {intro && <div className={cn("mt-3 text-base md:mt-4 md:text-lg", dark ? "text-maroon-100" : "text-ink-600")}>{intro}</div>}
             </div>
             {action && <div className="shrink-0">{action}</div>}
           </div>
