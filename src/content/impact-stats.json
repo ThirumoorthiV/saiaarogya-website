@@ -1,0 +1,8 @@
+{
+  "items": [
+    { "label": { "en": "Patients served", "te": null }, "value": null, "asOfDate": null, "order": 1 },
+    { "label": { "en": "Specialities", "te": null }, "value": "10", "asOfDate": null, "order": 2 },
+    { "label": { "en": "Beds", "te": null }, "value": null, "asOfDate": null, "order": 3 },
+    { "label": { "en": "Free of charge", "te": null }, "value": "100%", "asOfDate": null, "order": 4 }
+  ]
+}

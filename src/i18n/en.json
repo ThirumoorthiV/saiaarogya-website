@@ -1,0 +1,61 @@
+{
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "breadcrumb": "Breadcrumb",
+    "quickActions": "Quick actions",
+    "language": "Language",
+    "opensNewTab": "(opens in a new tab)"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "departments": "Departments",
+    "doctors": "Doctors",
+    "patientGuide": "Patient Guide",
+    "impact": "Our Impact",
+    "contact": "Contact",
+    "supportUs": "Support Us",
+    "donate": "Donate",
+    "policies": "Policies"
+  },
+  "utility": {
+    "emergency": "Emergency",
+    "opd": "OPD",
+    "call": "Call",
+    "openNow": "Open now",
+    "closed": "Closed now"
+  },
+  "actions": {
+    "call": "Call",
+    "callUs": "Call Us",
+    "timings": "Timings",
+    "opdTimings": "OPD Timings",
+    "directions": "Directions",
+    "findDoctor": "Find a Doctor",
+    "viewAll": "View all",
+    "viewDetails": "View details",
+    "readMore": "Read more",
+    "email": "Email us",
+    "volunteer": "Volunteer",
+    "donate": "Donate",
+    "callToEnquire": "Call to enquire",
+    "getDirections": "Get directions"
+  },
+  "footer": {
+    "tagline": "Your one-stop destination for quality healthcare solutions, offered by medical specialists driven by compassion and expertise, free of charge.",
+    "quickLinks": "Quick links",
+    "patientGuide": "Patient guide",
+    "contact": "Contact",
+    "unitOf": "A unit of Sri Sathya Sai Sujala Sravanthi Trust",
+    "underMission": "Under the Sri Madhusudan Sai Global Humanitarian Mission",
+    "copyright": "© {{year}} Sai Aarogya Hospital. All rights reserved."
+  },
+  "common": {
+    "freeOfCharge": "Free of charge",
+    "toBeConfirmed": "To be confirmed",
+    "teluguNotice": "Telugu translation is in progress. This page is shown in English for now."
+  }
+}

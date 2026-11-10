@@ -1,0 +1,130 @@
+{
+  "items": [
+    {
+      "name": { "en": "General Medicine", "te": null },
+      "slug": "general-medicine",
+      "icon": "stethoscope",
+      "summary": { "en": "Handles routine health concerns, diagnoses, and treatments for common illnesses and conditions.", "te": null },
+      "description": [],
+      "services": [
+        { "en": "Routine health concerns", "te": null },
+        { "en": "Diagnosis of common illnesses", "te": null },
+        { "en": "Treatment of common illnesses and conditions", "te": null }
+      ],
+      "order": 1,
+      "isActive": true
+    },
+    {
+      "name": { "en": "General Surgery", "te": null },
+      "slug": "general-surgery",
+      "icon": "scissors",
+      "summary": null,
+      "description": [],
+      "services": [],
+      "order": 2,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Dentistry", "te": null },
+      "slug": "dentistry",
+      "icon": "smile",
+      "summary": { "en": "Focuses on oral health, including routine cleanings, cavity treatments, and dental surgeries.", "te": null },
+      "description": [],
+      "services": [
+        { "en": "Routine cleanings", "te": null },
+        { "en": "Cavity treatments", "te": null },
+        { "en": "Dental surgeries", "te": null }
+      ],
+      "order": 3,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Orthopaedics", "te": null },
+      "slug": "orthopaedics",
+      "icon": "bone",
+      "summary": { "en": "Deals with bone, joint, and muscle issues, including fractures, arthritis, and sports injuries.", "te": null },
+      "description": [],
+      "services": [
+        { "en": "Fractures", "te": null },
+        { "en": "Arthritis", "te": null },
+        { "en": "Sports injuries", "te": null },
+        { "en": "Bone, joint and muscle issues", "te": null }
+      ],
+      "order": 4,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Paediatrics", "te": null },
+      "slug": "paediatrics",
+      "icon": "baby",
+      "summary": { "en": "Provides healthcare services for infants, children, and adolescents, including immunisations and growth monitoring.", "te": null },
+      "description": [],
+      "services": [
+        { "en": "Care for infants, children and adolescents", "te": null },
+        { "en": "Immunisations", "te": null },
+        { "en": "Growth monitoring", "te": null }
+      ],
+      "order": 5,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Ophthalmology", "te": null },
+      "slug": "ophthalmology",
+      "icon": "eye",
+      "summary": { "en": "Provides eye care services, including vision correction, cataract surgery, and treatment of eye diseases.", "te": null },
+      "description": [],
+      "services": [
+        { "en": "Vision correction", "te": null },
+        { "en": "Cataract surgery", "te": null },
+        { "en": "Treatment of eye diseases", "te": null }
+      ],
+      "order": 6,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Obstetrics & Gynaecology", "te": null },
+      "slug": "obstetrics-gynaecology",
+      "icon": "heart-handshake",
+      "summary": { "en": "Cares for women's reproductive health, including pregnancy, childbirth, and hormonal issues.", "te": null },
+      "description": [],
+      "services": [
+        { "en": "Pregnancy care", "te": null },
+        { "en": "Childbirth", "te": null },
+        { "en": "Hormonal issues", "te": null },
+        { "en": "Women's reproductive health", "te": null }
+      ],
+      "order": 7,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Cardiology", "te": null },
+      "slug": "cardiology",
+      "icon": "heart-pulse",
+      "summary": null,
+      "description": [],
+      "services": [],
+      "order": 8,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Dermatology", "te": null },
+      "slug": "dermatology",
+      "icon": "hand",
+      "summary": null,
+      "description": [],
+      "services": [],
+      "order": 9,
+      "isActive": true
+    },
+    {
+      "name": { "en": "Urology", "te": null },
+      "slug": "urology",
+      "icon": "droplets",
+      "summary": null,
+      "description": [],
+      "services": [],
+      "order": 10,
+      "isActive": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "items": [
+    { "image": "/images/hospital-ward.webp", "caption": { "en": "Inpatient ward with rows of made-up hospital beds", "te": null }, "category": "Hospital", "date": null },
+    { "image": "/images/opd-waiting-area.webp", "caption": { "en": "Patients waiting in the OPD corridor", "te": null }, "category": "Hospital", "date": "2024-12-02" },
+    { "image": "/images/consultation.webp", "caption": { "en": "A doctor consulting an elderly patient", "te": null }, "category": "Hospital", "date": null },
+    { "image": "/images/dental-consultation.webp", "caption": { "en": "A patient being attended to in the dental room", "te": null }, "category": "Hospital", "date": null },
+    { "image": "/images/patient-care.webp", "caption": { "en": "Staff attending to patients in the corridor", "te": null }, "category": "Hospital", "date": null },
+    { "image": "/images/medical-equipment.webp", "caption": { "en": "Newly installed medical equipment at the hospital", "te": null }, "category": "Hospital", "date": "2024-12-16" }
+  ]
+}

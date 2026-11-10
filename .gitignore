@@ -1,0 +1,10 @@
+node_modules
+dist
+.vite-react-ssg-temp
+*.local
+.env
+.env.*
+!.env.example
+assets-src/
+.DS_Store
+Thumbs.db

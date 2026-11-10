@@ -1,0 +1,36 @@
+{
+  "hospitalName": "Sai Aarogya Hospital",
+  "phone": "+918499991259",
+  "phoneDisplay": "+91 84999 91259",
+  "emergencyPhone": null,
+  "email": "info@saisujalasravanthi.com",
+  "whatsapp": null,
+  "address": {
+    "lines": [
+      "Sai Aarogya Hospital",
+      "Sai Swasthya Wellness Centre",
+      "Khajipalem, Pittlavanipalem Mandal"
+    ],
+    "locality": "Khajipalem",
+    "district": "Bapatla District",
+    "region": "Andhra Pradesh",
+    "postalCode": "522329",
+    "country": "IN"
+  },
+  "geo": null,
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Sai+Aarogya+Hospital+Khajipalem+Bapatla+Andhra+Pradesh+522329",
+  "mapEmbedUrl": "https://maps.google.com/maps?q=Sai%20Aarogya%20Hospital%2C%20Khajipalem%2C%20Pittlavanipalem%20Mandal%2C%20Bapatla%2C%20Andhra%20Pradesh%20522329&z=14&output=embed",
+  "opdHours": [],
+  "opdSummary": null,
+  "holidayNotice": null,
+  "trust": {
+    "name": "Sri Sathya Sai Sujala Sravanthi Trust",
+    "url": null,
+    "registeredOffice": "8-2-601/P/1, Panchavathi Colony, Road No. 10, Banjara Hills, Hyderabad, Telangana 500034"
+  },
+  "donation": {
+    "indianDonorUrl": null,
+    "internationalEmail": "info@saisujalasravanthi.in"
+  },
+  "social": []
+}

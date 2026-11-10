@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens — requirements §6.1 (also mirrored in tailwind.config.ts) */
+:root {
+  --maroon-700: #7a0c0c;
+  --maroon-900: #5a0808;
+  --maroon-50: #fbefef;
+  --saffron-500: #f07e1e;
+  --saffron-700: #c2410c;
+  --gold-400: #f4b740;
+  --cream-100: #f8f1e4;
+  --white: #ffffff;
+  --text-900: #2b2220;
+  --text-600: #5e5450;
+  --success-700: #1e6b34;
+  --alert-700: #b91c1c;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-body text-base leading-[1.6] text-ink-900 antialiased md:text-lg;
+  }
+  html[lang="te"] body {
+    font-family: "Noto Sans Telugu", Inter, system-ui, sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-medium text-maroon-700;
+    text-wrap: balance;
+  }
+  a {
+    @apply text-maroon-700 underline-offset-4;
+  }
+  :focus-visible {
+    outline: 3px solid var(--saffron-700);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .h1 {
+    @apply text-h1 md:text-h1-lg;
+  }
+  .h2 {
+    @apply text-h2 md:text-h2-lg;
+  }
+  .h3 {
+    @apply text-h3 md:text-h3-lg;
+  }
+  .prose-body p + p {
+    @apply mt-4;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
