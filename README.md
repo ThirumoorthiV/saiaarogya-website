@@ -55,6 +55,6 @@ docs/
 - [x] Phase 0 — Quick-fix checklist for the current Wix site (`docs/PHASE0_WIX_FIXES.md`)
 - [x] Phase 1 — Foundation: project setup, design system, layout, routing for the full sitemap, SEO component, content model
 - [x] Phase 2 — Patient essentials: Home, Patient Guide, Contact
-- [ ] Phase 3 — Departments & Doctors, CMS admin, schema markup
+- [x] Phase 3 — Departments & Doctors, CMS admin, schema markup
 - [ ] Phase 4 — About, Impact, Stories, Gallery, Support Us
 - [ ] Phase 5 — Telugu, redirects, analytics, launch QA

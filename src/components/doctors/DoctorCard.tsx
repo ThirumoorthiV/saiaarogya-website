@@ -48,7 +48,7 @@ export function DoctorPhoto({ doctor, className }: { doctor: Doctor; className?:
 /** "Daily" / "Visiting: Mon & Thu" badge, or a TODO while days are unconfirmed. */
 export function VisitingBadge({ doctor }: { doctor: Doctor }) {
   const t = useT();
-  if (doctor.visitingDays === "Daily") {
+  if (doctor.visitingDays.includes("Daily")) {
     return (
       <Badge tone="success" icon={<CircleCheck className="h-4 w-4" aria-hidden />}>
         {t("doctor.daily")}

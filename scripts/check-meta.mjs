@@ -23,7 +23,7 @@ async function walk(dir) {
 const decode = (s) =>
   s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 
-const files = (await walk("dist")).filter((f) => !f.includes(`${path.sep}404${path.sep}`));
+const files = (await walk("dist")).filter((f) => !f.includes(`${path.sep}404${path.sep}`) && !f.includes(`${path.sep}admin${path.sep}`));
 const problems = [];
 const seen = { title: new Map(), desc: new Map() };
 const noindexPages = [];

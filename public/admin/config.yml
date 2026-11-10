@@ -1,0 +1,367 @@
+# Decap CMS configuration — content collections from requirements §10.
+# Every save creates a git commit; Netlify rebuilds the site in ~1–2 minutes.
+# Staff guide: docs/STAFF_GUIDE.md
+#
+# Login: Netlify Identity + Git Gateway (enable both in the Netlify dashboard).
+# Local editing without login: run `npx decap-server` and open http://localhost:5173/admin/
+
+backend:
+  name: git-gateway
+  branch: main
+local_backend: true
+
+site_url: https://www.saiaarogya.hospital
+display_url: https://www.saiaarogya.hospital
+logo_url: /images/logo-mark.webp
+media_folder: public/images/uploads
+public_folder: /images/uploads
+publish_mode: simple
+
+collections:
+  # ---------------------------------------------------------------- Doctors
+  - name: doctors
+    label: "Doctors"
+    description: "Doctor names, photos, departments and visiting days. Leave a field empty if not yet confirmed — the website shows a TODO."
+    files:
+      - name: doctors
+        label: "All doctors"
+        file: src/content/doctors.json
+        format: json
+        fields:
+          - label: "Doctors"
+            name: items
+            widget: list
+            summary: "{{fields.name}} — {{fields.department}}"
+            fields:
+              - { label: "Name", name: name, widget: string, hint: "e.g. Dr Narendra Kumar" }
+              - { label: "URL slug", name: slug, widget: string, hint: "lowercase-with-hyphens, e.g. dr-narendra-kumar. Do not change after launch." }
+              - { label: "Photo", name: photo, widget: image, required: false, hint: "Square, at least 600×600 px, under 150 KB" }
+              - { label: "Qualification", name: qualification, widget: string }
+              - label: "Department"
+                name: department
+                widget: relation
+                collection: departments
+                file: departments
+                search_fields: ["items.*.name.en"]
+                display_fields: ["items.*.name.en"]
+                value_field: "items.*.slug"
+              - { label: "Type", name: type, widget: select, options: ["Resident", "Consultant"] }
+              - { label: "Visiting days", name: visitingDays, widget: select, multiple: true, required: false, options: &days [{ label: "Daily", value: "Daily" }, { label: "Monday", value: "Mon" }, { label: "Tuesday", value: "Tue" }, { label: "Wednesday", value: "Wed" }, { label: "Thursday", value: "Thu" }, { label: "Friday", value: "Fri" }, { label: "Saturday", value: "Sat" }, { label: "Sunday", value: "Sun" }] }
+              - { label: "Consultation time", name: timing, widget: string, required: false, hint: "e.g. 10:00 AM – 1:00 PM" }
+              - { label: "Languages spoken", name: languages, widget: list, required: false, hint: "Comma-separated, e.g. Telugu, English" }
+              - { label: "Sort order", name: order, widget: number, value_type: int }
+              - { label: "Show on website", name: isActive, widget: boolean, default: true }
+
+  # ------------------------------------------------------------ OPD timings
+  - name: opd
+    label: "OPD timings"
+    files:
+      - name: opd-timings
+        label: "Department timetable"
+        file: src/content/opd-timings.json
+        format: json
+        fields:
+          - label: "Timetable rows"
+            name: items
+            widget: list
+            summary: "{{fields.department}} — {{fields.day}} {{fields.startTime}}–{{fields.endTime}}"
+            fields:
+              - label: "Department"
+                name: department
+                widget: relation
+                collection: departments
+                file: departments
+                search_fields: ["items.*.name.en"]
+                display_fields: ["items.*.name.en"]
+                value_field: "items.*.slug"
+              - { label: "Day", name: day, widget: select, options: &weekdays [{ label: "Monday", value: "Mon" }, { label: "Tuesday", value: "Tue" }, { label: "Wednesday", value: "Wed" }, { label: "Thursday", value: "Thu" }, { label: "Friday", value: "Fri" }, { label: "Saturday", value: "Sat" }, { label: "Sunday", value: "Sun" }] }
+              - { label: "Start time (24h)", name: startTime, widget: string, pattern: ['^\d{2}:\d{2}$', "Use HH:MM, e.g. 09:30"] }
+              - { label: "End time (24h)", name: endTime, widget: string, pattern: ['^\d{2}:\d{2}$', "Use HH:MM, e.g. 13:00"] }
+              - { label: "Notes", name: notes, widget: string, required: false }
+
+  # ------------------------------------------------------------ Departments
+  - name: departments
+    label: "Departments"
+    files:
+      - name: departments
+        label: "All departments"
+        file: src/content/departments.json
+        format: json
+        fields:
+          - label: "Departments"
+            name: items
+            widget: list
+            summary: "{{fields.name.en}}"
+            fields:
+              - { label: "Name", name: name, widget: object, fields: &en_te [{ label: "English", name: "en", widget: string }, { label: "Telugu (తెలుగు)", name: "te", widget: string, required: false }] }
+              - { label: "URL slug", name: slug, widget: string, hint: "Do not change after launch." }
+              - label: "Icon"
+                name: icon
+                widget: select
+                options: ["stethoscope", "scissors", "smile", "bone", "baby", "eye", "heart-handshake", "heart-pulse", "hand", "droplets"]
+              - { label: "One-line summary", name: summary, widget: object, required: false, fields: &en_te_text [{ label: "English", name: "en", widget: text }, { label: "Telugu (తెలుగు)", name: "te", widget: text, required: false }] }
+              - { label: "Description paragraphs", name: description, widget: list, required: false, fields: *en_te_text }
+              - { label: "Services & conditions treated", name: services, widget: list, required: false, fields: *en_te }
+              - { label: "Sort order", name: order, widget: number, value_type: int }
+              - { label: "Show on website", name: isActive, widget: boolean, default: true }
+
+  # ---------------------------------------------------------- Site settings
+  - name: settings
+    label: "Site settings"
+    description: "Phone, email, address and OPD hours — used on every page."
+    files:
+      - name: site-settings
+        label: "Contact details & OPD hours"
+        file: src/content/site-settings.json
+        format: json
+        fields:
+          - { label: "Hospital name", name: hospitalName, widget: string }
+          - { label: "Phone (international format)", name: phone, widget: string, hint: "e.g. +918499991259 — used for tap-to-call" }
+          - { label: "Phone (as displayed)", name: phoneDisplay, widget: string, hint: "e.g. +91 84999 91259" }
+          - { label: "Emergency / ambulance number", name: emergencyPhone, widget: string, required: false }
+          - { label: "Official email", name: email, widget: string }
+          - { label: "WhatsApp number", name: whatsapp, widget: string, required: false }
+          - label: "Address"
+            name: address
+            widget: object
+            fields:
+              - { label: "Address lines", name: lines, widget: list }
+              - { label: "Locality", name: locality, widget: string }
+              - { label: "District", name: district, widget: string }
+              - { label: "State", name: region, widget: string }
+              - { label: "PIN code", name: postalCode, widget: string }
+              - { label: "Country code", name: country, widget: string }
+          - label: "Map coordinates"
+            name: geo
+            widget: object
+            required: false
+            fields:
+              - { label: "Latitude", name: lat, widget: number, value_type: float }
+              - { label: "Longitude", name: lng, widget: number, value_type: float }
+          - { label: "Google Maps link (directions)", name: mapUrl, widget: string }
+          - { label: "Google Maps embed URL", name: mapEmbedUrl, widget: string }
+          - label: "General OPD hours"
+            name: opdHours
+            widget: list
+            required: false
+            hint: "Drives the 'Open now' badge"
+            fields:
+              - { label: "Days", name: days, widget: select, multiple: true, options: *weekdays }
+              - { label: "Opens (24h HH:MM)", name: open, widget: string }
+              - { label: "Closes (24h HH:MM)", name: close, widget: string }
+          - { label: "OPD summary (top bar)", name: opdSummary, widget: object, required: false, fields: *en_te }
+          - { label: "Holiday notice", name: holidayNotice, widget: object, required: false, fields: *en_te_text }
+          - label: "Trust"
+            name: trust
+            widget: object
+            fields:
+              - { label: "Name", name: name, widget: string }
+              - { label: "Website", name: url, widget: string, required: false }
+              - { label: "Registered office", name: registeredOffice, widget: string }
+          - label: "Donations"
+            name: donation
+            widget: object
+            fields:
+              - { label: "Online donation link (Indian donors)", name: indianDonorUrl, widget: string, required: false }
+              - { label: "Email for international donors", name: internationalEmail, widget: string }
+              - { label: "Impact per contribution (one per line)", name: impactPerContribution, widget: list, required: false }
+              - { label: "Tax exemption information", name: taxInfo, widget: text, required: false }
+              - { label: "How funds are used", name: fundUse, widget: text, required: false }
+          - label: "Social links"
+            name: social
+            widget: list
+            required: false
+            fields:
+              - { label: "Label", name: label, widget: string }
+              - { label: "URL", name: url, widget: string }
+
+  # ------------------------------------------------------- Stories & updates
+  - name: stories
+    label: "Stories & camp updates"
+    files:
+      - name: stories
+        label: "All stories"
+        file: src/content/stories.json
+        format: json
+        fields:
+          - label: "Stories"
+            name: items
+            widget: list
+            summary: "{{fields.date}} — {{fields.title.en}}"
+            fields:
+              - { label: "Title", name: title, widget: object, fields: *en_te }
+              - { label: "URL slug", name: slug, widget: string }
+              - { label: "Category", name: category, widget: select, options: ["Patient", "Camp", "Update"] }
+              - { label: "Date", name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "Cover image", name: coverImage, widget: image, required: false }
+              - { label: "Cover image description (alt text)", name: coverAlt, widget: string }
+              - { label: "Paragraphs", name: body, widget: list, fields: *en_te_text }
+              - { label: "Written consent received (required for patient stories)", name: consentConfirmed, widget: boolean, default: false }
+
+  # ---------------------------------------------------------------- Gallery
+  - name: gallery
+    label: "Gallery"
+    files:
+      - name: gallery
+        label: "Photos"
+        file: src/content/gallery.json
+        format: json
+        fields:
+          - label: "Photos"
+            name: items
+            widget: list
+            summary: "{{fields.category}} — {{fields.caption.en}}"
+            fields:
+              - { label: "Image", name: image, widget: image }
+              - { label: "Caption (also used as alt text)", name: caption, widget: object, fields: *en_te }
+              - { label: "Category", name: category, widget: select, options: ["Hospital", "Camps", "Events"] }
+              - { label: "Date", name: date, widget: datetime, required: false, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+
+  # ----------------------------------------------------------- Impact stats
+  - name: impact
+    label: "Impact numbers"
+    files:
+      - name: impact-stats
+        label: "Impact at a glance"
+        file: src/content/impact-stats.json
+        format: json
+        fields:
+          - label: "Numbers"
+            name: items
+            widget: list
+            summary: "{{fields.label.en}}: {{fields.value}}"
+            fields:
+              - { label: "Label", name: label, widget: object, fields: *en_te }
+              - { label: "Value", name: value, widget: string, required: false, hint: "e.g. 12,500 or 100%" }
+              - { label: "As of date", name: asOfDate, widget: datetime, required: false, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "Sort order", name: order, widget: number, value_type: int }
+
+  # ------------------------------------------------------------------- FAQs
+  - name: faqs
+    label: "FAQs"
+    files:
+      - name: faqs
+        label: "All FAQs"
+        file: src/content/faqs.json
+        format: json
+        fields:
+          - label: "Questions"
+            name: items
+            widget: list
+            summary: "[{{fields.page}}] {{fields.question.en}}"
+            fields:
+              - { label: "Question", name: question, widget: object, fields: *en_te }
+              - { label: "Answer", name: answer, widget: object, required: false, fields: *en_te_text }
+              - { label: "Page", name: page, widget: select, options: ["PatientGuide", "SupportUs", "Department"] }
+              - { label: "Department slug (only for page = Department)", name: department, widget: string, required: false }
+              - { label: "Sort order", name: order, widget: number, value_type: int }
+
+  # ------------------------------------------------------------------ About
+  - name: about
+    label: "About page"
+    files:
+      - name: about
+        label: "About content"
+        file: src/content/about.json
+        format: json
+        fields:
+          - { label: "Hospital introduction", name: intro, widget: list, field: { label: "Paragraph", name: p, widget: text } }
+          - label: "Inspiration"
+            name: inspiration
+            widget: object
+            fields:
+              - { label: "Name", name: name, widget: string }
+              - { label: "Photo", name: photo, widget: image }
+              - { label: "Quote", name: quote, widget: string }
+              - { label: "Paragraphs", name: body, widget: list, field: { label: "Paragraph", name: p, widget: text } }
+          - label: "Founder"
+            name: founder
+            widget: object
+            fields:
+              - { label: "Name", name: name, widget: string }
+              - { label: "Photo", name: photo, widget: image }
+              - { label: "Quote", name: quote, widget: string }
+              - { label: "Paragraphs", name: body, widget: list, field: { label: "Paragraph", name: p, widget: text } }
+          - label: "Mission"
+            name: mission
+            widget: object
+            fields:
+              - { label: "Name", name: name, widget: string }
+              - { label: "Paragraphs", name: body, widget: list, field: { label: "Paragraph", name: p, widget: text } }
+          - label: "Trust"
+            name: trust
+            widget: object
+            fields:
+              - { label: "Name", name: name, widget: string }
+              - { label: "Logo", name: logo, widget: image }
+              - { label: "Paragraphs", name: body, widget: list, field: { label: "Paragraph", name: p, widget: text } }
+          - { label: "History paragraphs", name: history, widget: list, field: { label: "Paragraph", name: p, widget: text } }
+          - label: "Timeline"
+            name: timeline
+            widget: list
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "Date", name: date, widget: string }
+              - { label: "Title", name: title, widget: string }
+              - { label: "Text", name: text, widget: text }
+          - label: "Governance groups"
+            name: governance
+            widget: list
+            summary: "{{fields.title}} {{fields.subtitle}}"
+            fields:
+              - { label: "Group title", name: title, widget: string }
+              - { label: "Subtitle", name: subtitle, widget: string, required: false }
+              - label: "People"
+                name: people
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: "Name", name: name, widget: string }
+                  - { label: "Slug", name: slug, widget: string }
+                  - { label: "Photo", name: photo, widget: image, required: false }
+                  - { label: "Role", name: role, widget: string, required: false }
+                  - { label: "Bio", name: bio, widget: text, required: false }
+          - label: "Our network"
+            name: network
+            widget: list
+            fields:
+              - { label: "Name", name: name, widget: string }
+              - { label: "Short name", name: short, widget: string, required: false }
+              - { label: "Description", name: description, widget: object, fields: *en_te_text }
+              - { label: "Website", name: url, widget: string, required: false }
+          - label: "Multi-speciality centre section"
+            name: multiSpeciality
+            widget: object
+            fields:
+              - { label: "Heading", name: heading, widget: string }
+              - label: "Points"
+                name: points
+                widget: list
+                fields:
+                  - { label: "Title", name: title, widget: string }
+                  - { label: "Text", name: text, widget: text }
+              - { label: "Show on website", name: published, widget: boolean, default: false }
+
+  # --------------------------------------------------------------- Policies
+  - name: policies
+    label: "Policies"
+    files:
+      - name: policies
+        label: "Terms, privacy & refund"
+        file: src/content/policies.json
+        format: json
+        fields:
+          - label: "Policies"
+            name: items
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Slug", name: slug, widget: string }
+              - { label: "Title", name: title, widget: string }
+              - label: "Sections"
+                name: sections
+                widget: list
+                fields:
+                  - { label: "Heading", name: heading, widget: string, required: false }
+                  - { label: "Paragraphs", name: paragraphs, widget: list, required: false, field: { label: "Paragraph", name: p, widget: text } }
+                  - { label: "Bullet list", name: list, widget: list, required: false, field: { label: "Item", name: i, widget: text } }

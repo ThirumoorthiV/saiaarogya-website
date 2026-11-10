@@ -19,6 +19,10 @@ export interface LocalizedText {
 
 export type DayOfWeek = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
 export const DAYS: DayOfWeek[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+export type VisitingDay = DayOfWeek | "Daily";
+
+/** True when the doctor is available on the given day. */
+export const visitsOn = (days: VisitingDay[], day: DayOfWeek) => days.includes("Daily") || days.includes(day);
 
 export interface Department {
   name: LocalizedText;
@@ -46,8 +50,8 @@ export interface Doctor {
   /** Department slug (reference) */
   department: string;
   type: DoctorType;
-  /** "Daily" or specific days; empty = not yet confirmed (TODO) */
-  visitingDays: DayOfWeek[] | "Daily";
+  /** Specific days, or ["Daily"]; empty = not yet confirmed (TODO) */
+  visitingDays: VisitingDay[];
   /** e.g. "10:00 AM – 1:00 PM"; null = TODO */
   timing: string | null;
   /** empty = TODO */
@@ -156,6 +160,12 @@ export interface SiteSettings {
     /** External online donation link for Indian donors; null = TODO */
     indianDonorUrl: string | null;
     internationalEmail: string;
+    /** e.g. "₹X covers a day of OPD medicines"; empty = TODO */
+    impactPerContribution: string[];
+    /** e.g. 80G details; null = TODO */
+    taxInfo: string | null;
+    /** How funds are used; null = TODO */
+    fundUse: string | null;
   };
   social: { label: string; url: string }[];
 }

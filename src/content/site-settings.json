@@ -30,7 +30,10 @@
   },
   "donation": {
     "indianDonorUrl": null,
-    "internationalEmail": "info@saisujalasravanthi.in"
+    "internationalEmail": "info@saisujalasravanthi.in",
+    "impactPerContribution": [],
+    "taxInfo": null,
+    "fundUse": null
   },
   "social": []
 }

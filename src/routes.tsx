@@ -16,11 +16,11 @@ const pageRoutes = (): RouteRecord[] => [
   { path: "about/history", lazy: placeholder },
   { path: "about/governance", lazy: placeholder },
 
-  { path: "departments", lazy: placeholder },
-  { path: "departments/:slug", lazy: placeholder },
+  { path: "departments", lazy: () => import("@/pages/departments/Index") },
+  { path: "departments/:slug", lazy: () => import("@/pages/departments/Detail") },
 
-  { path: "doctors", lazy: placeholder },
-  { path: "doctors/:slug", lazy: placeholder },
+  { path: "doctors", lazy: () => import("@/pages/doctors/Index") },
+  { path: "doctors/:slug", lazy: () => import("@/pages/doctors/Detail") },
 
   { path: "patient-guide", lazy: () => import("@/pages/patient-guide/Index") },
   { path: "patient-guide/opd-timings", lazy: () => import("@/pages/patient-guide/OpdTimings") },
