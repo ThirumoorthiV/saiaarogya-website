@@ -128,7 +128,7 @@ The site is **English only** (client decision, 10 Nov 2026). This overrides the 
 
 | # | Item | Code id | Needed |
 |---|---|---|---|
-| G1 | **Google Analytics 4 measurement ID** | `analytics-id` | Set `VITE_GA_ID` in Netlify environment variables |
-| G2 | **Web3Forms access key** — the contact form cannot send until this is set. Create a free key at https://web3forms.com **using the official hospital email** (submissions are emailed there), then set `VITE_WEB3FORMS_ACCESS_KEY` in Netlify → Site settings → Environment variables and redeploy | `form-access-key` | Access key + confirm which inbox receives enquiries |
+| G1 | **Google Analytics 4 measurement ID** | `analytics-id` | Set `VITE_GA_ID` in Vercel environment variables |
+| G2 | **Web3Forms access key** — the contact form cannot send until this is set. Create a free key at https://web3forms.com **using the official hospital email** (submissions are emailed there), then set `VITE_WEB3FORMS_ACCESS_KEY` in Vercel → Project → Settings → Environment Variables and redeploy | `form-access-key` | Access key + confirm which inbox receives enquiries |
 | G3 | **Logo source file (SVG)** and official colours | — | The site uses the logo PNG from the current website (§11) |
 | G4 | **Domain / DNS access** for launch | — | Who manages `saiaarogya.hospital` DNS? |

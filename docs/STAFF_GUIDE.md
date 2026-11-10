@@ -5,8 +5,8 @@ This guide is for hospital and Trust staff. You can change doctors, timings, dep
 ## 1. Logging in
 
 1. Go to **https://www.saiaarogya.hospital/admin/**
-2. Click **Login with Netlify Identity** and sign in with the email address you were invited with.
-   - First time? Open the invitation email, click the link and choose a password.
+2. Click **Login with GitHub** and sign in with your GitHub account.
+   - First time? You need a free GitHub account, and the website administrator must add it to the website's repository. Approve the "Sai Aarogya CMS" request the first time you sign in.
 3. You will see the **Collections** list on the left.
 
 > Every time you press **Publish**, the website rebuilds itself. Changes appear on the live site in about **1–2 minutes**.

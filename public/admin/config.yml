@@ -1,13 +1,17 @@
 # Decap CMS configuration — content collections from requirements §10.
-# Every save creates a git commit; Netlify rebuilds the site in ~1–2 minutes.
+# Every save creates a git commit on GitHub; Vercel rebuilds the site in ~1–2 minutes.
 # Staff guide: docs/STAFF_GUIDE.md
 #
-# Login: Netlify Identity + Git Gateway (enable both in the Netlify dashboard).
+# Login: GitHub (editors need write access to the repository). The OAuth handshake runs in
+# the Vercel functions api/auth.ts and api/callback.ts (env GITHUB_OAUTH_CLIENT_ID / _SECRET).
 # Local editing without login: run `npx decap-server` and open http://localhost:5173/admin/
 
 backend:
-  name: git-gateway
+  name: github
+  repo: ThirumoorthiV/saiaarogya-website
   branch: main
+  base_url: https://www.saiaarogya.hospital
+  auth_endpoint: api/auth
 local_backend: true
 
 site_url: https://www.saiaarogya.hospital

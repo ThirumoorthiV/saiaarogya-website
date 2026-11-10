@@ -19,5 +19,5 @@
     "baseUrl": ".",
     "paths": { "@/*": ["src/*"] }
   },
-  "include": ["src", "netlify", "scripts/**/*.ts", "vite.config.ts", "tailwind.config.ts"]
+  "include": ["src", "api", "server", "scripts/**/*.ts", "vite.config.ts", "tailwind.config.ts"]
 }

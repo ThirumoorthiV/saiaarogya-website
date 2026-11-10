@@ -63,9 +63,9 @@ type Status = { kind: "idle" } | { kind: "paid"; paymentId: string } | { kind: "
 
 /**
  * Donation form for Indian passport holders (§5.7), with the same fields as the current
- * website's form. Donate → /api/donations/create (Netlify Function: Razorpay Order or
+ * website's form. Donate → /api/donations/create (Vercel Function: Razorpay Order or
  * Subscription with the form details in its notes) → Razorpay Checkout → signature check.
- * Razorpay's webhook then sends the details to Frappe (netlify/functions/razorpay-webhook.ts).
+ * Razorpay's webhook then sends the details to Frappe (api/razorpay/webhook.ts).
  */
 export function DonationForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });

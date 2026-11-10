@@ -1,6 +1,6 @@
 # Launch checklist
 
-This covers the steps to take the new site live on Netlify at `www.saiaarogya.hospital` (roadmap §12 Phase 5, off-site plan §9). Tick each item as it is done.
+This covers the steps to take the new site live on Vercel at `www.saiaarogya.hospital` (roadmap §12 Phase 5, off-site plan §9). Tick each item as it is done.
 
 ## 1. Before launch: content
 
@@ -8,10 +8,10 @@ This covers the steps to take the new site live on Netlify at `www.saiaarogya.ho
 - [ ] `npm run todo:scan`: review what is still a placeholder. Anything left shows as a visible TODO box, so decide whether it is acceptable at launch.
 - [ ] Hospital sign-off on the Refund and Privacy policies (L1, L2).
 
-## 2. Netlify setup
+## 2. Vercel setup
 
-- [ ] Create a Netlify site from the Git repository (branch `main`). The build settings are read from `netlify.toml` (`npm run build` → `dist`).
-- [ ] **Environment variables** (Site configuration → Environment variables):
+- [ ] Vercel → **Add New → Project** → import `ThirumoorthiV/saiaarogya-website` (production branch `main`). Build settings, redirects and headers come from `vercel.json` (`npm run build` → `dist`). The functions in `api/` deploy automatically.
+- [ ] **Environment variables** (Project → Settings → Environment Variables, for Production and Preview):
   - [ ] `VITE_WEB3FORMS_ACCESS_KEY`: from https://web3forms.com, created **with the official hospital email**. Enquiries and volunteer sign-ups are sent there.
   - [ ] `VITE_GA_ID`: GA4 measurement ID (optional). Analytics loads only after a visitor accepts the cookie notice.
 - [ ] **Online donations (Razorpay → Frappe).** These are server-only variables, so never add a `VITE_` prefix. See `.env.example`.
@@ -22,17 +22,18 @@ This covers the steps to take the new site live on Netlify at `www.saiaarogya.ho
   - [ ] In Razorpay, turn **international payments off** (Indian passport holders only).
   - [ ] Test-mode run: donate ₹1 with a Razorpay test card or UPI, then check that the donation appears in Frappe **once**, with the 12 form fields and the amount.
   - [ ] Switch to live keys and make one small real donation to confirm it reaches Frappe.
-- [ ] Trigger a deploy and check the deploy log ends with `[vite-react-ssg] Build finished.`
-- [ ] **CMS logins**: Site configuration → Identity → **Enable Identity**. Set Registration to **Invite only**, then Services → **Enable Git Gateway**. Invite each staff editor by email.
-  - If Netlify Identity is unavailable for the account, switch `backend` in `public/admin/config.yml` to `github` and set up a GitHub OAuth app (see the Decap CMS docs).
-- [ ] Open `/admin/` and log in with an invited account. Make a test edit (e.g. a doctor's timing), publish it, and confirm the live site updates.
+- [ ] Deploy and check the build log ends with `[vite-react-ssg] Build finished.`
+- [ ] **CMS logins (GitHub).** Go to GitHub → Settings → Developer settings → **OAuth Apps** → New. Homepage URL `https://www.saiaarogya.hospital`, callback URL `https://www.saiaarogya.hospital/api/callback`. Put the Client ID and a new Client secret into `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET`, then redeploy.
+  - [ ] Give each staff editor a GitHub account with **write access** to the repository (Repository → Settings → Collaborators).
+- [ ] Open `/admin/` and click **Login with GitHub**. Make a test edit (e.g. a doctor's timing), publish it, and confirm the live site updates.
 
 ## 3. Domain & redirects
 
-- [ ] Add the custom domain `www.saiaarogya.hospital` (and the bare `saiaarogya.hospital` → `www` redirect) in Netlify → Domain management.
+- [ ] Add the custom domain `www.saiaarogya.hospital` (and the bare `saiaarogya.hospital` → `www` redirect) in Vercel → Project → Settings → Domains.
 - [ ] Update DNS at the registrar. Who manages the DNS is still to be confirmed (CONTENT_TODO G4).
-- [ ] HTTPS certificate issued (automatic on Netlify).
-- [ ] Check the 301 redirects from `public/_redirects` on the live domain:
+- [ ] HTTPS certificate issued (automatic on Vercel).
+- [ ] Check the 301 redirects from `vercel.json` on the live domain:
+  - [ ] `/donateus` → `/support-us/donate/`
   - [ ] `/donormanagement` → `/support-us/donate/`
   - [ ] `/terms` → `/policies/terms/`
   - [ ] `/privacypolicy` → `/policies/privacy/`

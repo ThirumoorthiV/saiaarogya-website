@@ -4,13 +4,11 @@
  * (recurring). The form details travel in the Razorpay `notes`, so the webhook can forward
  * them to Frappe after payment. Returns what the browser needs to open Razorpay Checkout.
  */
-import { donationSchema, isRecurring, PLAN_PERIOD, toRazorpayNotes, type Frequency } from "../../src/lib/donation";
-import { env, json, originAllowed, razorpay, razorpayConfigured } from "../lib/razorpay";
+import { donationSchema, isRecurring, PLAN_PERIOD, toRazorpayNotes, type Frequency } from "../../src/lib/donation.js";
+import { env, json, originAllowed, razorpay, razorpayConfigured } from "../../server/razorpay.js";
 
-export const config = { path: "/api/donations/create" };
-
-export default async (req: Request) => {
-  if (req.method !== "POST") return json(405, { error: "Method not allowed" });
+/** Vercel Function (Node.js runtime, Web Request/Response API). Only POST is exported, so other methods get 405. */
+export async function POST(req: Request): Promise<Response> {
   if (!originAllowed(req)) return json(403, { error: "Forbidden" });
   if (!razorpayConfigured()) return json(503, { error: "Online donations are not set up yet." });
 
@@ -46,4 +44,4 @@ export default async (req: Request) => {
     console.error("donation-create", e);
     return json(502, { error: "We could not start the payment. Please try again in a moment." });
   }
-};
+}

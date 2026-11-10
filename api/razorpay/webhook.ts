@@ -7,10 +7,8 @@
  * Frappe is called once per successful payment. If Frappe fails we return 502 so
  * Razorpay retries the webhook later (Razorpay retries only when we do not return 2xx).
  */
-import { toFrappePayload, type RazorpayPayment } from "../../src/lib/donation";
-import { env, json, verifySignature } from "../lib/razorpay";
-
-export const config = { path: "/api/razorpay/webhook" };
+import { toFrappePayload, type RazorpayPayment } from "../../src/lib/donation.js";
+import { env, json, verifySignature } from "../../server/razorpay.js";
 
 interface Event {
   event: string;
@@ -21,8 +19,8 @@ interface Event {
   };
 }
 
-export default async (req: Request) => {
-  if (req.method !== "POST") return json(405, { error: "Method not allowed" });
+/** Vercel Function (Node.js runtime, Web Request/Response API). Only POST is exported, so other methods get 405. */
+export async function POST(req: Request): Promise<Response> {
   const raw = await req.text(); // the signature is over the raw body — do not re-serialise
   if (!verifySignature(raw, req.headers.get("x-razorpay-signature"), env("RAZORPAY_WEBHOOK_SECRET"))) {
     return json(401, { error: "Invalid signature" });
@@ -54,4 +52,4 @@ export default async (req: Request) => {
     return json(502, { error: "Frappe did not accept the donation" });
   }
   return json(200, { ok: true, payment: payment.id });
-};
+}

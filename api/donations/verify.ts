@@ -4,9 +4,7 @@
  * only shown for a genuine payment. Recording the donation in Frappe is done by the webhook
  * (razorpay-webhook.ts), which also covers donors who close the tab after paying.
  */
-import { env, json, verifySignature } from "../lib/razorpay";
-
-export const config = { path: "/api/donations/verify" };
+import { env, json, verifySignature } from "../../server/razorpay.js";
 
 interface Body {
   razorpay_payment_id?: string;
@@ -15,8 +13,8 @@ interface Body {
   razorpay_signature?: string;
 }
 
-export default async (req: Request) => {
-  if (req.method !== "POST") return json(405, { error: "Method not allowed" });
+/** Vercel Function (Node.js runtime, Web Request/Response API). Only POST is exported, so other methods get 405. */
+export async function POST(req: Request): Promise<Response> {
   const b = ((await req.json().catch(() => ({}))) ?? {}) as Body;
   const secret = env("RAZORPAY_KEY_SECRET");
   if (!b.razorpay_payment_id || !b.razorpay_signature) return json(400, { ok: false });
@@ -25,4 +23,4 @@ export default async (req: Request) => {
   const signed = b.razorpay_order_id ? `${b.razorpay_order_id}|${b.razorpay_payment_id}` : b.razorpay_subscription_id ? `${b.razorpay_payment_id}|${b.razorpay_subscription_id}` : "";
   const ok = Boolean(signed) && verifySignature(signed, b.razorpay_signature, secret);
   return json(ok ? 200 : 400, { ok, paymentId: ok ? b.razorpay_payment_id : undefined });
-};
+}

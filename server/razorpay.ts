@@ -1,6 +1,6 @@
 /**
- * Server-only helpers for the donation functions. Secrets come from Netlify environment
- * variables and never reach the browser:
+ * Server-only helpers for the donation functions. Secrets come from Vercel environment
+ * variables (Project → Settings → Environment Variables) and never reach the browser:
  *   RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET   — Dashboard → Account & Settings → API keys
  *   RAZORPAY_WEBHOOK_SECRET                — Dashboard → Webhooks (the secret you set there)
  *   FRAPPE_WEBHOOK_URL                     — the Frappe endpoint that records donations

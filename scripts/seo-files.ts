@@ -2,7 +2,7 @@
  * Runs after pre-rendering (vite-react-ssg onFinished):
  *  - writes sitemap.xml
  *  - writes robots.txt
- *  - copies the rendered 404 page to /404.html (served by Netlify for unknown URLs)
+ *  - copies the rendered 404 page to /404.html (served by Vercel for unknown URLs)
  */
 import { copyFile, writeFile } from "node:fs/promises";
 import path from "node:path";

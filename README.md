@@ -11,7 +11,7 @@ A patient-first website for Sai Aarogya Hospital, Bapatla, a unit of Sri Sathya 
 - The colour tokens are in `tailwind.config.ts`.
 - **Pre-rendering:** every route is pre-rendered to static HTML with `vite-react-ssg`.
 - **Content:** JSON files in `src/content/`, edited with Decap CMS.
-- **Hosting:** Netlify, which also handles redirects and CMS logins.
+- **Hosting:** Vercel. `vercel.json` holds the redirects and headers; `api/` holds the server functions (Razorpay donations → Frappe, CMS GitHub login).
 - **Forms:** sent through [Web3Forms](https://web3forms.com). Set `VITE_WEB3FORMS_ACCESS_KEY` (see `.env.example`). Forms also work without JavaScript.
 
 ## Commands
@@ -49,7 +49,7 @@ src/
 └── main.tsx
 docs/
 ├── CONTENT_TODO.md      Every placeholder waiting for information from the hospital
-├── LAUNCH_CHECKLIST.md  Netlify, domain, Search Console, Google Business Profile, off-site (§9)
+├── LAUNCH_CHECKLIST.md  Vercel, domain, Search Console, Google Business Profile, off-site (§9)
 ├── STAFF_GUIDE.md       How hospital staff update content in the CMS
 └── PHASE0_WIX_FIXES.md  Quick fixes for the current Wix site
 public/

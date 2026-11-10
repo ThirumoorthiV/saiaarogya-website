@@ -1,8 +1,8 @@
 /**
- * Donation data shared by the Donate form (browser) and the Netlify Functions (server):
+ * Donation data shared by the Donate form (browser) and the Vercel Functions in api/ (server):
  * the validation schema, the Razorpay order notes, and the payload sent to Frappe.
  *
- * Keep this file free of "@/..." imports and React: it is bundled into the functions too.
+ * Keep this file free of "@/..." imports and React: it is imported by the functions too.
  *
  * Flow: Donate click → /api/donations/create (Razorpay Order or Subscription, with the
  * form details in `notes`) → Razorpay Checkout → Razorpay webhook (order.paid /
