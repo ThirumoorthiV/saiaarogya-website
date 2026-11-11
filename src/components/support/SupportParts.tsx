@@ -8,7 +8,7 @@ export const DONATION_APPEAL = [
   "Let’s all join hands in this mission of delivering compassionate healthcare to those in need, absolutely free of cost! Every small step we take can make a big difference in giving someone a happier childhood and a healthier life.",
 ];
 
-/** Online donation button for Indian donors (falls back to the contact page until the link is supplied). */
+/** Online donation button for Indian donors: jumps straight to the donation form (or an external link if one is set). */
 export function IndianDonateButton({ onDark = false }: { onDark?: boolean }) {
   const url = siteSettings.donation.indianDonorUrl;
   return url ? (
@@ -37,8 +37,9 @@ export function DonatePaths() {
         <p className="relative mt-4 flex-1 text-ink-700">Contribute online from India.</p>
         <div className="relative mt-6 flex flex-wrap items-center gap-3">
           <IndianDonateButton />
-          <ButtonLink to="/support-us/donate/" variant="outline">
-            Details
+          {/* "Donate now" jumps to the form; this goes to the 80G / fund-use page */}
+          <ButtonLink to="/support-us/transparency/" variant="outline">
+            Tax benefits
           </ButtonLink>
         </div>
       </li>

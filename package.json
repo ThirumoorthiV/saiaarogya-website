@@ -54,6 +54,9 @@
     "vite": "^6.4.6",
     "vite-react-ssg": "^0.9.2"
   },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@4.68.2"
+  },
   "private": true,
   "engines": {
     "node": ">=20"

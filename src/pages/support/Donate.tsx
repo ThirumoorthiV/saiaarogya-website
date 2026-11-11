@@ -28,7 +28,7 @@ export function Component() {
       <Seo title={meta.title} description={meta.description} path={path} />
       <PageHero title="Make a Difference, Donate Today" eyebrow={<p className="eyebrow">For Indian Donors - Indian Passport Holders</p>} intro={<p>{INTRO}</p>} crumbs={meta.crumbs} path={path} />
 
-      <div id="donate-form" className="scroll-mt-28 bg-white py-14 md:py-20">
+      <div id="donate-form" className="bg-white py-14 md:py-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
           {/* Left: Trust information (from the current page) */}
           <div className="space-y-8">

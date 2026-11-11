@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { MobileActionBar } from "./MobileActionBar";
 import { Analytics } from "./Analytics";
+import { HashScroll } from "./HashScroll";
 
 export function Layout() {
   return (
@@ -23,6 +24,7 @@ export function Layout() {
       <MobileActionBar />
       <Analytics />
       <ScrollRestoration />
+      <HashScroll />
     </>
   );
 }
