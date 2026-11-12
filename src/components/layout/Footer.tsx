@@ -119,8 +119,11 @@ export function Footer() {
 
       <div className="border-t border-white/10 pb-[76px] md:pb-0">
         <Container className="flex flex-col gap-3 py-6 text-[13px] text-white/70 md:flex-row md:items-center md:justify-between">
-          <p>© {year} Sai Aarogya Hospital. A unit of Sri Sathya Sai Sujala Sravanthi Trust, under the Sri Madhusudan Sai Global Humanitarian Mission.</p>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+          <p>
+            <span className="block">© {year} Sai Aarogya Hospital.</span>
+            <span className="block">A unit of Sri Sathya Sai Sujala Sravanthi Trust, under the Sri Madhusudan Sai Global Humanitarian Mission.</span>
+          </p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 md:shrink-0 md:flex-nowrap md:whitespace-nowrap">
             {policies.map((p) => (
               <li key={p.slug}>
                 <Link to={`/policies/${p.slug}/`} className="text-white/70 no-underline hover:text-white">

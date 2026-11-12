@@ -57,7 +57,7 @@ export function Component() {
               <div className="mt-5">
                 <VisitingBadge doctor={doctor} />
               </div>
-              <dl className="mt-8 max-w-xl">
+              <dl className="mt-8 grid max-w-3xl lg:grid-cols-2 lg:gap-x-8">
                 <Fact icon={<Stethoscope className={ic} aria-hidden />} label="Speciality">
                   {dept ? <Link to={`/departments/${dept.slug}/`}>{dept.name}</Link> : null}
                 </Fact>

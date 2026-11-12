@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { FormError, FormSuccess } from "./FormStatus";
+import { filtered } from "./filter";
+import { clean, LIMITS, rules } from "@/lib/fieldRules";
 
 export const REASONS = [
   { value: "patient", label: "Patient enquiry" },
@@ -21,22 +23,21 @@ export const REASONS = [
 ] as const;
 export type Reason = (typeof REASONS)[number]["value"];
 
-/** Indian mobile: optional +91 / 91 / 0 prefix, then 10 digits starting 6–9. */
-export const INDIAN_PHONE = /^(?:\+?91|0)?[6-9]\d{9}$/;
-export const normalizePhone = (v: string) => v.replace(/[\s()-]/g, "");
 const noopSubscribe = () => () => {};
 
 const schema = z.object({
-  name: z.string().trim().min(2, "Please enter your name.").max(100),
-  phone: z
-    .string()
-    .transform(normalizePhone)
-    .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
-  email: z.union([z.literal(""), z.string().trim().email("Please enter a valid email address, or leave it empty.")]),
+  name: rules.name("name", LIMITS.fullName),
+  phone: rules.mobile(),
+  email: rules.optionalEmail(),
   reason: z.enum(REASONS.map((r) => r.value) as [Reason, ...Reason[]], {
     message: "Please choose a reason.",
   }),
-  message: z.string().trim().min(10, "Please write a short message (at least 10 characters).").max(2000),
+  message: z
+    .string()
+    .trim()
+    .min(1, "Please write your message.")
+    .min(10, "Please write a short message (at least 10 characters).")
+    .max(LIMITS.message, `Please keep your message under ${LIMITS.message} characters.`),
   botcheck: z.boolean().optional(),
 });
 type In = z.input<typeof schema>;
@@ -124,11 +125,12 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
         <input
           id="enq-name"
           autoComplete="name"
+          maxLength={LIMITS.fullName}
           className={inputClass(!!errors.name)}
           aria-required="true"
           aria-invalid={!!errors.name}
           aria-describedby={describedBy("enq-name", false, !!errors.name)}
-          {...register("name")}
+          {...filtered(register("name"), (v) => clean.name(v, LIMITS.fullName))}
         />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
@@ -136,14 +138,14 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
           <input
             id="enq-phone"
             type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-            placeholder="98765 43210"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder="9876543210"
             className={inputClass(!!errors.phone)}
             aria-required="true"
             aria-invalid={!!errors.phone}
             aria-describedby={describedBy("enq-phone", true, !!errors.phone)}
-            {...register("phone")}
+            {...filtered(register("phone"), clean.mobile)}
           />
         </Field>
         <Field id="enq-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
@@ -151,10 +153,11 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
             id="enq-email"
             type="email"
             autoComplete="email"
+            maxLength={LIMITS.email}
             className={inputClass(!!errors.email)}
             aria-invalid={!!errors.email}
             aria-describedby={describedBy("enq-email", true, !!errors.email)}
-            {...register("email")}
+            {...filtered(register("email"), clean.email)}
           />
         </Field>
       </div>
@@ -183,11 +186,12 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
         <textarea
           id="enq-message"
           rows={5}
+          maxLength={LIMITS.message}
           className={inputClass(!!errors.message)}
           aria-required="true"
           aria-invalid={!!errors.message}
           aria-describedby={describedBy("enq-message", false, !!errors.message)}
-          {...register("message")}
+          {...filtered(register("message"), clean.text(LIMITS.message))}
         />
       </Field>
       {/* Honeypot (spam protection) — hidden from people and screen readers */}

@@ -10,6 +10,8 @@ import { Select } from "@/components/ui/Select";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { cn } from "@/components/ui/cn";
 import { FormError, FormSuccess } from "./FormStatus";
+import { filtered } from "./filter";
+import { clean, LIMITS } from "@/lib/fieldRules";
 
 const inr = (v: string | number) => `₹${Number(v).toLocaleString("en-IN")}`;
 const CHECKOUT_JS = "https://checkout.razorpay.com/v1/checkout.js";
@@ -70,6 +72,9 @@ type Status = { kind: "idle" } | { kind: "paid"; paymentId: string } | { kind: "
 export function DonationForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [busy, setBusy] = useState(false);
+  // DOB can't be in the future (set after hydration so the pre-rendered HTML matches)
+  const [today, setToday] = useState<string | undefined>();
+  useEffect(() => setToday(new Date().toLocaleDateString("en-CA")), []);
   const statusRef = useRef<HTMLDivElement>(null);
   const {
     register,
@@ -178,7 +183,17 @@ export function DonationForm() {
     id: string,
     name: TextName,
     label: string,
-    opts: { type?: string; autoComplete?: string; inputMode?: "numeric" | "tel" | "email" | "text"; placeholder?: string; required?: boolean; className?: string; maxLength?: number } = {},
+    opts: {
+      type?: string;
+      autoComplete?: string;
+      inputMode?: "numeric" | "tel" | "email" | "text";
+      placeholder?: string;
+      required?: boolean;
+      className?: string;
+      maxLength?: number;
+      filter?: (v: string) => string;
+      max?: string;
+    } = {},
   ) => {
     const err = errors[name]?.message;
     const required = opts.required ?? true;
@@ -191,11 +206,12 @@ export function DonationForm() {
           inputMode={opts.inputMode}
           placeholder={opts.placeholder}
           maxLength={opts.maxLength}
+          max={opts.max}
           className={cn(inputClass(!!err), opts.className)}
           aria-required={required || undefined}
           aria-invalid={!!err}
           aria-describedby={describedBy(id, false, !!err)}
-          {...register(name)}
+          {...(opts.filter ? filtered(register(name), opts.filter) : register(name))}
         />
       </Field>
     );
@@ -249,31 +265,31 @@ export function DonationForm() {
       {select("don-purpose", "purpose", "Donation Purpose", PURPOSES)}
       {select("don-salutation", "salutation", "Salutation", SALUTATIONS, false, "Select")}
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-first", "firstName", "First name", { autoComplete: "given-name", maxLength: 60 })}
-        {input("don-last", "lastName", "Last name", { autoComplete: "family-name", maxLength: 60 })}
+        {input("don-first", "firstName", "First name", { autoComplete: "given-name", maxLength: LIMITS.name, filter: (v) => clean.name(v) })}
+        {input("don-last", "lastName", "Last name", { autoComplete: "family-name", maxLength: LIMITS.name, filter: (v) => clean.name(v) })}
       </div>
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-email", "email", "Email", { type: "email", autoComplete: "email" })}
-        {input("don-mobile", "mobile", "Mobile", { type: "tel", inputMode: "tel", autoComplete: "tel", placeholder: "98765 43210" })}
+        {input("don-email", "email", "Email", { type: "email", autoComplete: "email", maxLength: LIMITS.email, filter: clean.email })}
+        {input("don-mobile", "mobile", "Mobile", { type: "tel", inputMode: "numeric", autoComplete: "tel-national", placeholder: "9876543210", filter: clean.mobile })}
       </div>
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-dob", "dob", "DOB", { type: "date", autoComplete: "bday", required: false })}
-        {input("don-pan", "pan", "PAN", { autoComplete: "off", placeholder: "ABCDE1234F", className: "uppercase", maxLength: 10 })}
+        {input("don-dob", "dob", "DOB", { type: "date", autoComplete: "bday", required: false, max: today })}
+        {input("don-pan", "pan", "PAN", { autoComplete: "off", placeholder: "ABCDE1234F", className: "uppercase", maxLength: LIMITS.pan, filter: clean.pan })}
       </div>
-      {input("don-address", "address", "Address", { autoComplete: "street-address", maxLength: 250 })}
+      {input("don-address", "address", "Address", { autoComplete: "street-address", maxLength: LIMITS.address, filter: clean.text(LIMITS.address) })}
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-city", "city", "City", { autoComplete: "address-level2", maxLength: 80 })}
-        {input("don-state", "state", "State", { autoComplete: "address-level1", maxLength: 80 })}
+        {input("don-city", "city", "City", { autoComplete: "address-level2", maxLength: LIMITS.place, filter: clean.place })}
+        {input("don-state", "state", "State", { autoComplete: "address-level1", maxLength: LIMITS.place, filter: clean.place })}
       </div>
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        {input("don-zip", "zip", "Zip/Postal Code", { inputMode: "numeric", autoComplete: "postal-code", placeholder: "522329", maxLength: 6 })}
-        {input("don-country", "country", "Country", { autoComplete: "country-name", maxLength: 80 })}
+        {input("don-zip", "zip", "Zip/Postal Code", { inputMode: "numeric", autoComplete: "postal-code", placeholder: "522329", maxLength: LIMITS.pin, filter: clean.digits(LIMITS.pin) })}
+        {input("don-country", "country", "Country", { autoComplete: "country-name", maxLength: LIMITS.place, filter: clean.place })}
       </div>
       {select("don-type", "donationType", "Donation Type", DONATION_TYPES)}
       {recurring && (
         <div className="grid items-start gap-5 rounded-2xl bg-maroon-50 p-4 sm:grid-cols-2">
           {select("don-frequency", "frequency", "Frequency", FREQUENCIES, true, "Select")}
-          {input("don-occ", "occurrences", "No of occurrence", { type: "number", inputMode: "numeric", placeholder: "e.g. 12" })}
+          {input("don-occ", "occurrences", "No of occurrence", { inputMode: "numeric", placeholder: "e.g. 12", maxLength: LIMITS.occurrences, filter: clean.digits(LIMITS.occurrences) })}
         </div>
       )}
 
@@ -289,7 +305,8 @@ export function DonationForm() {
             aria-required="true"
             aria-invalid={!!errors.amount}
             aria-describedby={describedBy("don-amount", false, !!errors.amount)}
-            {...register("amount")}
+            maxLength={LIMITS.amount}
+            {...filtered(register("amount"), clean.rupees)}
           />
         </div>
       </Field>

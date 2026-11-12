@@ -9,6 +9,7 @@
  * subscription.charged) → /api/razorpay/webhook → POST to the Frappe webhook, once per payment.
  */
 import { z } from "zod";
+import { LIMITS, PAN, PIN, rules } from "./fieldRules.js";
 
 /* Field options copied from the donation form on the current website (/donateus). */
 export const PURPOSES = ["Healthcare", "Social Welfare", "Education", "Surgery Gap Funding", "Nutrition"] as const;
@@ -17,50 +18,54 @@ export const DONATION_TYPES = ["One time donation", "Recurring donations"] as co
 export const FREQUENCIES = ["Weekly", "Monthly", "Quarterly", "Yearly"] as const;
 export type Frequency = (typeof FREQUENCIES)[number];
 
-/** Indian mobile: optional +91 / 91 / 0 prefix, then 10 digits starting 6–9. */
-const INDIAN_PHONE = /^(?:\+?91|0)?[6-9]\d{9}$/;
-const PAN = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
-const PIN = /^[1-9][0-9]{5}$/;
 /** Razorpay limits: each note value ≤ 256 characters, at most 15 notes. */
 const NOTE_MAX = 250;
 export const MAX_AMOUNT = 10_00_000; // ₹10 lakh per transaction (guard against typos)
 
+/** yyyy-mm-dd, a real date, not in the future, after 1900. */
+const validDob = (v: string) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  const t = Date.parse(`${v}T00:00:00Z`);
+  return Number.isFinite(t) && t <= Date.now() && v >= "1900-01-01" && new Date(t).toISOString().startsWith(v);
+};
 const req = (label: string, max: number) => z.string().trim().min(1, `Please enter your ${label}.`).max(max, `Please keep your ${label} under ${max} characters.`);
 
 export const donationSchema = z
   .object({
     purpose: z.enum(PURPOSES, { message: "Please choose a donation purpose." }),
     salutation: z.union([z.literal(""), z.enum(SALUTATIONS)]),
-    firstName: req("first name", 60),
-    lastName: req("last name", 60),
-    email: z.string().trim().email("Please enter a valid email address.").max(120),
-    mobile: z
-      .string()
-      .transform((v) => v.replace(/[\s()-]/g, ""))
-      .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
+    firstName: rules.name("first name"),
+    lastName: rules.name("last name", LIMITS.name, 1),
+    email: rules.email(),
+    mobile: rules.mobile(),
     dob: z
       .string()
       .optional()
-      .refine((v) => !v || /^\d{4}-\d{2}-\d{2}$/.test(v), "Please enter a valid date."),
+      .refine((v) => !v || validDob(v), "Please enter a valid date of birth (not in the future)."),
     pan: z
       .string()
       .trim()
       .transform((v) => v.toUpperCase())
-      .refine((v) => PAN.test(v), "Please enter a valid PAN, e.g. ABCDE1234F."),
-    address: req("address", NOTE_MAX),
-    city: req("city", 80),
-    state: req("state", 80),
+      .refine((v) => v.length > 0, "Please enter your PAN.")
+      .refine((v) => v.length === 0 || PAN.test(v), "Please enter a valid 10-character PAN, e.g. ABCDE1234F."),
+    address: req("address", NOTE_MAX)
+      .min(5, "Please enter your full address.")
+      .refine((v) => !/[<>]/.test(v), "Your address cannot contain < or >."),
+    city: rules.place("city"),
+    state: rules.place("state"),
     zip: z
       .string()
       .trim()
-      .refine((v) => PIN.test(v), "Please enter a valid 6-digit PIN code."),
-    country: req("country", 80),
+      .refine((v) => v.length > 0, "Please enter your PIN code.")
+      .refine((v) => v.length === 0 || PIN.test(v), "Please enter a valid 6-digit PIN code."),
+    country: rules.place("country"),
     donationType: z.enum(DONATION_TYPES, { message: "Please choose a donation type." }),
     frequency: z.union([z.literal(""), z.enum(FREQUENCIES)]),
     occurrences: z.string().trim().optional(),
     amount: z
       .string()
       .trim()
+      .transform((v) => v.replace(/\.$/, "")) // "5000." (paise ignored) → "5000"
       .refine((v) => /^\d+$/.test(v) && Number(v) >= 1, "Please enter the amount in rupees.")
       .refine((v) => Number(v) <= MAX_AMOUNT, "For donations above ₹10,00,000 please contact the Trust."),
     terms: z.boolean().refine((v) => v, "Please agree to the terms & conditions."),

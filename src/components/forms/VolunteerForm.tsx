@@ -9,7 +9,8 @@ import { trackEvent } from "@/components/layout/Analytics";
 import { Button } from "@/components/ui/Button";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { Select } from "@/components/ui/Select";
-import { INDIAN_PHONE, normalizePhone } from "./EnquiryForm";
+import { filtered } from "./filter";
+import { clean, LIMITS, rules } from "@/lib/fieldRules";
 import { FormError, FormSuccess } from "./FormStatus";
 
 const AREAS = {
@@ -23,18 +24,15 @@ const AREAS = {
 type Area = keyof typeof AREAS;
 
 const schema = z.object({
-  name: z.string().trim().min(2, "Please enter your name.").max(100),
-  phone: z
-    .string()
-    .transform(normalizePhone)
-    .refine((v) => INDIAN_PHONE.test(v), "Please enter a valid 10-digit Indian mobile number."),
-  email: z.union([z.literal(""), z.string().trim().email("Please enter a valid email address, or leave it empty.")]),
+  name: rules.name("name", LIMITS.fullName),
+  phone: rules.mobile(),
+  email: rules.optionalEmail(),
   area: z.enum(Object.keys(AREAS) as [Area, ...Area[]], {
     message: "Please choose an area of interest.",
   }),
-  profession: z.string().trim().max(120).optional(),
-  availability: z.string().trim().max(200).optional(),
-  message: z.string().trim().max(2000).optional(),
+  profession: rules.optionalText("profession", LIMITS.short),
+  availability: rules.optionalText("availability", LIMITS.medium),
+  message: rules.optionalText("message", LIMITS.message),
   botcheck: z.boolean().optional(),
 });
 type In = z.input<typeof schema>;
@@ -95,11 +93,12 @@ export function VolunteerForm() {
         <input
           id="vol-name"
           autoComplete="name"
+          maxLength={LIMITS.fullName}
           className={inputClass(!!errors.name)}
           aria-required="true"
           aria-invalid={!!errors.name}
           aria-describedby={describedBy("vol-name", false, !!errors.name)}
-          {...register("name")}
+          {...filtered(register("name"), (v) => clean.name(v, LIMITS.fullName))}
         />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
@@ -107,13 +106,14 @@ export function VolunteerForm() {
           <input
             id="vol-phone"
             type="tel"
-            inputMode="tel"
-            autoComplete="tel"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder="9876543210"
             className={inputClass(!!errors.phone)}
             aria-required="true"
             aria-invalid={!!errors.phone}
             aria-describedby={describedBy("vol-phone", true, !!errors.phone)}
-            {...register("phone")}
+            {...filtered(register("phone"), clean.mobile)}
           />
         </Field>
         <Field id="vol-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
@@ -121,10 +121,11 @@ export function VolunteerForm() {
             id="vol-email"
             type="email"
             autoComplete="email"
+            maxLength={LIMITS.email}
             className={inputClass(!!errors.email)}
             aria-invalid={!!errors.email}
             aria-describedby={describedBy("vol-email", true, !!errors.email)}
-            {...register("email")}
+            {...filtered(register("email"), clean.email)}
           />
         </Field>
       </div>
@@ -152,15 +153,35 @@ export function VolunteerForm() {
       </Field>
 
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        <Field id="vol-profession" label="Profession / skills" optional>
-          <input id="vol-profession" className={inputClass(false)} {...register("profession")} />
+        <Field id="vol-profession" label="Profession / skills" optional error={errors.profession?.message}>
+          <input
+            id="vol-profession"
+            maxLength={LIMITS.short}
+            className={inputClass(!!errors.profession)}
+            aria-invalid={!!errors.profession}
+            {...filtered(register("profession"), clean.text(LIMITS.short))}
+          />
         </Field>
-        <Field id="vol-availability" label="Availability" optional>
-          <input id="vol-availability" placeholder="e.g. weekends, during camps" className={inputClass(false)} {...register("availability")} />
+        <Field id="vol-availability" label="Availability" optional error={errors.availability?.message}>
+          <input
+            id="vol-availability"
+            placeholder="e.g. weekends, during camps"
+            maxLength={LIMITS.medium}
+            className={inputClass(!!errors.availability)}
+            aria-invalid={!!errors.availability}
+            {...filtered(register("availability"), clean.text(LIMITS.medium))}
+          />
         </Field>
       </div>
-      <Field id="vol-message" label="Anything else you’d like to tell us?" optional>
-        <textarea id="vol-message" rows={4} className={inputClass(false)} {...register("message")} />
+      <Field id="vol-message" label="Anything else you’d like to tell us?" optional error={errors.message?.message}>
+        <textarea
+          id="vol-message"
+          rows={4}
+          maxLength={LIMITS.message}
+          className={inputClass(!!errors.message)}
+          aria-invalid={!!errors.message}
+          {...filtered(register("message"), clean.text(LIMITS.message))}
+        />
       </Field>
       <input type="checkbox" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("botcheck")} />
       <Button type="submit" size="lg" disabled={isSubmitting} icon={<Send className="h-5 w-5" aria-hidden />} className="w-full">
