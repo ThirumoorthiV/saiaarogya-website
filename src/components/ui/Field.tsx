@@ -38,12 +38,13 @@ export function Field({
         )}
         {optional && <span className="font-normal text-ink-600"> (optional)</span>}
       </label>
+      {children}
+      {/* Hint sits under the input so inputs in a row stay aligned whether or not they have one */}
       {hint && (
-        <p id={`${id}-hint`} className="mb-1.5 text-sm text-ink-600">
+        <p id={`${id}-hint`} className="mt-1.5 text-sm text-ink-600">
           {hint}
         </p>
       )}
-      {children}
       {error && (
         <p id={`${id}-error`} className="mt-1.5 text-sm font-medium text-alert-700">
           {error}

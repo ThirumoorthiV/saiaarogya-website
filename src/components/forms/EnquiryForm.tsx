@@ -134,7 +134,7 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
         />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        <Field id="enq-phone" label="Phone number" required hint="10-digit Indian mobile number" error={errors.phone?.message}>
+        <Field id="enq-phone" label="Phone number" required error={errors.phone?.message}>
           <input
             id="enq-phone"
             type="tel"
@@ -144,11 +144,11 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
             className={inputClass(!!errors.phone)}
             aria-required="true"
             aria-invalid={!!errors.phone}
-            aria-describedby={describedBy("enq-phone", true, !!errors.phone)}
+            aria-describedby={describedBy("enq-phone", false, !!errors.phone)}
             {...filtered(register("phone"), clean.mobile)}
           />
         </Field>
-        <Field id="enq-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
+        <Field id="enq-email" label="Email" optional error={errors.email?.message}>
           <input
             id="enq-email"
             type="email"
@@ -156,7 +156,7 @@ export function EnquiryForm({ defaultReason, pagePath = "/contact/" }: { default
             maxLength={LIMITS.email}
             className={inputClass(!!errors.email)}
             aria-invalid={!!errors.email}
-            aria-describedby={describedBy("enq-email", true, !!errors.email)}
+            aria-describedby={describedBy("enq-email", false, !!errors.email)}
             {...filtered(register("email"), clean.email)}
           />
         </Field>

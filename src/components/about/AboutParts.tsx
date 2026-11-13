@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown, ExternalLink, Quote } from "lucide-react";
 import { about, siteSettings, type Portrait } from "@/content";
 import type { GovernanceGroup, Person } from "@/types";
@@ -79,32 +79,136 @@ export function MissionTrust() {
 }
 
 /** History timeline: vertical on mobile, horizontal on desktop (§5.2). */
+/**
+ * Sticky vertical timeline with scroll progress.
+ * Desktop: a sticky panel (current milestone, progress bar, jump list) beside the vertical timeline.
+ * All sizes: the line fills in as you scroll and each milestone's dot fills once it is reached.
+ * Without JavaScript it is a plain, fully readable vertical list.
+ */
 export function Timeline() {
-  const last = about.timeline.length - 1;
+  const events = about.timeline;
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLOListElement>(null);
+  const [active, setActive] = useState(-1);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const list = listRef.current;
+    if (!wrap || !list) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const dots = [...list.querySelectorAll<HTMLElement>("[data-dot]")];
+      if (!dots.length) return;
+      const centre = (el: HTMLElement) => {
+        const r = el.getBoundingClientRect();
+        return r.top + r.height / 2;
+      };
+      const first = centre(dots[0]!);
+      const last = centre(dots[dots.length - 1]!);
+      const mark = window.innerHeight * 0.55; // the "reading line"
+      const track = Math.max(1, last - first);
+      const progress = Math.min(1, Math.max(0, (mark - first) / track));
+      list.style.setProperty("--track", `${track}px`);
+      wrap.style.setProperty("--progress", String(progress));
+      let a = -1;
+      dots.forEach((d, i) => {
+        if (centre(d) <= mark) a = i;
+      });
+      setActive(a);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const shown = Math.max(active, 0);
+  const pad = (n: number) => String(n).padStart(2, "0");
+
   return (
-    <ol className="relative grid gap-6 lg:grid-cols-6 lg:gap-4">
-      <span aria-hidden className="absolute bottom-3 left-[15px] top-3 w-px bg-maroon-200 lg:bottom-auto lg:left-4 lg:right-4 lg:top-[15px] lg:h-px lg:w-auto" />
-      {about.timeline.map((e, i) => (
-        <li key={e.title} className="relative pl-12 lg:pl-0 lg:pt-12">
-          <span
-            aria-hidden
-            className={`absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full ring-4 ring-ink-50 ${i === last ? "bg-maroon-700" : "bg-white ring-offset-0"} border ${i === last ? "border-maroon-700" : "border-maroon-200"}`}
-          >
-            <span className={`h-2.5 w-2.5 rounded-full ${i === last ? "bg-white" : "bg-maroon-700"}`} />
-          </span>
-          <div className="surface h-full p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-maroon-700">{e.date}</p>
-            <h3 className="mt-2 font-heading text-lg font-bold text-ink-900">{e.title}</h3>
-            <p className="mt-1 text-[15px] text-ink-600">{e.text}</p>
+    <div ref={wrapRef} className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-14">
+      {/* Sticky progress panel (desktop) */}
+      <nav aria-label="Timeline milestones" className="hidden lg:block">
+        <div className="surface sticky top-28 p-7">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-600">
+            Milestone <span className="text-maroon-700">{pad(shown + 1)}</span> / {pad(events.length)}
+          </p>
+          <p className="mt-3 font-heading text-3xl font-bold leading-tight text-maroon-800">{events[shown]!.date}</p>
+          <p className="mt-1 text-lg font-semibold text-ink-900">{events[shown]!.title}</p>
+          <div aria-hidden className="mt-5 h-1.5 overflow-hidden rounded-full bg-maroon-100">
+            <div className="h-full origin-left rounded-full bg-maroon-700 motion-safe:transition-transform motion-safe:duration-150" style={{ transform: "scaleX(var(--progress, 0))" }} />
           </div>
-        </li>
-      ))}
-    </ol>
+          <ol className="mt-6 space-y-1">
+            {events.map((e, i) => (
+              <li key={e.title}>
+                <a
+                  href={`#milestone-${i + 1}`}
+                  aria-current={i === active ? "step" : undefined}
+                  className={cn(
+                    "flex items-baseline gap-3 rounded-xl px-3 py-2 text-[15px] no-underline transition-colors hover:bg-maroon-50",
+                    i === active ? "bg-maroon-50 font-semibold text-maroon-800" : i < active ? "text-ink-900" : "text-ink-600",
+                  )}
+                >
+                  <span className="w-6 shrink-0 font-mono text-xs text-maroon-700">{pad(i + 1)}</span>
+                  {e.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </nav>
+
+      {/* Vertical timeline */}
+      <ol ref={listRef} className="relative space-y-6">
+        {/* track + scroll-progress fill, running from the first dot to the last */}
+        <span aria-hidden className="absolute left-[15px] top-[38px] w-0.5 rounded-full bg-maroon-100" style={{ height: "var(--track, calc(100% - 76px))" }}>
+          <span className="absolute inset-0 origin-top rounded-full bg-maroon-700" style={{ transform: "scaleY(var(--progress, 0))" }} />
+        </span>
+        {events.map((e, i) => {
+          const reached = i <= active;
+          return (
+            <li key={e.title} id={`milestone-${i + 1}`} className="relative scroll-mt-32 pl-14">
+              <span
+                data-dot
+                aria-hidden
+                className={cn(
+                  "absolute left-0 top-[22px] flex h-8 w-8 items-center justify-center rounded-full border-2 ring-4 ring-ink-50 motion-safe:transition-colors motion-safe:duration-300",
+                  reached ? "border-maroon-700 bg-maroon-700" : "border-maroon-200 bg-white",
+                )}
+              >
+                <span className={cn("h-2.5 w-2.5 rounded-full motion-safe:transition-colors", reached ? "bg-yellow-400" : "bg-maroon-300")} />
+              </span>
+              <div
+                className={cn(
+                  "surface p-5 motion-safe:transition-all motion-safe:duration-300 md:p-6",
+                  i === active && "shadow-lift ring-2 ring-maroon-200",
+                )}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-maroon-700">
+                  <span className="mr-2 font-mono text-ink-600">{pad(i + 1)}</span>
+                  {e.date}
+                </p>
+                <h3 className="mt-2 font-heading text-lg font-bold text-ink-900 md:text-xl">{e.title}</h3>
+                <p className="mt-1 text-[15px] text-ink-600 md:text-base">{e.text}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   );
 }
 
-function PersonCard({ person }: { person: Person }) {
-  const [open, setOpen] = useState(false);
+/** `open` / `onToggle` come from GovernanceGroups so only one card's bio is expanded at a time. */
+function PersonCard({ person, open, onToggle }: { person: Person; open: boolean; onToggle: () => void }) {
   const bioId = useId();
   const initials = person.name
     .replace(/^(Dr|Sri|Smt)\.?\s+/i, "")
@@ -145,7 +249,7 @@ function PersonCard({ person }: { person: Person }) {
               type="button"
               aria-expanded={open}
               aria-controls={bioId}
-              onClick={() => setOpen((o) => !o)}
+              onClick={onToggle}
               className="mt-1 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-maroon-700 hover:text-maroon-900"
             >
               {open ? "Show less" : "Read more"}
@@ -161,6 +265,8 @@ function PersonCard({ person }: { person: Person }) {
 
 /** Board of Trustees · Advisors · Management Committee — grouped grids (§5.2). */
 export function GovernanceGroups({ groups }: { groups: GovernanceGroup[] }) {
+  // Only one "Read more" open at a time across the page: opening a card closes the previous one
+  const [openKey, setOpenKey] = useState<string | null>(null);
   const merged: { title: string; parts: GovernanceGroup[] }[] = [];
   for (const g of groups) {
     const prev = merged[merged.length - 1];
@@ -181,9 +287,10 @@ export function GovernanceGroups({ groups }: { groups: GovernanceGroup[] }) {
                 <div key={i}>
                   {g.subtitle && <p className="eyebrow mb-4">{g.subtitle}</p>}
                   <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-                    {g.people.map((p) => (
-                      <PersonCard key={p.slug} person={p} />
-                    ))}
+                    {g.people.map((p) => {
+                      const key = `${m.title}-${i}-${p.slug}`;
+                      return <PersonCard key={p.slug} person={p} open={openKey === key} onToggle={() => setOpenKey((k) => (k === key ? null : key))} />;
+                    })}
                   </ul>
                 </div>
               ))}

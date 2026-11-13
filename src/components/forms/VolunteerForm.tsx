@@ -102,7 +102,7 @@ export function VolunteerForm() {
         />
       </Field>
       <div className="grid items-start gap-5 sm:grid-cols-2">
-        <Field id="vol-phone" label="Phone number" required hint="10-digit Indian mobile number" error={errors.phone?.message}>
+        <Field id="vol-phone" label="Phone number" required error={errors.phone?.message}>
           <input
             id="vol-phone"
             type="tel"
@@ -112,11 +112,11 @@ export function VolunteerForm() {
             className={inputClass(!!errors.phone)}
             aria-required="true"
             aria-invalid={!!errors.phone}
-            aria-describedby={describedBy("vol-phone", true, !!errors.phone)}
+            aria-describedby={describedBy("vol-phone", false, !!errors.phone)}
             {...filtered(register("phone"), clean.mobile)}
           />
         </Field>
-        <Field id="vol-email" label="Email" optional hint="So we can reply by email" error={errors.email?.message}>
+        <Field id="vol-email" label="Email" optional error={errors.email?.message}>
           <input
             id="vol-email"
             type="email"
@@ -124,7 +124,7 @@ export function VolunteerForm() {
             maxLength={LIMITS.email}
             className={inputClass(!!errors.email)}
             aria-invalid={!!errors.email}
-            aria-describedby={describedBy("vol-email", true, !!errors.email)}
+            aria-describedby={describedBy("vol-email", false, !!errors.email)}
             {...filtered(register("email"), clean.email)}
           />
         </Field>
